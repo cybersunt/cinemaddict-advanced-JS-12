@@ -106,6 +106,8 @@ for (let i = 0; i < MOVIES_LIST_COUNT; i++) {
 }
 
 const mainMoviesListElement = moviesElement.querySelector(`.films-list`);
+const topRatedMoviesListElement = moviesElement.querySelectorAll(`.films-list--extra`)[0];
+const mostCommentedMoviesListElement = moviesElement.querySelectorAll(`.films-list--extra`)[1];
 
 render(mainMoviesListElement, createMoviesListTitleTemplate(`All movies. Upcoming`, true), `beforeend`);
 render(mainMoviesListElement, createMoviesListContainerTemplate(), `beforeend`);
@@ -115,4 +117,22 @@ const moviesListContainerElement = mainMoviesListElement.querySelector(`.films-l
 
 for (let i = 0; i < MOVIES_COUNT; i++) {
   render(moviesListContainerElement, createMovieCard(), `beforeend`);
+}
+
+render(topRatedMoviesListElement, createMoviesListTitleTemplate(`Top rated`), `beforeend`);
+render(topRatedMoviesListElement, createMoviesListContainerTemplate (), `beforeend`);
+
+const topRatedMoviesListContainerElement = topRatedMoviesListElement.querySelector(`.films-list__container`);
+
+for (let i = 0; i < 2; i++) {
+  render(topRatedMoviesListContainerElement, createMovieCard(), `beforeend`);
+}
+
+render(mostCommentedMoviesListElement, createMoviesListTitleTemplate(`Most commented`), `beforeend`);
+render(mostCommentedMoviesListElement, createMoviesListContainerTemplate (), `beforeend`);
+
+const mostCommentedMoviesListContainerElement = mostCommentedMoviesListElement.querySelector(`.films-list__container`);
+
+for (let i = 0; i < 2; i++) {
+  render(mostCommentedMoviesListContainerElement, createMovieCard(), `beforeend`);
 }
