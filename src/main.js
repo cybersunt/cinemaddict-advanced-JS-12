@@ -2,9 +2,21 @@
 
 const MOVIES_LIST_COUNT = 3;
 const MOVIES_COUNT = 5;
+const MOVIES_EXTRA_COUNT = 2;
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
+};
+
+const renderMoviesList = (moviesList, title, titleHide, count) => {
+  render(moviesList, createMoviesListTitleTemplate(title), `beforeend`);
+  render(moviesList, createMoviesListContainerTemplate(), `beforeend`);
+
+  const containerElement = moviesList.querySelector(`.films-list__container`);
+
+  for (let i = 0; i < count; i++) {
+    render(containerElement, createMovieCard(), `beforeend`);
+  }
 };
 
 // Header Components
@@ -109,30 +121,7 @@ const mainMoviesListElement = moviesElement.querySelector(`.films-list`);
 const topRatedMoviesListElement = moviesElement.querySelectorAll(`.films-list--extra`)[0];
 const mostCommentedMoviesListElement = moviesElement.querySelectorAll(`.films-list--extra`)[1];
 
-render(mainMoviesListElement, createMoviesListTitleTemplate(`All movies. Upcoming`, true), `beforeend`);
-render(mainMoviesListElement, createMoviesListContainerTemplate(), `beforeend`);
+renderMoviesList(mainMoviesListElement, `All movies. Upcoming`, true, MOVIES_COUNT);
 render(mainMoviesListElement, createLoadMoreButtonTemplate(), `beforeend`);
-
-const moviesListContainerElement = mainMoviesListElement.querySelector(`.films-list__container`);
-
-for (let i = 0; i < MOVIES_COUNT; i++) {
-  render(moviesListContainerElement, createMovieCard(), `beforeend`);
-}
-
-render(topRatedMoviesListElement, createMoviesListTitleTemplate(`Top rated`), `beforeend`);
-render(topRatedMoviesListElement, createMoviesListContainerTemplate(), `beforeend`);
-
-const topRatedMoviesListContainerElement = topRatedMoviesListElement.querySelector(`.films-list__container`);
-
-for (let i = 0; i < 2; i++) {
-  render(topRatedMoviesListContainerElement, createMovieCard(), `beforeend`);
-}
-
-render(mostCommentedMoviesListElement, createMoviesListTitleTemplate(`Most commented`), `beforeend`);
-render(mostCommentedMoviesListElement, createMoviesListContainerTemplate(), `beforeend`);
-
-const mostCommentedMoviesListContainerElement = mostCommentedMoviesListElement.querySelector(`.films-list__container`);
-
-for (let i = 0; i < 2; i++) {
-  render(mostCommentedMoviesListContainerElement, createMovieCard(), `beforeend`);
-}
+renderMoviesList(topRatedMoviesListElement, `Top rated`, false, MOVIES_EXTRA_COUNT);
+renderMoviesList(mostCommentedMoviesListElement, `Top rated`, false, MOVIES_EXTRA_COUNT);
