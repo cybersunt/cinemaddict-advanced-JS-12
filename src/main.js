@@ -14,6 +14,17 @@ const createUserInfoTemplate = () => {
   );
 };
 
+// Footer components
+const createMovieStatsTemplate = () => {
+  return (
+    `<section class="footer__statistics">
+       <p>130 291 movies inside</p>
+     </section>`
+  );
+};
+
 const siteHeaderElement = document.querySelector(`.header`);
+const siteFooterElement = document.querySelector(`.footer`);
 
 render(siteHeaderElement, createUserInfoTemplate(), `beforeend`);
+render(siteFooterElement, createMovieStatsTemplate(), `beforeend`);
