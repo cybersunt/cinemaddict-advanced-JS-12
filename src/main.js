@@ -41,8 +41,20 @@ const createSortTemplate = () => {
 };
 const createMoviesTemplate = () => `<section class="films"></section>`;
 
-// Movies Components
+// MoviesList Components
 const createMoviesListTemplate = (id) => id !== 0 ? `<section class="films-list--extra"></section>` : `<section class="films-list"></section>`;
+const createMoviesListTitleTemplate = (title, hidden = false) => {
+  if (hidden) {
+    return (
+      `<h2 class="films-list__title visually-hidden">${title}</h2>`
+    );
+  }
+  return (
+    `<h2 class="films-list__title">${title}</h2>`
+  );
+};
+const createMoviesListContainerTemplate = ()=> `<div class="films-list__container"></div>`;
+const createLoadMoreButtonTemplate = ()=> `<button class="films-list__show-more">Show more</button>`;
 
 // Footer Components
 const createMovieStatsTemplate = () => {
@@ -68,3 +80,9 @@ const moviesElement = siteMainElement.querySelector(`.films`);
 for (let i = 0; i < MOVIES_LIST_COUNT; i++) {
   render(moviesElement, createMoviesListTemplate(i), `beforeend`);
 }
+
+const mainMoviesListElement = moviesElement.querySelector(`.films-list`);
+
+render(mainMoviesListElement, createMoviesListTitleTemplate('All movies. Upcoming', true), `beforeend`);
+render(mainMoviesListElement, createMoviesListContainerTemplate(), `beforeend`);
+render(mainMoviesListElement, createLoadMoreButtonTemplate(), `beforeend`);
