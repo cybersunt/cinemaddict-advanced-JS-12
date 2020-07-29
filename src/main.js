@@ -1,5 +1,7 @@
 'use strict';
 
+const MOVIES_LIST_COUNT = 3;
+
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
@@ -39,6 +41,9 @@ const createSortTemplate = () => {
 };
 const createMoviesTemplate = () => `<section class="films"></section>`;
 
+// Movies Components
+const createMoviesListTemplate = (id) => id !== 0 ? `<section class="films-list--extra"></section>` : `<section class="films-list"></section>`;
+
 // Footer Components
 const createMovieStatsTemplate = () => {
   return (
@@ -57,3 +62,9 @@ render(siteMainElement, createSiteMenuTemplate(), `beforeend`);
 render(siteMainElement, createSortTemplate(), `beforeend`);
 render(siteMainElement, createMoviesTemplate(), `beforeend`);
 render(siteFooterElement, createMovieStatsTemplate(), `beforeend`);
+
+const moviesElement = siteMainElement.querySelector(`.films`);
+
+for (let i = 0; i < MOVIES_LIST_COUNT; i++) {
+  render(moviesElement, createMoviesListTemplate(i), `beforeend`);
+}
