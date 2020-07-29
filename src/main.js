@@ -120,7 +120,7 @@ for (let i = 0; i < MOVIES_COUNT; i++) {
 }
 
 render(topRatedMoviesListElement, createMoviesListTitleTemplate(`Top rated`), `beforeend`);
-render(topRatedMoviesListElement, createMoviesListContainerTemplate (), `beforeend`);
+render(topRatedMoviesListElement, createMoviesListContainerTemplate(), `beforeend`);
 
 const topRatedMoviesListContainerElement = topRatedMoviesListElement.querySelector(`.films-list__container`);
 
@@ -129,7 +129,7 @@ for (let i = 0; i < 2; i++) {
 }
 
 render(mostCommentedMoviesListElement, createMoviesListTitleTemplate(`Most commented`), `beforeend`);
-render(mostCommentedMoviesListElement, createMoviesListContainerTemplate (), `beforeend`);
+render(mostCommentedMoviesListElement, createMoviesListContainerTemplate(), `beforeend`);
 
 const mostCommentedMoviesListContainerElement = mostCommentedMoviesListElement.querySelector(`.films-list__container`);
 
