@@ -7,7 +7,7 @@ import {createMoviesListTemplate} from "./view/movies-list";
 import {createMoviesListTitleTemplate} from "./view/movies-list-title";
 import {createMoviesListContainerTemplate} from "./view/movie-list-container";
 import {createMovieCard} from "./view/movie-card";
-import {createLoadMoreButtonTemplate} from "./view/load-more-button";
+import {createShowMoreButtonTemplate} from "./view/show-more-button";
 
 const MOVIES_LIST_COUNT = 3;
 const MOVIES_COUNT = 5;
@@ -49,6 +49,6 @@ const topRatedMoviesListElement = moviesElement.querySelectorAll(`.films-list--e
 const mostCommentedMoviesListElement = moviesElement.querySelectorAll(`.films-list--extra`)[1];
 
 renderMoviesList(mainMoviesListElement, `All movies. Upcoming`, true, MOVIES_COUNT);
-render(mainMoviesListElement, createLoadMoreButtonTemplate(), `beforeend`);
+render(mainMoviesListElement, createShowMoreButtonTemplate(), `beforeend`);
 renderMoviesList(topRatedMoviesListElement, `Top rated`, false, MOVIES_EXTRA_COUNT);
 renderMoviesList(mostCommentedMoviesListElement, `Top rated`, false, MOVIES_EXTRA_COUNT);
