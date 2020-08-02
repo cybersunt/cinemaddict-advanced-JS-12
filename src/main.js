@@ -18,7 +18,7 @@ const render = (container, template, place) => {
 };
 
 const renderMoviesList = (moviesList, title, titleIsHidden, count) => {
-  render(moviesList, createMoviesListTitleTemplate(title, titleIsHidden,), `beforeend`);
+  render(moviesList, createMoviesListTitleTemplate(title, titleIsHidden), `beforeend`);
   render(moviesList, createMoviesListContainerTemplate(), `beforeend`);
 
   const containerElement = moviesList.querySelector(`.films-list__container`);
