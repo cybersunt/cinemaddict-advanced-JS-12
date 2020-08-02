@@ -1,10 +1,3 @@
-export const createMoviesListTitleTemplate = (title, hidden = false) => {
-  if (hidden) {
-    return (
-      `<h2 class="films-list__title visually-hidden">${title}</h2>`
-    );
-  }
-  return (
-    `<h2 class="films-list__title">${title}</h2>`
-  );
+export const createMoviesListTitleTemplate = (title, isHidden = false) => {
+  return `<h2 class="films-list__title ${isHidden ? `visually-hidden` : ``}">${title}</h2>`;
 };
