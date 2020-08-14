@@ -110,3 +110,5 @@ export const ACTORS = [
   'Bruce Willis',
   'Nicole Kidman'
 ];
+
+export const EMOJI = ['angry', 'puke', 'sleeping', 'smile'];

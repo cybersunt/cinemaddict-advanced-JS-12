@@ -1,5 +1,35 @@
 import {getArrayRandomLength, getRandom, getRandomElement, getRandomInteger} from "../utils";
-import {ACTORS, COUNTRIES, DIRECTORS, TITLES, POSTERS, WRITERS, DESCRIPTIONS, GENRES} from "../const";
+import {ACTORS, COUNTRIES, DIRECTORS, TITLES, POSTERS, WRITERS, DESCRIPTIONS, GENRES, EMOJI} from "../const";
+
+const generateDate = () => {
+
+  const maxDaysGap = 7;
+  const daysGap = getRandomInteger(-maxDaysGap, 0);
+  const currentDate = new Date();
+
+  currentDate.setHours(23, 59, 59, 999);
+
+  currentDate.setDate(currentDate.getDate() + daysGap);
+
+  return new Date(currentDate);
+};
+
+const generateComments = () => {
+  const messages = [];
+
+  const countComments = getRandomInteger(1, 5);
+
+  for (let i = 0; i < countComments; i++) {
+    messages.push({
+      emoji: `/public/images/emoji/${getRandomElement(EMOJI)}.png`,
+      author: getRandomElement(ACTORS),
+      message: getArrayRandomLength(1, 3, DESCRIPTIONS).toString(),
+      date: generateDate()
+    });
+  }
+
+  return messages;
+};
 
 export const generateMovie = () => {
 
@@ -24,13 +54,6 @@ export const generateMovie = () => {
     genres,
     rating,
     ageLimitations: getRandomInteger(0, 18),
-    comments: [
-      {
-        emoji: '/public/images/posters/' + ' Название картинки',
-        message: 'Текст сообщения',
-        author: 'Имя автора',
-        date: '2 дня назад'
-      }
-    ],
+    comments: generateComments()
   };
 };
