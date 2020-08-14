@@ -15,7 +15,6 @@ const MOVIES_COUNT = 5;
 const MOVIES_EXTRA_COUNT = 2;
 
 const movies = new Array(MOVIES_COUNT).fill('').map(generateMovie);
-console.log(movies);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -28,7 +27,7 @@ const renderMoviesList = (moviesList, title, titleIsHidden, count) => {
   const containerElement = moviesList.querySelector(`.films-list__container`);
 
   for (let i = 0; i < count; i++) {
-    render(containerElement, createMovieCard(), `beforeend`);
+    render(containerElement, createMovieCard(movies[i]), `beforeend`);
   }
 };
 
