@@ -8,10 +8,14 @@ import {createMoviesListTitleTemplate} from "./view/movies-list-title";
 import {createMoviesListContainerTemplate} from "./view/movie-list-container";
 import {createMovieCard} from "./view/movie-card";
 import {createShowMoreButtonTemplate} from "./view/show-more-button";
+import {generateMovie} from "./mock/movie.js";
 
 const MOVIES_LIST_COUNT = 3;
 const MOVIES_COUNT = 5;
 const MOVIES_EXTRA_COUNT = 2;
+
+const movies = new Array(MOVIES_COUNT).fill('').map(generateMovie);
+console.log(movies);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
