@@ -35,9 +35,8 @@ export const generateMovie = () => {
 
   const rating = getRandom(1, 10).toPrecision(2);
   const title = getRandomElement(TITLES);
-  const poster = `/public/images/posters/${getRandomElement(POSTERS)}`;
-  const description = getArrayRandomLength(1, 5, DESCRIPTIONS).toString();
-  const genres = getArrayRandomLength(1, 4, GENRES).join(', ').toString();
+  const poster = `/images/posters/${getRandomElement(POSTERS)}`;
+  const description = getArrayRandomLength(1, 5, DESCRIPTIONS).join('. ').toString();
 
   return {
     poster,
@@ -51,7 +50,7 @@ export const generateMovie = () => {
     actors: getArrayRandomLength(3, ACTORS.length, ACTORS),
     runtime: getRandomInteger(90, 180),
     country: getRandomElement(COUNTRIES),
-    genres,
+    genres: getArrayRandomLength(1, 4, GENRES),
     rating,
     ageLimitations: getRandomInteger(0, 18),
     comments: generateComments()
