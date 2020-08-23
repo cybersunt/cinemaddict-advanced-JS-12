@@ -71,3 +71,5 @@ const onMoviePictureClick = (evt) => {
 };
 
 mainMoviesListElement.addEventListener(`click`, onMoviePictureClick);
+topRatedMoviesListElement.addEventListener(`click`, onMoviePictureClick);
+mostCommentedMoviesListElement.addEventListener(`click`, onMoviePictureClick);
