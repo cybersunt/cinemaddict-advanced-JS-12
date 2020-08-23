@@ -15,14 +15,14 @@ const generateDate = () => {
 };
 
 const generateRandomDate = (start, end) => {
-  let date1 = start || '01-01-1970';
+  let date1 = start || `01-01-1970`;
   let date2 = end || new Date().toLocaleDateString();
 
   date1 = new Date(date1).getTime();
   date2 = new Date(date2).getTime();
 
-  if ( date1 > date2 ) {
-    return new Date(getRandomArbitrary(date2,date1));
+  if (date1 > date2) {
+    return new Date(getRandomArbitrary(date2, date1));
   } else {
     return new Date(getRandomArbitrary(date1, date2));
   }
@@ -49,8 +49,8 @@ export const generateMovie = (idx) => {
   const rating = getRandom(1, 10).toPrecision(2);
   const title = getRandomElement(TITLES);
   const poster = `/images/posters/${getRandomElement(POSTERS)}`;
-  const description = getArrayRandomLength(1, 5, DESCRIPTIONS).join('. ').toString();
-  const actors = getArrayRandomLength(3, ACTORS.length, ACTORS).join(', ').toString();
+  const description = getArrayRandomLength(1, 5, DESCRIPTIONS).join(`. `).toString();
+  const actors = getArrayRandomLength(3, ACTORS.length, ACTORS).join(`, `).toString();
 
   return {
     id: idx,
@@ -59,7 +59,7 @@ export const generateMovie = (idx) => {
     title,
     originalTitle: title,
     description,
-    releaseDate: generateRandomDate('02/13/2013', '01/01/2000'),
+    releaseDate: generateRandomDate(`02/13/2013`, `01/01/2000`),
     director: getRandomElement(DIRECTORS),
     writers: getRandomElement(WRITERS),
     actors,

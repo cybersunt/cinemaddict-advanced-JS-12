@@ -1,4 +1,4 @@
-import {getRandomElement, getRuntimeInHours,} from "../utils";
+import {getRandomElement, getRuntimeInHours} from "../utils";
 
 export const createMovieCard = (movie) => {
   const {

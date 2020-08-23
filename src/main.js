@@ -15,11 +15,9 @@ const MOVIES_LIST_COUNT = 3;
 const MOVIES_COUNT = 5;
 const MOVIES_EXTRA_COUNT = 2;
 
-const movies = new Array(MOVIES_COUNT).fill('').map(function (array, index) {
+const movies = new Array(MOVIES_COUNT).fill(``).map(function (array, index) {
   return generateMovie(index);
 });
-
-console.log(movies)
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -71,5 +69,3 @@ mainMoviesListElement.addEventListener(`click`, (evt)=> {
 
   buttonClose.addEventListener(`click`, () => movieDetails.remove());
 });
-
-

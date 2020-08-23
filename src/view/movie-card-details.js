@@ -27,7 +27,9 @@ export const createMovieCardDetails = (movie)=> {
     return `${day} ${month} ${year}`;
   };
 
- const createMovieCardDetailsInfoHeadTemplate = () => {
+
+  const createMovieCardDetailsInfoHeadTemplate = () => {
+
     return (
       `<div class="film-details__info-head">
         <div class="film-details__title-wrap">
@@ -60,20 +62,20 @@ export const createMovieCardDetails = (movie)=> {
   const createMovieCardDetailsTableTemplate = () => {
     return (
       `<table class="film-details__table">
-        ${createMovieCardDetailsTableRowTemplate('Director', director)}
-        ${createMovieCardDetailsTableRowTemplate('Writers', writers)}
-        ${createMovieCardDetailsTableRowTemplate('Actors', actors)}
-        ${createMovieCardDetailsTableRowTemplate('Release Date', getReleaseDate())}
-        ${createMovieCardDetailsTableRowTemplate('Runtime', getRuntimeInHours(runtime))}
-        ${createMovieCardDetailsTableRowTemplate('Country', country)}
-        ${createMovieCardDetailsTableRowTemplate('Genres', createMovieCardDetailsGenresTemplate())}
+        ${createMovieCardDetailsTableRowTemplate(`Director`, director)}
+        ${createMovieCardDetailsTableRowTemplate(`Writers`, writers)}
+        ${createMovieCardDetailsTableRowTemplate(`Actors`, actors)}
+        ${createMovieCardDetailsTableRowTemplate(`Release Date`, getReleaseDate())}
+        ${createMovieCardDetailsTableRowTemplate(`Runtime`, getRuntimeInHours(runtime))}
+        ${createMovieCardDetailsTableRowTemplate(`Country`, country)}
+        ${createMovieCardDetailsTableRowTemplate(`Genres`, createMovieCardDetailsGenresTemplate())}
       </table>`
     );
   };
 
   const createMovieCardDetailsCommentsListTemplate = () => {
     return comments.map((comment) =>
-       `<li class="film-details__comment">
+      `<li class="film-details__comment">
         <span class="film-details__comment-emoji">
           <img src="${comment.emoji}" width="55" height="55" alt="emoji-smile">
         </span>

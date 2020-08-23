@@ -30,5 +30,5 @@ export const getArrayRandomLength = (min, max, array) => {
 export const getRuntimeInHours = (runtime) => {
   const hours = Math.floor(runtime / ONE_HOUR);
   const minutes = runtime % ONE_HOUR;
-  return `${hours}h ${minutes}m`
+  return `${hours}h ${minutes}m`;
 };
