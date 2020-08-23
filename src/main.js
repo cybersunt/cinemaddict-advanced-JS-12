@@ -59,7 +59,7 @@ render(mainMoviesListElement, createShowMoreButtonTemplate(), `beforeend`);
 renderMoviesList(topRatedMoviesListElement, `Top rated`, false, MOVIES_EXTRA_COUNT);
 renderMoviesList(mostCommentedMoviesListElement, `Most commented`, false, MOVIES_EXTRA_COUNT);
 
-mainMoviesListElement.addEventListener(`click`, (evt)=> {
+const onMoviePictureClick = (evt) => {
   evt.preventDefault();
   const idx = evt.target.dataset.id;
   render(siteFooterElement, createMovieCardDetails(movies[idx]), `beforeend`);
@@ -68,4 +68,6 @@ mainMoviesListElement.addEventListener(`click`, (evt)=> {
   const buttonClose = movieDetails.querySelector(`.film-details__close-btn`);
 
   buttonClose.addEventListener(`click`, () => movieDetails.remove());
-});
+};
+
+mainMoviesListElement.addEventListener(`click`, onMoviePictureClick);
