@@ -1,3 +1,5 @@
+export const ONE_HOUR = 60 //minutes//;
+
 export const POSTERS = [
   'made-for-each-other.png',
   'popeye-meets-sinbad.png',

@@ -19,6 +19,8 @@ const movies = new Array(MOVIES_COUNT).fill('').map(function (array, index) {
   return generateMovie(index);
 });
 
+console.log(movies)
+
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
