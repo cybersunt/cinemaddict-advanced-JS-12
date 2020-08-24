@@ -11,9 +11,11 @@ import {createMovieCardDetails} from "./view/movie-card-details";
 import {createShowMoreButtonTemplate} from "./view/show-more-button";
 import {generateMovie} from "./mock/movie.js";
 import {generateFilter} from "./mock/filter.js";
+import {createTaskTemplate} from "../../demo-taskmanager-12/src/view/task";
 
 const MOVIES_LIST_COUNT = 3;
 const MOVIES_COUNT = 22;
+const MOVIES_COUNT_PER_STEP = 5;
 const MOVIES_EXTRA_COUNT = 2;
 
 const movies = new Array(MOVIES_COUNT).fill(``).map(function (array, index) {
@@ -57,8 +59,32 @@ const mainMoviesListElement = moviesElement.querySelector(`.films-list`);
 const topRatedMoviesListElement = moviesElement.querySelectorAll(`.films-list--extra`)[0];
 const mostCommentedMoviesListElement = moviesElement.querySelectorAll(`.films-list--extra`)[1];
 
-renderMoviesList(mainMoviesListElement, `All movies. Upcoming`, true, MOVIES_COUNT);
-render(mainMoviesListElement, createShowMoreButtonTemplate(), `beforeend`);
+renderMoviesList(mainMoviesListElement, `All movies. Upcoming`, true, Math.min(movies.length, MOVIES_COUNT_PER_STEP));
+
+if (movies.length > MOVIES_COUNT_PER_STEP) {
+  let renderedMoviesCount = MOVIES_COUNT_PER_STEP;
+
+  render(mainMoviesListElement, createShowMoreButtonTemplate(), `beforeend`);
+
+  const showMoreButton = mainMoviesListElement.querySelector(`.films-list__show-more`);
+  const containerElement = mainMoviesListElement.querySelector(`.films-list__container`);
+
+  console.log(containerElement);
+
+  showMoreButton.addEventListener(`click`, (evt) => {
+    evt.preventDefault();
+    movies
+      .slice(renderedMoviesCount, renderedMoviesCount + MOVIES_COUNT_PER_STEP)
+      .forEach((movie) => render(containerElement, createMovieCard(movie), `beforeend`));
+
+    renderedMoviesCount += MOVIES_COUNT_PER_STEP;
+
+    if (renderedMoviesCount >= movies.length) {
+      showMoreButton.remove();
+    }
+  });
+}
+
 renderMoviesList(topRatedMoviesListElement, `Top rated`, false, MOVIES_EXTRA_COUNT);
 renderMoviesList(mostCommentedMoviesListElement, `Most commented`, false, MOVIES_EXTRA_COUNT);
 
