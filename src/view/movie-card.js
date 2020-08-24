@@ -1,6 +1,6 @@
 import {getRandomElement, getRuntimeInHours} from "../utils";
 
-export const createMovieCard = (movie) => {
+export const createMovieCardTemplate = (movie) => {
   const {
     id,
     poster,

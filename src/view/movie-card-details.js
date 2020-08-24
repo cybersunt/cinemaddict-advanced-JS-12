@@ -1,6 +1,6 @@
 import {getRuntimeInHours} from "../utils";
 
-export const createMovieCardDetails = (movie)=> {
+export const createMovieCardDetailsTemplate = (movie)=> {
 
   const {
     poster,

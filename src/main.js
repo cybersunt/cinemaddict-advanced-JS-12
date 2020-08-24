@@ -6,12 +6,11 @@ import {createMovieStatsTemplate} from "./view/movie-stats";
 import {createMoviesListTemplate} from "./view/movies-list";
 import {createMoviesListTitleTemplate} from "./view/movies-list-title";
 import {createMoviesListContainerTemplate} from "./view/movie-list-container";
-import {createMovieCard} from "./view/movie-card";
-import {createMovieCardDetails} from "./view/movie-card-details";
+import {createMovieCardTemplate} from "./view/movie-card";
+import {createMovieCardDetailsTemplate} from "./view/movie-card-details";
 import {createShowMoreButtonTemplate} from "./view/show-more-button";
 import {generateMovie} from "./mock/movie.js";
 import {generateFilter} from "./mock/filter.js";
-import {createTaskTemplate} from "../../demo-taskmanager-12/src/view/task";
 
 const MOVIES_LIST_COUNT = 3;
 const MOVIES_COUNT = 22;
@@ -35,7 +34,7 @@ const renderMoviesList = (moviesList, title, titleIsHidden, count) => {
   const containerElement = moviesList.querySelector(`.films-list__container`);
 
   for (let i = 0; i < count; i++) {
-    render(containerElement, createMovieCard(movies[i]), `beforeend`);
+    render(containerElement, createMovieCardTemplate(movies[i]), `beforeend`);
   }
 };
 
@@ -75,7 +74,7 @@ if (movies.length > MOVIES_COUNT_PER_STEP) {
     evt.preventDefault();
     movies
       .slice(renderedMoviesCount, renderedMoviesCount + MOVIES_COUNT_PER_STEP)
-      .forEach((movie) => render(containerElement, createMovieCard(movie), `beforeend`));
+      .forEach((movie) => render(containerElement, createMovieCardTemplate(movie), `beforeend`));
 
     renderedMoviesCount += MOVIES_COUNT_PER_STEP;
 
@@ -91,7 +90,7 @@ renderMoviesList(mostCommentedMoviesListElement, `Most commented`, false, MOVIES
 const onMoviePictureClick = (evt) => {
   evt.preventDefault();
   const idx = evt.target.dataset.id;
-  render(siteFooterElement, createMovieCardDetails(movies[idx]), `beforeend`);
+  render(siteFooterElement, createMovieCardDetailsTemplate(movies[idx]), `beforeend`);
 
   const movieDetails = document.querySelector(`.film-details`);
   const buttonClose = movieDetails.querySelector(`.film-details__close-btn`);
