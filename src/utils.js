@@ -32,3 +32,5 @@ export const getRuntimeInHours = (runtime) => {
   const minutes = runtime % ONE_HOUR;
   return `${hours}h ${minutes}m`;
 };
+
+export const getBooleanValue = () => Boolean(getRandomInteger(0, 1));

@@ -1,4 +1,11 @@
-import {getArrayRandomLength, getRandom, getRandomArbitrary, getRandomElement, getRandomInteger} from "../utils";
+import {
+  getArrayRandomLength,
+  getBooleanValue,
+  getRandom,
+  getRandomArbitrary,
+  getRandomElement,
+  getRandomInteger
+} from "../utils";
 import {ACTORS, COUNTRIES, DIRECTORS, TITLES, POSTERS, WRITERS, DESCRIPTIONS, GENRES, EMOJI} from "../const";
 
 const generateDate = () => {
@@ -68,6 +75,9 @@ export const generateMovie = (idx) => {
     genres: getArrayRandomLength(1, 4, GENRES),
     rating,
     ageLimitations: getRandomInteger(0, 18),
-    comments: generateComments()
+    comments: generateComments(),
+    isWatchlist: getBooleanValue(),
+    isHistory: getBooleanValue(),
+    isFavorite: getBooleanValue()
   };
 };

@@ -10,14 +10,19 @@ import {createMovieCard} from "./view/movie-card";
 import {createMovieCardDetails} from "./view/movie-card-details";
 import {createShowMoreButtonTemplate} from "./view/show-more-button";
 import {generateMovie} from "./mock/movie.js";
+import {generateFilter} from "./mock/filter.js";
 
 const MOVIES_LIST_COUNT = 3;
-const MOVIES_COUNT = 5;
+const MOVIES_COUNT = 22;
 const MOVIES_EXTRA_COUNT = 2;
 
 const movies = new Array(MOVIES_COUNT).fill(``).map(function (array, index) {
   return generateMovie(index);
 });
+
+console.log(movies);
+
+const filters = generateFilter(movies);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -39,7 +44,7 @@ const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
 render(siteHeaderElement, createUserInfoTemplate(), `beforeend`);
-render(siteMainElement, createSiteMenuTemplate(), `beforeend`);
+render(siteMainElement, createSiteMenuTemplate(filters), `beforeend`);
 render(siteMainElement, createSortTemplate(), `beforeend`);
 render(siteMainElement, createMoviesTemplate(), `beforeend`);
 render(siteFooterElement, createMovieStatsTemplate(), `beforeend`);
