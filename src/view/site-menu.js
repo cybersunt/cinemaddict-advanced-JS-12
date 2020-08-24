@@ -2,11 +2,10 @@ const createSiteMenuItemTemplate = (filter) => {
 
   const {name, count} = filter;
 
-  return `<a href="#${name}" class="main-navigation__item">${name} <span class="main-navigation__item-count">${count}</span></a>`
+  return `<a href="#${name}" class="main-navigation__item">${name} <span class="main-navigation__item-count">${count}</span></a>`;
 };
 
 export const createSiteMenuTemplate = (filterItems) => {
-  debugger;
   const filterItemsTemplate = filterItems
     .map((filter, index) => createSiteMenuItemTemplate(filter, index))
     .join(``);

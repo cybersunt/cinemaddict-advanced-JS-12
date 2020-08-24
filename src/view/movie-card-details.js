@@ -33,7 +33,7 @@ export const createMovieCardDetails = (movie)=> {
     const year = date.getFullYear();
     const month = date.getMonth();
     const day = date.getDay();
-    const time = date.toLocaleTimeString([], {hour: `2-digit`, minute:`2-digit`}).replace(`PM`,``);
+    const time = date.toLocaleTimeString([], {hour: `2-digit`, minute: `2-digit`}).replace(`PM`, ``);
 
     if (date < currentDate) {
       const countYearsAgo = `${year - currentDate.getFullYear()} years`.replace(`0 years`, ``);
