@@ -27,6 +27,26 @@ export const createMovieCardDetails = (movie)=> {
     return `${day} ${month} ${year}`;
   };
 
+  const getCommentDate = (date) => {
+    const currentDate = new Date();
+
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDay();
+    const time = date.toLocaleTimeString([], {hour: `2-digit`, minute:`2-digit`}).replace(`PM`,``);
+
+    if (date < currentDate) {
+      const countYearsAgo = `${year - currentDate.getFullYear()} years`.replace(`0 years`, ``);
+      const countMonthsAgo = `${month - currentDate.getMonth()} months`.replace(`0 months`, ``);
+      const countDaysAgo = `${day - currentDate.getDay()} days`.replace(`0 days`, ``);
+
+      return `${countYearsAgo} ${countMonthsAgo} ${countDaysAgo} ago`;
+    }
+
+    if (date === currentDate) {
+      return `${year}/${day}/${month} ${time}`;
+    }
+  };
 
   const createMovieCardDetailsInfoHeadTemplate = () => {
 
@@ -83,7 +103,7 @@ export const createMovieCardDetails = (movie)=> {
           <p class="film-details__comment-text">${comment.message}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.author}</span>
-            <span class="film-details__comment-day">${comment.date.toLocaleString().slice(0, -6)}</span>
+            <span class="film-details__comment-day">${getCommentDate(comment.date)}</span>
             <button class="film-details__comment-delete">Delete</button>
           </p>
         </div>
