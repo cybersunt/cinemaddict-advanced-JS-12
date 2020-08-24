@@ -68,8 +68,6 @@ if (movies.length > MOVIES_COUNT_PER_STEP) {
   const showMoreButton = mainMoviesListElement.querySelector(`.films-list__show-more`);
   const containerElement = mainMoviesListElement.querySelector(`.films-list__container`);
 
-  console.log(containerElement);
-
   showMoreButton.addEventListener(`click`, (evt) => {
     evt.preventDefault();
     movies
