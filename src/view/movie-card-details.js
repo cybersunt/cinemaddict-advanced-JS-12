@@ -46,6 +46,8 @@ export const createMovieCardDetailsTemplate = (movie)=> {
     if (date === currentDate) {
       return `${year}/${day}/${month} ${time}`;
     }
+
+    return null;
   };
 
   const createMovieCardDetailsInfoHeadTemplate = () => {
