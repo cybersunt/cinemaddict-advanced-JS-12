@@ -17,9 +17,7 @@ const MOVIES_COUNT = 22;
 const MOVIES_COUNT_PER_STEP = 5;
 const MOVIES_EXTRA_COUNT = 2;
 
-const movies = new Array(MOVIES_COUNT).fill(``).map(function (array, index) {
-  return generateMovie(index);
-});
+const movies = new Array(MOVIES_COUNT).fill(``).map((array, index) => generateMovie(index));
 
 const filters = generateFilter(movies);
 
@@ -55,8 +53,7 @@ for (let i = 0; i < MOVIES_LIST_COUNT; i++) {
 }
 
 const mainMoviesListElement = moviesElement.querySelector(`.films-list`);
-const topRatedMoviesListElement = moviesElement.querySelectorAll(`.films-list--extra`)[0];
-const mostCommentedMoviesListElement = moviesElement.querySelectorAll(`.films-list--extra`)[1];
+const [topRatedMoviesListElement, mostCommentedMoviesListElement] = moviesElement.querySelectorAll(`.films-list--extra`);
 
 renderMoviesList(mainMoviesListElement, `All movies. Upcoming`, true, Math.min(movies.length, MOVIES_COUNT_PER_STEP));
 

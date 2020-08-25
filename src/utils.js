@@ -1,5 +1,3 @@
-// Функция из интернета по генерации случайного числа из диапазона
-// Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
 import {ONE_HOUR} from "./const";
 
 export const getRandom = (a = 1, b = 0) => {

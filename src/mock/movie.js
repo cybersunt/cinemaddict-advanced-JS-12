@@ -25,14 +25,11 @@ const generateRandomDate = (start, end) => {
   let date1 = start || `01-01-1970`;
   let date2 = end || new Date().toLocaleDateString();
 
-  date1 = new Date(date1).getTime();
-  date2 = new Date(date2).getTime();
-
-  if (date1 > date2) {
-    return new Date(getRandomArbitrary(date2, date1));
-  } else {
-    return new Date(getRandomArbitrary(date1, date2));
-  }
+  return new Date(
+      new Date(date1).getTime() > new Date(date2).getTime()
+        ? getRandomArbitrary(date2, date1)
+        : getRandomArbitrary(date1, date2)
+  );
 };
 
 const generateComments = () => {
