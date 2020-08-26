@@ -26,9 +26,9 @@ const generateRandomDate = (start, end) => {
   let date2 = end || new Date().toLocaleDateString();
 
   return new Date(
-      new Date(date1).getTime() > new Date(date2).getTime()
-        ? getRandomArbitrary(date2, date1)
-        : getRandomArbitrary(date1, date2)
+    new Date(date1).getTime() > new Date(date2).getTime()
+      ? getRandomArbitrary(new Date(date2).getTime(), new Date(date1).getTime())
+      : getRandomArbitrary(new Date(date1).getTime(), new Date(date2).getTime())
   );
 };
 
@@ -63,7 +63,7 @@ export const generateMovie = (idx) => {
     title,
     originalTitle: title,
     description,
-    releaseDate: generateRandomDate(`02/13/2013`, `01/01/2000`),
+    releaseDate: generateRandomDate(`01/01/1970`, `31/12/2020`),
     director: getRandomElement(DIRECTORS),
     writers: getRandomElement(WRITERS),
     actors,
