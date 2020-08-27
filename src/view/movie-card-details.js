@@ -1,4 +1,4 @@
-import {getRuntimeInHours} from "../utils";
+import {getPictureUrl, getRuntimeInHours, getStringFromArray} from "../utils";
 
 export const createMovieCardDetailsTemplate = (movie)=> {
 
@@ -19,10 +19,10 @@ export const createMovieCardDetailsTemplate = (movie)=> {
     comments
   } = movie;
 
-  const getReleaseDate = () => {
-    const year = releaseDate.getFullYear();
-    const month = releaseDate.toLocaleString(`en-US`, {month: `long`});
-    const day = releaseDate.getDay();
+  const getReleaseDate = (date) => {
+    const year = date.getFullYear();
+    const month = date.toLocaleString(`en-US`, {month: `long`});
+    const day = date.getDay();
 
     return `${day} ${month} ${year}`;
   };
@@ -60,7 +60,7 @@ export const createMovieCardDetailsTemplate = (movie)=> {
         </div>
 
         <div class="film-details__rating">
-          <p class="film-details__total-rating">${rating}</p>
+          <p class="film-details__total-rating">${rating.toPrecision(2)}</p>
         </div>
       </div>`
     );
@@ -81,16 +81,23 @@ export const createMovieCardDetailsTemplate = (movie)=> {
     ).join(``);
   };
 
+  const detailsData = [
+    [`Director`, director],
+    [`Writers`, writers],
+    [`Actors`, getStringFromArray(actors, `,`)],
+    [`Release Date`, getReleaseDate(releaseDate)],
+    [`Runtime`, getRuntimeInHours(runtime)],
+    [`Country`, country],
+    [`Genres`, createMovieCardDetailsGenresTemplate()]
+  ];
+
   const createMovieCardDetailsTableTemplate = () => {
+    const content = detailsData
+      .map(([name, value]) => createMovieCardDetailsTableRowTemplate(name, value))
+      .join(``);
     return (
       `<table class="film-details__table">
-        ${createMovieCardDetailsTableRowTemplate(`Director`, director)}
-        ${createMovieCardDetailsTableRowTemplate(`Writers`, writers)}
-        ${createMovieCardDetailsTableRowTemplate(`Actors`, actors)}
-        ${createMovieCardDetailsTableRowTemplate(`Release Date`, getReleaseDate())}
-        ${createMovieCardDetailsTableRowTemplate(`Runtime`, getRuntimeInHours(runtime))}
-        ${createMovieCardDetailsTableRowTemplate(`Country`, country)}
-        ${createMovieCardDetailsTableRowTemplate(`Genres`, createMovieCardDetailsGenresTemplate())}
+        ${content}
       </table>`
     );
   };
@@ -99,7 +106,8 @@ export const createMovieCardDetailsTemplate = (movie)=> {
     return comments.map((comment) =>
       `<li class="film-details__comment">
         <span class="film-details__comment-emoji">
-          <img src="${comment.emoji}" width="55" height="55" alt="emoji-smile">
+        
+          <img src="${getPictureUrl(`emoji`, comment.emoji)}" width="55" height="55" alt="emoji-smile">
         </span>
         <div>
           <p class="film-details__comment-text">${comment.message}</p>
@@ -164,7 +172,7 @@ export const createMovieCardDetailsTemplate = (movie)=> {
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="${poster}" alt="">
+          <img class="film-details__poster-img" src="${getPictureUrl(`posters`, poster)}" alt="">
 
           <p class="film-details__age">${ageLimitations}+</p>
         </div>
@@ -174,7 +182,7 @@ export const createMovieCardDetailsTemplate = (movie)=> {
 
           ${createMovieCardDetailsTableTemplate()}
 
-          <p class="film-details__film-description">${description}</p>
+          <p class="film-details__film-description">${getStringFromArray(description, `.`)}</p>
         </div>
       </div>
 

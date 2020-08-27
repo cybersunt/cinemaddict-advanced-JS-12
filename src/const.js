@@ -1,5 +1,25 @@
 export const ONE_HOUR = 60;
 
+export const movieDetailsData = {
+  RATING_MIN: 1,
+  RATING_MAX: 10,
+  DESCRIPTION_MIN_LENGTH: 1,
+  DESCRIPTION_MAX_LENGTH: 5,
+  ACTORS_MIN: 3,
+  RELEASE_DATE_START: `01/01/1970`,
+  RELEASE_DATE_END: `26/08/2000`,
+  RUNTIME_MIN: 90,
+  RUNTIME_MAX: 180,
+  GENRES_MIN: 1,
+  GENRES_MAX: 4,
+  AGE_LIMITATIONS_MIN: 0,
+  AGE_LIMITATIONS_MAX: 18,
+  COMMENTS_COUNT_MIN: 1,
+  COMMENTS_COUNT_MAX: 5,
+  MESSAGE_MIN_LENGTH: 1,
+  MESSAGE_MAX_LENGTH: 3
+};
+
 export const POSTERS = [
   `made-for-each-other.png`,
   `popeye-meets-sinbad.png`,
@@ -113,4 +133,4 @@ export const ACTORS = [
   `Nicole Kidman`
 ];
 
-export const EMOJI = [`angry`, `puke`, `sleeping`, `smile`];
+export const EMOJI = [`angry.png`, `puke.png`, `sleeping.png`, `smile.png`];

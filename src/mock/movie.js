@@ -1,12 +1,23 @@
 import {
   getArrayRandomLength,
   getBooleanValue,
-  getRandom,
   getRandomArbitrary,
   getRandomElement,
+  getRandomFractionalNumber,
   getRandomInteger
 } from "../utils";
-import {ACTORS, COUNTRIES, DIRECTORS, TITLES, POSTERS, WRITERS, DESCRIPTIONS, GENRES, EMOJI} from "../const";
+import {
+  ACTORS,
+  COUNTRIES,
+  DIRECTORS,
+  TITLES,
+  POSTERS,
+  WRITERS,
+  DESCRIPTIONS,
+  GENRES,
+  EMOJI,
+  movieDetailsData
+} from "../const";
 
 const generateDate = () => {
 
@@ -35,13 +46,13 @@ const generateRandomDate = (start, end) => {
 const generateComments = () => {
   const messages = [];
 
-  const countComments = getRandomInteger(1, 5);
+  const countComments = getRandomInteger(movieDetailsData.COMMENTS_COUNT_MIN, movieDetailsData.COMMENTS_COUNT_MAX);
 
   for (let i = 0; i < countComments; i++) {
     messages.push({
-      emoji: `./images/emoji/${getRandomElement(EMOJI)}.png`,
+      emoji:  getRandomElement(EMOJI),
       author: getRandomElement(ACTORS),
-      message: getArrayRandomLength(1, 3, DESCRIPTIONS).toString(),
+      message: getArrayRandomLength(movieDetailsData.MESSAGE_MIN_LENGTH, movieDetailsData.MESSAGE_MAX_LENGTH, DESCRIPTIONS),
       date: generateDate()
     });
   }
@@ -50,11 +61,8 @@ const generateComments = () => {
 };
 
 export const generateMovie = (idx) => {
-  const rating = getRandom(1, 10).toPrecision(2);
   const title = getRandomElement(TITLES);
-  const poster = `/images/posters/${getRandomElement(POSTERS)}`;
-  const description = getArrayRandomLength(1, 5, DESCRIPTIONS).join(`. `).toString();
-  const actors = getArrayRandomLength(3, ACTORS.length, ACTORS).join(`, `).toString();
+  const poster = getRandomElement(POSTERS);
 
   return {
     id: idx,
@@ -62,16 +70,16 @@ export const generateMovie = (idx) => {
     fullPoster: poster,
     title,
     originalTitle: title,
-    description,
-    releaseDate: generateRandomDate(`01/01/1970`, `31/12/2020`),
+    description: getArrayRandomLength(movieDetailsData.DESCRIPTION_MIN_LENGTH, movieDetailsData.DESCRIPTION_MAX_LENGTH, DESCRIPTIONS),
+    releaseDate: generateRandomDate(movieDetailsData.RELEASE_DATE_START, movieDetailsData.RELEASE_DATE_END),
     director: getRandomElement(DIRECTORS),
     writers: getRandomElement(WRITERS),
-    actors,
-    runtime: getRandomInteger(90, 180),
+    actors:  getArrayRandomLength(movieDetailsData.ACTORS_MIN, ACTORS.length, ACTORS),
+    runtime: getRandomInteger(movieDetailsData.RUNTIME_MIN, movieDetailsData.RUNTIME_MAX),
     country: getRandomElement(COUNTRIES),
-    genres: getArrayRandomLength(1, 4, GENRES),
-    rating,
-    ageLimitations: getRandomInteger(0, 18),
+    genres: getArrayRandomLength(movieDetailsData.GENRES_MIN, movieDetailsData.GENRES_MAX, GENRES),
+    rating: getRandomFractionalNumber(movieDetailsData.RATING_MIN, movieDetailsData.RATING_MAX),
+    ageLimitations: getRandomInteger(movieDetailsData.AGE_LIMITATIONS_MIN, movieDetailsData.AGE_LIMITATIONS_MAX),
     comments: generateComments(),
     isWatchlist: getBooleanValue(),
     isHistory: getBooleanValue(),
