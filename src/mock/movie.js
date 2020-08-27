@@ -81,10 +81,8 @@ export const generateMovie = (idx) => {
     rating: getRandomFractionalNumber(movieDetailsData.RATING_MIN, movieDetailsData.RATING_MAX),
     ageLimitations: getRandomInteger(movieDetailsData.AGE_LIMITATIONS_MIN, movieDetailsData.AGE_LIMITATIONS_MAX),
     comments: generateComments(),
-    movieStatus: {
-      isWatchlist: getBooleanValue(),
-      isHistory: getBooleanValue(),
-      isFavorite: getBooleanValue()
-    }
+    isWatchlist: getBooleanValue(),
+    isHistory: getBooleanValue(),
+    isFavorite: getBooleanValue()
   };
 };

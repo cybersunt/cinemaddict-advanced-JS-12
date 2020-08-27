@@ -1,5 +1,7 @@
+const getСapitalizedString = (str) => str.replace(/(^|\s)\S/g, (a) =>a.toUpperCase());
+
 const createSiteMenuItemTemplate = ({name, count}) => {
-  return `<a href="#${name}" class="main-navigation__item">${name} <span class="main-navigation__item-count">${count}</span></a>`;
+  return `<a href="#${name}" class="main-navigation__item">${getСapitalizedString(name)} <span class="main-navigation__item-count">${count}</span></a>`;
 };
 
 export const createSiteMenuTemplate = (filterItems) => {
