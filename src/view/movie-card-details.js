@@ -119,7 +119,7 @@ export const createMovieCardDetailsTemplate = (movie)=> {
           </p>
         </div>
       </li>`
-    ).join(``)
+    ).join(``);
     return (
       `<ul class="film-details__comments-list">${content}</ul>`
     );
@@ -131,7 +131,7 @@ export const createMovieCardDetailsTemplate = (movie)=> {
         <label class="film-details__emoji-label" for="emoji-smile">
           <img src="${getPictureUrl(`emoji`, emoji)}.png" width="30" height="30" alt="emoji">
           </label>`
-    ).join(``)
+    ).join(``);
     return (
       `<div class="film-details__emoji-list">${content}</div>`
     );
