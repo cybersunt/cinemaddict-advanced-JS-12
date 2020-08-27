@@ -1,3 +1,5 @@
+import {getStringFromArray} from "./utils";
+
 export const ONE_HOUR = 60;
 
 export const movieDetailsData = {

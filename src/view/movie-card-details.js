@@ -16,7 +16,8 @@ export const createMovieCardDetailsTemplate = (movie)=> {
     genres,
     rating,
     ageLimitations,
-    comments
+    comments,
+    movieStatus
   } = movie;
 
   const getReleaseDate = (date) => {
@@ -163,6 +164,36 @@ export const createMovieCardDetailsTemplate = (movie)=> {
     );
   };
 
+  const movieStatusControls = [
+    [`watchlist`, `Add to watchlist`],
+    [`watched`, `Already watched`],
+    [`favorite`, `Add to favorites`],
+  ];
+
+   const createMovieCardControlTemplate = (status, label) => {
+    return (
+      `<input 
+        type="checkbox" 
+        class="film-details__control-input visually-hidden" 
+        id="${status}" 
+        name="${status}"
+      >
+      <label for="${status}" class="film-details__control-label film-details__control-label--${status}">${label}</label>`
+    );
+  };
+
+  const createMovieCardControlsTemplate = () => {
+    const content = movieStatusControls
+      .map(([status, label]) => createMovieCardControlTemplate(status, label))
+      .join(``);
+    return (
+      `<section class="film-details__controls">
+        ${content}
+      </section>`
+    );
+  };
+
+
   return (
     `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -186,16 +217,7 @@ export const createMovieCardDetailsTemplate = (movie)=> {
         </div>
       </div>
 
-      <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
-        <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
-        <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
-        <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
-      </section>
+      ${createMovieCardControlsTemplate()}
     </div>
 
     <div class="form-details__bottom-container">
