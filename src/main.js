@@ -19,8 +19,6 @@ const MOVIES_EXTRA_COUNT = 2;
 
 const movies = new Array(MOVIES_COUNT).fill(``).map((array, index) => generateMovie(index));
 
-console.log(movies)
-
 const filters = generateFilter(movies);
 
 const render = (container, template, place) => {

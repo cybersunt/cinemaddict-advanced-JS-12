@@ -37,9 +37,9 @@ const generateRandomDate = (start, end) => {
   let date2 = end || new Date().toLocaleDateString();
 
   return new Date(
-    new Date(date1).getTime() > new Date(date2).getTime()
-      ? getRandomArbitrary(new Date(date2).getTime(), new Date(date1).getTime())
-      : getRandomArbitrary(new Date(date1).getTime(), new Date(date2).getTime())
+      new Date(date1).getTime() > new Date(date2).getTime()
+        ? getRandomArbitrary(new Date(date2).getTime(), new Date(date1).getTime())
+        : getRandomArbitrary(new Date(date1).getTime(), new Date(date2).getTime())
   );
 };
 
@@ -50,7 +50,7 @@ const generateComments = () => {
 
   for (let i = 0; i < countComments; i++) {
     messages.push({
-      emoji:  getRandomElement(EMOJI),
+      emoji: getRandomElement(EMOJI),
       author: getRandomElement(ACTORS),
       message: getArrayRandomLength(movieDetailsData.MESSAGE_MIN_LENGTH, movieDetailsData.MESSAGE_MAX_LENGTH, DESCRIPTIONS),
       date: generateDate()
@@ -74,7 +74,7 @@ export const generateMovie = (idx) => {
     releaseDate: generateRandomDate(movieDetailsData.RELEASE_DATE_START, movieDetailsData.RELEASE_DATE_END),
     director: getRandomElement(DIRECTORS),
     writers: getRandomElement(WRITERS),
-    actors:  getArrayRandomLength(movieDetailsData.ACTORS_MIN, ACTORS.length, ACTORS),
+    actors: getArrayRandomLength(movieDetailsData.ACTORS_MIN, ACTORS.length, ACTORS),
     runtime: getRandomInteger(movieDetailsData.RUNTIME_MIN, movieDetailsData.RUNTIME_MAX),
     country: getRandomElement(COUNTRIES),
     genres: getArrayRandomLength(movieDetailsData.GENRES_MIN, movieDetailsData.GENRES_MAX, GENRES),

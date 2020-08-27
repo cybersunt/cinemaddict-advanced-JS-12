@@ -16,8 +16,7 @@ export const createMovieCardDetailsTemplate = (movie)=> {
     genres,
     rating,
     ageLimitations,
-    comments,
-    movieStatus
+    comments
   } = movie;
 
   const getReleaseDate = (date) => {
@@ -170,7 +169,7 @@ export const createMovieCardDetailsTemplate = (movie)=> {
     [`favorite`, `Add to favorites`],
   ];
 
-   const createMovieCardControlTemplate = (status, label) => {
+  const createMovieCardControlTemplate = (status, label) => {
     return (
       `<input 
         type="checkbox" 
