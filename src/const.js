@@ -133,4 +133,4 @@ export const ACTORS = [
   `Nicole Kidman`
 ];
 
-export const EMOJI = [`angry.png`, `puke.png`, `sleeping.png`, `smile.png`];
+export const EMOJI = [`angry`, `puke`, `sleeping`, `smile`];
