@@ -11,10 +11,10 @@ export const createMovieCardTemplate = (movie) => {
     genres,
     rating,
     comments,
-    movieStatus
+    isWatchlist,
+    isHistory,
+    isFavorite
   } = movie;
-
-  const {isWatchlist, isHistory, isFavorite} = movieStatus;
 
   const watchlistClassName = isWatchlist ? `film-card__controls-item--add-to-watchlist film-card__controls-item--active` : `film-card__controls-item--add-to-watchlist`;
 
