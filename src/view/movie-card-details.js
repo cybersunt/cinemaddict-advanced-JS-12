@@ -1,4 +1,4 @@
-import {getPictureUrl, getRuntimeInHours, getStringFromArray} from "../utils";
+import {getCommentDate, getPictureUrl, getReleaseDate, getRuntimeInHours, getStringFromArray} from "../utils";
 import {EMOJI} from "../const";
 
 export const createMovieCardDetailsTemplate = (movie)=> {
@@ -22,24 +22,6 @@ export const createMovieCardDetailsTemplate = (movie)=> {
     isHistory,
     isFavorite
   } = movie;
-
-  const getReleaseDate = (date) => {
-    const year = date.getFullYear();
-    const month = date.toLocaleString(`en-US`, {month: `long`});
-    const day = date.getDay();
-
-    return `${day} ${month} ${year}`;
-  };
-
-  const getCommentDate = (date) => {
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDay();
-
-    const time = date.toLocaleTimeString([], {hour: `2-digit`, minute: `2-digit`}).replace(`PM`, ``);
-
-    return `${year}/${day}/${month} ${time}`;
-  };
 
   const createMovieCardDetailsInfoHeadTemplate = () => {
 
