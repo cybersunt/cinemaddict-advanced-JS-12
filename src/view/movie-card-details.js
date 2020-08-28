@@ -17,7 +17,10 @@ export const createMovieCardDetailsTemplate = (movie)=> {
     genres,
     rating,
     ageLimitations,
-    comments
+    comments,
+    isWatchlist,
+    isHistory,
+    isFavorite
   } = movie;
 
   const getReleaseDate = (date) => {
@@ -161,18 +164,19 @@ export const createMovieCardDetailsTemplate = (movie)=> {
   };
 
   const movieStatusControls = [
-    [`watchlist`, `Add to watchlist`],
-    [`watched`, `Already watched`],
-    [`favorite`, `Add to favorites`],
+    [`watchlist`, `Add to watchlist`, isWatchlist],
+    [`watched`, `Already watched`, isHistory],
+    [`favorite`, `Add to favorites`, isFavorite],
   ];
 
-  const createMovieCardControlTemplate = (status, label) => {
+  const createMovieCardControlTemplate = (status, label, isChecked) => {
     return (
       `<input 
         type="checkbox" 
         class="film-details__control-input visually-hidden" 
         id="${status}" 
         name="${status}"
+        ${isChecked ? `checked` : ``}
       >
       <label for="${status}" class="film-details__control-label film-details__control-label--${status}">${label}</label>`
     );
@@ -180,7 +184,7 @@ export const createMovieCardDetailsTemplate = (movie)=> {
 
   const createMovieCardControlsTemplate = () => {
     const content = movieStatusControls
-      .map(([status, label]) => createMovieCardControlTemplate(status, label))
+      .map(([status, label, isChecked]) => createMovieCardControlTemplate(status, label, isChecked))
       .join(``);
     return (
       `<section class="film-details__controls">
@@ -188,7 +192,6 @@ export const createMovieCardDetailsTemplate = (movie)=> {
       </section>`
     );
   };
-
 
   return (
     `<section class="film-details">
