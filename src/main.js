@@ -11,6 +11,7 @@ import {createMovieCardDetailsTemplate} from "./view/movie-card-details";
 import {createShowMoreButtonTemplate} from "./view/show-more-button";
 import {generateMovie} from "./mock/movie.js";
 import {generateFilter} from "./mock/filter.js";
+import {render} from "./utils/render";
 
 const MOVIES_LIST_COUNT = 3;
 const MOVIES_COUNT = 22;
@@ -20,10 +21,6 @@ const MOVIES_EXTRA_COUNT = 2;
 const movies = new Array(MOVIES_COUNT).fill(``).map((array, index) => generateMovie(index));
 
 const filters = generateFilter(movies);
-
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
 
 const renderMoviesList = (moviesList, title, titleIsHidden, count) => {
   render(moviesList, createMoviesListTitleTemplate(title, titleIsHidden), `beforeend`);

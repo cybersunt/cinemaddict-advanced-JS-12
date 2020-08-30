@@ -1,5 +1,5 @@
-import {getCommentDate, getPictureUrl, getReleaseDate, getRuntimeInHours, getStringFromArray} from "../utils";
 import {EMOJI} from "../const";
+import {getPictureUrl, getReleaseDate, getRuntimeInHours, getStringFromArray} from "../utils/movie";
 
 export const createMovieCardDetailsTemplate = (movie)=> {
 
@@ -79,7 +79,7 @@ export const createMovieCardDetailsTemplate = (movie)=> {
     const content = comments.map((comment) =>
       `<li class="film-details__comment">
         <span class="film-details__comment-emoji">
-        
+
           <img src="${getPictureUrl(`emoji`, comment.emoji)}.png" width="55" height="55" alt="emoji-smile">
         </span>
         <div>
@@ -140,10 +140,10 @@ export const createMovieCardDetailsTemplate = (movie)=> {
 
   const createMovieCardControlTemplate = (status, label, isChecked) => {
     return (
-      `<input 
-        type="checkbox" 
-        class="film-details__control-input visually-hidden" 
-        id="${status}" 
+      `<input
+        type="checkbox"
+        class="film-details__control-input visually-hidden"
+        id="${status}"
         name="${status}"
         ${isChecked ? `checked` : ``}
       >

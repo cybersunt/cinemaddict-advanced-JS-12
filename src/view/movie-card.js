@@ -1,4 +1,4 @@
-import {getPictureUrl, getRandomElement, getRuntimeInHours, getStringFromArray} from "../utils";
+import {getPictureUrl, getRandomElement, getRuntimeInHours, getStringFromArray} from "../utils/movie";
 
 export const createMovieCardTemplate = (movie) => {
   const {
@@ -24,7 +24,6 @@ export const createMovieCardTemplate = (movie) => {
 
   return (
     `<article class="film-card">
-
       <h3 class="film-card__title">${title}</h3>
       <p class="film-card__rating">${rating.toPrecision(2)}</p>
       <p class="film-card__info">

@@ -1,4 +1,4 @@
-import {getСapitalizedString} from "../utils";
+import {getСapitalizedString} from "../utils/movie";
 
 const createSiteMenuItemTemplate = ({name, count}) => {
   return `<a href="#${name}" class="main-navigation__item">${getСapitalizedString(name)} <span class="main-navigation__item-count">${count}</span></a>`;
