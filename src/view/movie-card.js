@@ -1,4 +1,5 @@
 import {getPictureUrl, getRandomElement, getRuntimeInHours, getStringFromArray} from "../utils/movie";
+import Abstract from "./abstract";
 
 export const createMovieCardTemplate = (movie) => {
   const {
@@ -42,3 +43,13 @@ export const createMovieCardTemplate = (movie) => {
     </article>`
   );
 };
+
+export default class MovieCard extends Abstract {
+  constructor(movie) {
+    super();
+    this._movie = movie;
+  }
+  getTemplate() {
+    return createMovieCardTemplate(this._movie);
+  }
+}

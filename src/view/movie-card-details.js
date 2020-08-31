@@ -1,7 +1,8 @@
 import {EMOJI} from "../const";
-import {getPictureUrl, getReleaseDate, getRuntimeInHours, getStringFromArray} from "../utils/movie";
+import {getCommentDate, getPictureUrl, getReleaseDate, getRuntimeInHours, getStringFromArray} from "../utils/movie";
+import Abstract from "./abstract";
 
-export const createMovieCardDetailsTemplate = (movie)=> {
+const createMovieCardDetailsTemplate = (movie)=> {
 
   const {
     poster,
@@ -195,3 +196,13 @@ export const createMovieCardDetailsTemplate = (movie)=> {
 </section>`
   );
 };
+
+export default class MovieCardDetails extends Abstract {
+  constructor(movie) {
+    super();
+    this._movie = movie;
+  }
+  getTemplate() {
+    return createMovieCardDetailsTemplate(this._movie);
+  }
+}
