@@ -1,7 +1,7 @@
 import {getPictureUrl, getRandomElement, getRuntimeInHours, getStringFromArray} from "../utils/movie";
 import Abstract from "./abstract";
 
-export const createMovieCardTemplate = (movie) => {
+const createMovieCardTemplate = (movie) => {
   const {
     id,
     poster,
