@@ -21,9 +21,8 @@ const filters = generateFilter(movies);
 
 const renderMovie = (movieListElement, movie) => {
   const movieCardComponent = new MovieCard(movie);
-  // const movieCardDetailsomponent = new MovieCardDetails(movie);
 
-  const movieListElementContainer = movieListElement.getElement().querySelector(`.films-list__container`);
+  const movieListElementContainer = movieListElement.querySelector(`.films-list__container`);
 
   render(movieListElementContainer, movieCardComponent.getElement(), RenderPosition.BEFOREEND);
 };
@@ -50,7 +49,7 @@ render(moviesComponent.getElement(), topRatedMoviesListComponent.getElement(), R
 render(moviesComponent.getElement(), mostCommentedMoviesListComponent.getElement(), RenderPosition.BEFOREEND);
 
 for (let i = 0; i < Math.min(movies.length, MOVIES_COUNT_PER_STEP); i++) {
-  renderMovie(mainMoviesListComponent, mainMoviesListComponent.getElement(),  movies[i]);
+  renderMovie(mainMoviesListComponent.getElement(),  movies[i]);
 }
 
 if (movies.length > MOVIES_COUNT_PER_STEP) {
@@ -75,12 +74,9 @@ if (movies.length > MOVIES_COUNT_PER_STEP) {
   });
 }
 
-const containerTopRatedMoviesList = topRatedMoviesListComponent.getElement().querySelector(`.films-list__container`);
-const containerMostCommentedMoviesList = mostCommentedMoviesListComponent.getElement().querySelector(`.films-list__container`);
-
 for (let i = 0; i < MOVIES_EXTRA_COUNT; i++) {
-  render(containerTopRatedMoviesList, new MovieCard(movies[i]).getElement(), RenderPosition.BEFOREEND);
-  render(containerMostCommentedMoviesList, new MovieCard(movies[i]).getElement(), RenderPosition.BEFOREEND);
+  renderMovie(topRatedMoviesListComponent.getElement(), movies[i]);
+  renderMovie(mostCommentedMoviesListComponent.getElement(), movies[i]);
 }
 
 const onMoviePictureClick = (evt) => {
