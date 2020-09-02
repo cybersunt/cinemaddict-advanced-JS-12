@@ -20,13 +20,36 @@ const movies = new Array(MOVIES_COUNT).fill(``).map((array, index) => generateMo
 const filters = generateFilter(movies);
 
 const renderMovie = (movieListElement, movie) => {
+  const bodyElement = document.querySelector(`body`);
   const movieCardComponent = new MovieCard(movie);
+  const movieCardDetailsComponent = new MovieCardDetails(movie);
 
   const movieListElementContainer = movieListElement.querySelector(`.films-list__container`);
+  const buttonClose = movieCardDetailsComponent.getElement().querySelector(`.film-details__close-btn`);
+
+  const showMovieCardDetails = () => bodyElement.appendChild(movieCardDetailsComponent.getElement());
+
+  const hideMovieCardDetails = () => bodyElement.removeChild(movieCardDetailsComponent.getElement());
+
+  const onEscKeyDown = (evt) => {
+    if (evt.key === `Escape`) {
+      evt.preventDefault();
+      hideMovieCardDetails();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+      buttonClose.removeEventListener(`click`, hideMovieCardDetails);
+    }
+  };
+
+  const onMoviePictureClick = () => {
+    showMovieCardDetails();
+    buttonClose.addEventListener(`click`, hideMovieCardDetails);
+    document.addEventListener(`keydown`, onEscKeyDown);
+  };
+
+  movieCardComponent.getElement().querySelector(`img`).addEventListener(`click`, onMoviePictureClick);
 
   render(movieListElementContainer, movieCardComponent.getElement(), RenderPosition.BEFOREEND);
 };
-
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
@@ -78,18 +101,3 @@ for (let i = 0; i < MOVIES_EXTRA_COUNT; i++) {
   renderMovie(topRatedMoviesListComponent.getElement(), movies[i]);
   renderMovie(mostCommentedMoviesListComponent.getElement(), movies[i]);
 }
-
-const onMoviePictureClick = (evt) => {
-  evt.preventDefault();
-  const idx = evt.target.dataset.id;
-  const movieDetailsComponent = new MovieCardDetails(movies[idx]);
-  render(siteFooterElement, movieDetailsComponent.getElement(), RenderPosition.BEFOREEND);
-
-  const buttonClose = movieDetailsComponent.querySelector(`.film-details__close-btn`);
-
-  buttonClose.addEventListener(`click`, () => movieDetailsComponent.getElement().remove());
-};
-
-mainMoviesListComponent.getElement().addEventListener(`click`, onMoviePictureClick);
-topRatedMoviesListComponent.getElement().addEventListener(`click`, onMoviePictureClick);
-mostCommentedMoviesListComponent.getElement().addEventListener(`click`, onMoviePictureClick);
