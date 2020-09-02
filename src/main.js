@@ -50,6 +50,7 @@ const renderMovie = (movieListElement, movie) => {
 
   render(movieListElementContainer, movieCardComponent.getElement(), RenderPosition.BEFOREEND);
 };
+
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
@@ -72,7 +73,7 @@ render(moviesComponent.getElement(), topRatedMoviesListComponent.getElement(), R
 render(moviesComponent.getElement(), mostCommentedMoviesListComponent.getElement(), RenderPosition.BEFOREEND);
 
 for (let i = 0; i < Math.min(movies.length, MOVIES_COUNT_PER_STEP); i++) {
-  renderMovie(mainMoviesListComponent.getElement(),  movies[i]);
+  renderMovie(mainMoviesListComponent.getElement(), movies[i]);
 }
 
 if (movies.length > MOVIES_COUNT_PER_STEP) {
