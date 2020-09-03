@@ -40,13 +40,16 @@ const renderMovie = (movieListElement, movie) => {
     }
   };
 
-  const onMoviePictureClick = () => {
+  const onMoviePictureClick = (evt) => {
+    evt.preventDefault();
     showMovieCardDetails();
     buttonClose.addEventListener(`click`, hideMovieCardDetails);
     document.addEventListener(`keydown`, onEscKeyDown);
   };
 
   movieCardComponent.getElement().querySelector(`img`).addEventListener(`click`, onMoviePictureClick);
+  movieCardComponent.getElement().querySelector(`.film-card__title`).addEventListener(`click`, onMoviePictureClick);
+  movieCardComponent.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, onMoviePictureClick);
 
   render(movieListElementContainer, movieCardComponent.getElement(), RenderPosition.BEFOREEND);
 };
