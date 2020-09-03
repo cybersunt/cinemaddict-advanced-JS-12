@@ -1,12 +1,4 @@
 import {
-  getArrayRandomLength,
-  getBooleanValue,
-  getRandomArbitrary,
-  getRandomElement,
-  getRandomFractionalNumber,
-  getRandomInteger
-} from "../utils";
-import {
   ACTORS,
   COUNTRIES,
   DIRECTORS,
@@ -18,6 +10,8 @@ import {
   EMOJI,
   movieDetailsData
 } from "../const";
+import {getRandomArbitrary, getRandomFractionalNumber, getRandomInteger} from "../utils/common";
+import {getArrayRandomLength, getBooleanValue, getRandomElement} from "../utils/movie";
 
 const generateDate = () => {
 

@@ -1,4 +1,6 @@
-export const createSortTemplate = () => {
+import Abstract from "./abstract";
+
+const createSortTemplate = () => {
   return (
     `<ul class="sort">
       <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
@@ -7,3 +9,9 @@ export const createSortTemplate = () => {
     </ul>`
   );
 };
+
+export default class Sort extends Abstract {
+  getTemplate() {
+    return createSortTemplate();
+  }
+}

@@ -1,10 +1,11 @@
-import {getСapitalizedString} from "../utils";
+import {getСapitalizedString} from "../utils/movie";
+import Abstract from "./abstract";
 
 const createSiteMenuItemTemplate = ({name, count}) => {
   return `<a href="#${name}" class="main-navigation__item">${getСapitalizedString(name)} <span class="main-navigation__item-count">${count}</span></a>`;
 };
 
-export const createSiteMenuTemplate = (filterItems) => {
+const createSiteMenuTemplate = (filterItems) => {
   const filterItemsTemplate = filterItems
     .map((filter) => createSiteMenuItemTemplate(filter))
     .join(``);
@@ -19,3 +20,13 @@ export const createSiteMenuTemplate = (filterItems) => {
     </nav>`
   );
 };
+
+export default class SiteMenu extends Abstract {
+  constructor(filters) {
+    super();
+    this._filters = filters;
+  }
+  getTemplate() {
+    return createSiteMenuTemplate(this._filters);
+  }
+}
