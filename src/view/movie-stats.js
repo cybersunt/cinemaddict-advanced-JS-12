@@ -1,9 +1,10 @@
 import Abstract from "./abstract";
+import {movies} from "../main";
 
 const createMovieStatsTemplate = () => {
   return (
     `<section class="footer__statistics">
-       <p>130 291 movies inside</p>
+       <p>${movies.length} movies inside</p>
      </section>`
   );
 };
