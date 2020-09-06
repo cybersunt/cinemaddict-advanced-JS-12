@@ -1,6 +1,6 @@
 import {generateMovie} from "./mock/movie.js";
 import {generateFilter} from "./mock/filter.js";
-import {render, RenderPosition} from "./utils/render";
+import {remove, render, RenderPosition} from "./utils/render";
 
 import UserInfo from "./view/user-info";
 import SiteMenu from "./view/site-menu";
@@ -26,9 +26,9 @@ const renderMovie = (movieListElement, movie) => {
 
   const movieListElementContainer = movieListElement.querySelector(`.films-list__container`);
 
-  const showMovieCardDetails = () => bodyElement.appendChild(movieCardDetailsComponent.getElement());
+  const showMovieCardDetails = () => render(bodyElement, movieCardDetailsComponent, RenderPosition.BEFOREEND);
 
-  const hideMovieCardDetails = () => bodyElement.removeChild(movieCardDetailsComponent.getElement());
+  const hideMovieCardDetails = () => remove(movieCardDetailsComponent);
 
   const onEscKeyDown = (evt) => {
     if (evt.key === `Escape`) {
@@ -50,20 +50,20 @@ const renderMovie = (movieListElement, movie) => {
     onMovieCardClick();
   });
 
-  render(movieListElementContainer, movieCardComponent.getElement(), RenderPosition.BEFOREEND);
+  render(movieListElementContainer, movieCardComponent, RenderPosition.BEFOREEND);
 };
 
-const renderNavigation = (navContainer) => {
-  render(navContainer, new SiteMenu(filters).getElement(), RenderPosition.BEFOREEND);
+const renderNavigation = (navContainer, listMovies) => {
+  render(navContainer, new SiteMenu(filters), RenderPosition.BEFOREEND);
 
-  if (movies.length !== 0) {
-    render(navContainer, new Sort().getElement(), RenderPosition.BEFOREEND);
+  if (listMovies.length !== 0) {
+    render(navContainer, new Sort(), RenderPosition.BEFOREEND);
   }
 };
 
 const renderMoviesBoard = (boardContainer, listMovies) => {
   const moviesComponent = new Movies();
-  render(boardContainer, moviesComponent.getElement(), RenderPosition.BEFOREEND);
+  render(boardContainer, moviesComponent, RenderPosition.BEFOREEND);
 
   const emptyMoviesListComponent = new MoviesList(0, `There are no movies in our database`, false, true);
   const mainMoviesListComponent = new MoviesList(0, `All movies. Upcoming`, true);
@@ -71,13 +71,13 @@ const renderMoviesBoard = (boardContainer, listMovies) => {
   const mostCommentedMoviesListComponent = new MoviesList(2, `Most commented`);
 
   if (listMovies.length === 0) {
-    render(moviesComponent.getElement(), emptyMoviesListComponent.getElement(), RenderPosition.BEFOREEND);
+    render(moviesComponent, emptyMoviesListComponent, RenderPosition.BEFOREEND);
     return;
   }
 
-  render(moviesComponent.getElement(), mainMoviesListComponent.getElement(), RenderPosition.BEFOREEND);
-  render(moviesComponent.getElement(), topRatedMoviesListComponent.getElement(), RenderPosition.BEFOREEND);
-  render(moviesComponent.getElement(), mostCommentedMoviesListComponent.getElement(), RenderPosition.BEFOREEND);
+  render(moviesComponent, mainMoviesListComponent, RenderPosition.BEFOREEND);
+  render(moviesComponent, topRatedMoviesListComponent, RenderPosition.BEFOREEND);
+  render(moviesComponent, mostCommentedMoviesListComponent, RenderPosition.BEFOREEND);
 
   listMovies
     .slice(0, Math.min(movies.length, MOVIES_COUNT_PER_STEP))
@@ -88,7 +88,7 @@ const renderMoviesBoard = (boardContainer, listMovies) => {
 
     const showMoreButtonComponent = new ShowMoreButton();
 
-    render(mainMoviesListComponent.getElement(), showMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
+    render(mainMoviesListComponent, showMoreButtonComponent, RenderPosition.BEFOREEND);
 
     showMoreButtonComponent.setClickHandler(() => {
       listMovies
@@ -98,8 +98,7 @@ const renderMoviesBoard = (boardContainer, listMovies) => {
       renderedMoviesCount += MOVIES_COUNT_PER_STEP;
 
       if (renderedMoviesCount >= listMovies.length) {
-        showMoreButtonComponent.getElement().remove();
-        showMoreButtonComponent.removeElement();
+        remove(showMoreButtonComponent);
       }
     });
   }
@@ -114,10 +113,10 @@ const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
-render(siteHeaderElement, new UserInfo().getElement(), RenderPosition.BEFOREEND);
+render(siteHeaderElement, new UserInfo(), RenderPosition.BEFOREEND);
 
-renderNavigation(siteMainElement);
+renderNavigation(siteMainElement, movies);
 renderMoviesBoard(siteMainElement, movies);
 
-render(siteFooterElement, new MovieStats(movies).getElement(), RenderPosition.BEFOREEND);
+render(siteFooterElement, new MovieStats(movies), RenderPosition.BEFOREEND);
 
