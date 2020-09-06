@@ -11,7 +11,6 @@ import MovieCard from "./view/movie-card";
 import Movies from "./view/movies";
 import ShowMoreButton from "./view/show-more-button";
 import MovieCardDetails from "./view/movie-card-details";
-import LoadMoreButton from "../../taskmanager-advanced-JS-12/src/view/load-more-button";
 
 const MOVIES_COUNT = 22;
 const MOVIES_COUNT_PER_STEP = 5;
@@ -26,7 +25,6 @@ const renderMovie = (movieListElement, movie) => {
   const movieCardDetailsComponent = new MovieCardDetails(movie);
 
   const movieListElementContainer = movieListElement.querySelector(`.films-list__container`);
-  const buttonClose = movieCardDetailsComponent.getElement().querySelector(`.film-details__close-btn`);
 
   const showMovieCardDetails = () => bodyElement.appendChild(movieCardDetailsComponent.getElement());
 

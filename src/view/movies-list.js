@@ -17,7 +17,7 @@ export default class MoviesList extends Abstract {
     this._id = id;
     this._title = title;
     this._isHidden = isHidden || IS_HIDDEN;
-    this._isEmpty = isEmpty
+    this._isEmpty = isEmpty;
   }
 
   getTemplate() {
