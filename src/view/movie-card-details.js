@@ -195,7 +195,7 @@ const createMovieCardDetailsTemplate = (movie)=> {
   );
 };
 
-export default class MovieCardDetails extends Abstract {
+export default class MovieCardDetailsView extends Abstract {
   constructor(movie) {
     super();
     this._movie = movie;

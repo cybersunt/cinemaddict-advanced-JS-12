@@ -11,7 +11,7 @@ const createMoviesListTemplate = (id, title, isHidden, isEmpty) => {
   );
 };
 
-export default class MoviesList extends Abstract {
+export default class MoviesListView extends Abstract {
   constructor(id, title, isHidden, isEmpty) {
     super();
     this._id = id;

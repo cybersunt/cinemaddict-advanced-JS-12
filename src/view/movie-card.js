@@ -44,7 +44,7 @@ const createMovieCardTemplate = (movie) => {
   );
 };
 
-export default class MovieCard extends Abstract {
+export default class MovieCardView extends Abstract {
   constructor(movie) {
     super();
     this._movie = movie;

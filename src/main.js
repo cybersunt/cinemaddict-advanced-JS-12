@@ -2,15 +2,15 @@ import {generateMovie} from "./mock/movie.js";
 import {generateFilter} from "./mock/filter.js";
 import {remove, render, RenderPosition} from "./utils/render";
 
-import UserInfo from "./view/user-info";
-import SiteMenu from "./view/site-menu";
-import Sort from "./view/sort";
-import MovieStats from "./view/movie-stats";
-import MoviesList from "./view/movies-list";
-import MovieCard from "./view/movie-card";
-import Movies from "./view/movies";
-import ShowMoreButton from "./view/show-more-button";
-import MovieCardDetails from "./view/movie-card-details";
+import UserInfoView from "./view/user-info";
+import SiteMenuView from "./view/site-menu";
+import SortView from "./view/sort";
+import MovieStatsView from "./view/movie-stats";
+import MoviesListView from "./view/movies-list";
+import MovieCardView from "./view/movie-card";
+import MoviesView from "./view/movies";
+import ShowMoreButtonView from "./view/show-more-button";
+import MovieCardDetailsView from "./view/movie-card-details";
 
 const MOVIES_COUNT = 22;
 const MOVIES_COUNT_PER_STEP = 5;
@@ -21,8 +21,8 @@ const filters = generateFilter(movies);
 
 const renderMovie = (movieListElement, movie) => {
   const bodyElement = document.querySelector(`body`);
-  const movieCardComponent = new MovieCard(movie);
-  const movieCardDetailsComponent = new MovieCardDetails(movie);
+  const movieCardComponent = new MovieCardView(movie);
+  const movieCardDetailsComponent = new MovieCardDetailsView(movie);
 
   const movieListElementContainer = movieListElement.querySelector(`.films-list__container`);
 
@@ -54,21 +54,21 @@ const renderMovie = (movieListElement, movie) => {
 };
 
 const renderNavigation = (navContainer, listMovies) => {
-  render(navContainer, new SiteMenu(filters), RenderPosition.BEFOREEND);
+  render(navContainer, new SiteMenuView(filters), RenderPosition.BEFOREEND);
 
   if (listMovies.length !== 0) {
-    render(navContainer, new Sort(), RenderPosition.BEFOREEND);
+    render(navContainer, new SortView(), RenderPosition.BEFOREEND);
   }
 };
 
 const renderMoviesBoard = (boardContainer, listMovies) => {
-  const moviesComponent = new Movies();
+  const moviesComponent = new MoviesView();
   render(boardContainer, moviesComponent, RenderPosition.BEFOREEND);
 
-  const emptyMoviesListComponent = new MoviesList(0, `There are no movies in our database`, false, true);
-  const mainMoviesListComponent = new MoviesList(0, `All movies. Upcoming`, true);
-  const topRatedMoviesListComponent = new MoviesList(1, `Top rated`);
-  const mostCommentedMoviesListComponent = new MoviesList(2, `Most commented`);
+  const emptyMoviesListComponent = new MoviesListView(0, `There are no movies in our database`, false, true);
+  const mainMoviesListComponent = new MoviesListView(0, `All movies. Upcoming`, true);
+  const topRatedMoviesListComponent = new MoviesListView(1, `Top rated`);
+  const mostCommentedMoviesListComponent = new MoviesListView(2, `Most commented`);
 
   if (listMovies.length === 0) {
     render(moviesComponent, emptyMoviesListComponent, RenderPosition.BEFOREEND);
@@ -86,7 +86,7 @@ const renderMoviesBoard = (boardContainer, listMovies) => {
   if (listMovies.length > MOVIES_COUNT_PER_STEP) {
     let renderedMoviesCount = MOVIES_COUNT_PER_STEP;
 
-    const showMoreButtonComponent = new ShowMoreButton();
+    const showMoreButtonComponent = new ShowMoreButtonView();
 
     render(mainMoviesListComponent, showMoreButtonComponent, RenderPosition.BEFOREEND);
 
@@ -113,10 +113,10 @@ const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
-render(siteHeaderElement, new UserInfo(), RenderPosition.BEFOREEND);
+render(siteHeaderElement, new UserInfoView(), RenderPosition.BEFOREEND);
 
 renderNavigation(siteMainElement, movies);
 renderMoviesBoard(siteMainElement, movies);
 
-render(siteFooterElement, new MovieStats(movies), RenderPosition.BEFOREEND);
+render(siteFooterElement, new MovieStatsView(movies), RenderPosition.BEFOREEND);
 

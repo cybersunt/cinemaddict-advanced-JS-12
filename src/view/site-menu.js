@@ -21,7 +21,7 @@ const createSiteMenuTemplate = (filterItems) => {
   );
 };
 
-export default class SiteMenu extends Abstract {
+export default class SiteMenuView extends Abstract {
   constructor(filters) {
     super();
     this._filters = filters;
