@@ -11,6 +11,7 @@ import MovieCard from "./view/movie-card";
 import Movies from "./view/movies";
 import ShowMoreButton from "./view/show-more-button";
 import MovieCardDetails from "./view/movie-card-details";
+import LoadMoreButton from "../../taskmanager-advanced-JS-12/src/view/load-more-button";
 
 const MOVIES_COUNT = 22;
 const MOVIES_COUNT_PER_STEP = 5;
@@ -36,20 +37,20 @@ const renderMovie = (movieListElement, movie) => {
       evt.preventDefault();
       hideMovieCardDetails();
       document.removeEventListener(`keydown`, onEscKeyDown);
-      buttonClose.removeEventListener(`click`, hideMovieCardDetails);
     }
   };
 
-  const onMovieCardClick = (evt) => {
-    evt.preventDefault();
+  const onMovieCardClick = () => {
     showMovieCardDetails();
-    buttonClose.addEventListener(`click`, hideMovieCardDetails);
+    movieCardDetailsComponent.setButtonCloseClickHandler(()=> {
+      hideMovieCardDetails();
+    });
     document.addEventListener(`keydown`, onEscKeyDown);
   };
 
-  movieCardComponent.getElement()
-    .querySelectorAll(`img, .film-card__title, .film-card__comments`)
-    .forEach((element) => element.addEventListener(`click`, onMovieCardClick));
+  movieCardComponent.setMovieCardClickHandler(() => {
+    onMovieCardClick();
+  });
 
   render(movieListElementContainer, movieCardComponent.getElement(), RenderPosition.BEFOREEND);
 };
@@ -62,7 +63,7 @@ const renderNavigation = (navContainer) => {
   }
 };
 
-const renderMoviesBoard = (boardContainer, moviesList) => {
+const renderMoviesBoard = (boardContainer, listMovies) => {
   const moviesComponent = new Movies();
   render(boardContainer, moviesComponent.getElement(), RenderPosition.BEFOREEND);
 
@@ -71,7 +72,7 @@ const renderMoviesBoard = (boardContainer, moviesList) => {
   const topRatedMoviesListComponent = new MoviesList(1, `Top rated`);
   const mostCommentedMoviesListComponent = new MoviesList(2, `Most commented`);
 
-  if (moviesList.length === 0) {
+  if (listMovies.length === 0) {
     render(moviesComponent.getElement(), emptyMoviesListComponent.getElement(), RenderPosition.BEFOREEND);
     return;
   }
@@ -80,26 +81,25 @@ const renderMoviesBoard = (boardContainer, moviesList) => {
   render(moviesComponent.getElement(), topRatedMoviesListComponent.getElement(), RenderPosition.BEFOREEND);
   render(moviesComponent.getElement(), mostCommentedMoviesListComponent.getElement(), RenderPosition.BEFOREEND);
 
-  for (let i = 0; i < Math.min(moviesList.length, MOVIES_COUNT_PER_STEP); i++) {
-    renderMovie(mainMoviesListComponent.getElement(), movies[i]);
-  }
+  listMovies
+    .slice(0, Math.min(movies.length, MOVIES_COUNT_PER_STEP))
+    .forEach((listMovie) => renderMovie(mainMoviesListComponent.getElement(), listMovie));
 
-  if (moviesList.length > MOVIES_COUNT_PER_STEP) {
+  if (listMovies.length > MOVIES_COUNT_PER_STEP) {
     let renderedMoviesCount = MOVIES_COUNT_PER_STEP;
 
     const showMoreButtonComponent = new ShowMoreButton();
 
     render(mainMoviesListComponent.getElement(), showMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
 
-    showMoreButtonComponent.getElement().addEventListener(`click`, (evt) => {
-      evt.preventDefault();
-      movies
+    showMoreButtonComponent.setClickHandler(() => {
+      listMovies
         .slice(renderedMoviesCount, renderedMoviesCount + MOVIES_COUNT_PER_STEP)
-        .forEach((movie) => render(mainMoviesListComponent, mainMoviesListComponent.getElement(), movie));
+        .forEach((listMovie) => renderMovie(mainMoviesListComponent.getElement(), listMovie));
 
       renderedMoviesCount += MOVIES_COUNT_PER_STEP;
 
-      if (renderedMoviesCount >= movies.length) {
+      if (renderedMoviesCount >= listMovies.length) {
         showMoreButtonComponent.getElement().remove();
         showMoreButtonComponent.removeElement();
       }
@@ -107,8 +107,8 @@ const renderMoviesBoard = (boardContainer, moviesList) => {
   }
 
   for (let i = 0; i < MOVIES_EXTRA_COUNT; i++) {
-    renderMovie(topRatedMoviesListComponent.getElement(), moviesList[i]);
-    renderMovie(mostCommentedMoviesListComponent.getElement(), moviesList[i]);
+    renderMovie(topRatedMoviesListComponent.getElement(), listMovies[i]);
+    renderMovie(mostCommentedMoviesListComponent.getElement(), listMovies[i]);
   }
 };
 
