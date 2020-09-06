@@ -40,16 +40,16 @@ const renderMovie = (movieListElement, movie) => {
     }
   };
 
-  const onMoviePictureClick = (evt) => {
+  const onMovieCardClick = (evt) => {
     evt.preventDefault();
     showMovieCardDetails();
     buttonClose.addEventListener(`click`, hideMovieCardDetails);
     document.addEventListener(`keydown`, onEscKeyDown);
   };
 
-  movieCardComponent.getElement().querySelector(`img`).addEventListener(`click`, onMoviePictureClick);
-  movieCardComponent.getElement().querySelector(`.film-card__title`).addEventListener(`click`, onMoviePictureClick);
-  movieCardComponent.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, onMoviePictureClick);
+  movieCardComponent.getElement()
+    .querySelectorAll(`img, .film-card__title, .film-card__comments`)
+    .forEach((element) => element.addEventListener(`click`, onMovieCardClick));
 
   render(movieListElementContainer, movieCardComponent.getElement(), RenderPosition.BEFOREEND);
 };
