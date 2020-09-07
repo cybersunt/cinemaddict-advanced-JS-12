@@ -11,6 +11,8 @@ import MovieCardView from "./view/movie-card";
 import MoviesView from "./view/movies";
 import ShowMoreButtonView from "./view/show-more-button";
 import MovieCardDetailsView from "./view/movie-card-details";
+import BoardPresenter from "../../taskmanager-12/src/presenter/board";
+import Board from "./presenter/board";
 
 const MOVIES_COUNT = 22;
 const MOVIES_COUNT_PER_STEP = 5;
@@ -24,6 +26,8 @@ const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
 const moviesComponent = new MoviesView();
+
+console.log(moviesComponent)
 
 const renderMovie = (movieListElement, movie) => {
   const bodyElement = document.querySelector(`body`);
@@ -57,16 +61,6 @@ const renderMovie = (movieListElement, movie) => {
   });
 
   render(movieListElementContainer, movieCardComponent, RenderPosition.BEFOREEND);
-};
-
-const renderMoviesBoard = (parentContainer, listMovies) => {
-  render(parentContainer, new SiteMenuView(filters), RenderPosition.BEFOREEND);
-
-  if (listMovies.length !== 0) {
-    render(parentContainer, new SortView(), RenderPosition.BEFOREEND);
-  }
-
-  render(parentContainer, moviesComponent, RenderPosition.BEFOREEND);
 };
 
 const renderMovieList = (listMovies, id, title, isHidden) => {
@@ -112,7 +106,10 @@ const renderMovieList = (listMovies, id, title, isHidden) => {
 };
 
 render(siteHeaderElement, new UserInfoView(), RenderPosition.BEFOREEND);
-renderMoviesBoard(siteMainElement, movies);
+
+const mainInner = new Board(siteMainElement, filters);
+mainInner.init(movies);
+
 renderMovieList(movies, 0, `All movies. Upcoming`, true);
 renderMovieList(movies, 1, `Top rated`);
 renderMovieList(movies, 2, `Most commented`);
