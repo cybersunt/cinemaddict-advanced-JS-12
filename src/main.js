@@ -19,6 +19,12 @@ const MOVIES_EXTRA_COUNT = 2;
 export const movies = new Array(MOVIES_COUNT).fill(``).map((array, index) => generateMovie(index));
 const filters = generateFilter(movies);
 
+const siteHeaderElement = document.querySelector(`.header`);
+const siteMainElement = document.querySelector(`.main`);
+const siteFooterElement = document.querySelector(`.footer`);
+
+const moviesComponent = new MoviesView();
+
 const renderMovie = (movieListElement, movie) => {
   const bodyElement = document.querySelector(`body`);
   const movieCardComponent = new MovieCardView(movie);
@@ -53,70 +59,63 @@ const renderMovie = (movieListElement, movie) => {
   render(movieListElementContainer, movieCardComponent, RenderPosition.BEFOREEND);
 };
 
-const renderNavigation = (navContainer, listMovies) => {
-  render(navContainer, new SiteMenuView(filters), RenderPosition.BEFOREEND);
+const renderMoviesBoard = (parentContainer, listMovies) => {
+  render(parentContainer, new SiteMenuView(filters), RenderPosition.BEFOREEND);
 
   if (listMovies.length !== 0) {
-    render(navContainer, new SortView(), RenderPosition.BEFOREEND);
+    render(parentContainer, new SortView(), RenderPosition.BEFOREEND);
   }
+
+  render(parentContainer, moviesComponent, RenderPosition.BEFOREEND);
 };
 
-const renderMoviesBoard = (boardContainer, listMovies) => {
-  const moviesComponent = new MoviesView();
-  render(boardContainer, moviesComponent, RenderPosition.BEFOREEND);
-
+const renderMovieList = (listMovies, id, title, isHidden) => {
   const emptyMoviesListComponent = new MoviesListView(0, `There are no movies in our database`, false, true);
-  const mainMoviesListComponent = new MoviesListView(0, `All movies. Upcoming`, true);
-  const topRatedMoviesListComponent = new MoviesListView(1, `Top rated`);
-  const mostCommentedMoviesListComponent = new MoviesListView(2, `Most commented`);
+  const moviesListComponent = new MoviesListView(id, title, isHidden);
 
   if (listMovies.length === 0) {
     render(moviesComponent, emptyMoviesListComponent, RenderPosition.BEFOREEND);
     return;
   }
 
-  render(moviesComponent, mainMoviesListComponent, RenderPosition.BEFOREEND);
-  render(moviesComponent, topRatedMoviesListComponent, RenderPosition.BEFOREEND);
-  render(moviesComponent, mostCommentedMoviesListComponent, RenderPosition.BEFOREEND);
+  render(moviesComponent, moviesListComponent, RenderPosition.BEFOREEND);
 
-  listMovies
-    .slice(0, Math.min(movies.length, MOVIES_COUNT_PER_STEP))
-    .forEach((listMovie) => renderMovie(mainMoviesListComponent.getElement(), listMovie));
+  if (isHidden) {
+    listMovies
+      .slice(0, Math.min(movies.length, MOVIES_COUNT_PER_STEP))
+      .forEach((listMovie) => renderMovie(moviesListComponent.getElement(), listMovie));
 
-  if (listMovies.length > MOVIES_COUNT_PER_STEP) {
-    let renderedMoviesCount = MOVIES_COUNT_PER_STEP;
+    if (listMovies.length > MOVIES_COUNT_PER_STEP) {
+      let renderedMoviesCount = MOVIES_COUNT_PER_STEP;
 
-    const showMoreButtonComponent = new ShowMoreButtonView();
+      const showMoreButtonComponent = new ShowMoreButtonView();
 
-    render(mainMoviesListComponent, showMoreButtonComponent, RenderPosition.BEFOREEND);
+      render(moviesListComponent, showMoreButtonComponent, RenderPosition.BEFOREEND);
 
-    showMoreButtonComponent.setClickHandler(() => {
-      listMovies
-        .slice(renderedMoviesCount, renderedMoviesCount + MOVIES_COUNT_PER_STEP)
-        .forEach((listMovie) => renderMovie(mainMoviesListComponent.getElement(), listMovie));
+      showMoreButtonComponent.setClickHandler(() => {
+        listMovies
+          .slice(renderedMoviesCount, renderedMoviesCount + MOVIES_COUNT_PER_STEP)
+          .forEach((listMovie) => renderMovie(moviesListComponent.getElement(), listMovie));
 
-      renderedMoviesCount += MOVIES_COUNT_PER_STEP;
+        renderedMoviesCount += MOVIES_COUNT_PER_STEP;
 
-      if (renderedMoviesCount >= listMovies.length) {
-        remove(showMoreButtonComponent);
-      }
-    });
-  }
-
-  for (let i = 0; i < MOVIES_EXTRA_COUNT; i++) {
-    renderMovie(topRatedMoviesListComponent.getElement(), listMovies[i]);
-    renderMovie(mostCommentedMoviesListComponent.getElement(), listMovies[i]);
+        if (renderedMoviesCount >= listMovies.length) {
+          remove(showMoreButtonComponent);
+        }
+      });
+    }
+  } else {
+    listMovies
+      .slice(0, Math.min(movies.length, MOVIES_EXTRA_COUNT))
+      .forEach((listMovie) => renderMovie(moviesListComponent.getElement(), listMovie));
   }
 };
 
-const siteHeaderElement = document.querySelector(`.header`);
-const siteMainElement = document.querySelector(`.main`);
-const siteFooterElement = document.querySelector(`.footer`);
-
 render(siteHeaderElement, new UserInfoView(), RenderPosition.BEFOREEND);
-
-renderNavigation(siteMainElement, movies);
 renderMoviesBoard(siteMainElement, movies);
+renderMovieList(movies, 0, `All movies. Upcoming`, true);
+renderMovieList(movies, 1, `Top rated`);
+renderMovieList(movies, 2, `Most commented`);
 
 render(siteFooterElement, new MovieStatsView(movies), RenderPosition.BEFOREEND);
 
