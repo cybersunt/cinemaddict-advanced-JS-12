@@ -1,5 +1,9 @@
 import MoviesListView from "../view/movies-list";
 import {render, RenderPosition} from "../utils/render";
+import {movies} from "../main";
+import Movie from "./movie";
+
+const MOVIES_COUNT_PER_STEP = 5;
 
 export default class MoviesList {
   constructor(moviesContainer) {
@@ -16,6 +20,17 @@ export default class MoviesList {
     this._renderMoviesList();
   }
 
+  _renderMovie(movie) {
+    const moviePresenter = new Movie(this._moviesContainer);
+    moviePresenter.init(movie);
+  }
+
+  _renderMovies(from, to, container) {
+    this._listMovies
+      .slice(from, to)
+      .forEach((listMovie) => this._renderMovie(container, listMovie));
+  }
+
   _renderEmptyMovieList() {
     if (this._listMovies.length === 0) {
       render(this._moviesContainer, this._emptyMoviesListComponent, RenderPosition.BEFOREEND);
@@ -25,6 +40,7 @@ export default class MoviesList {
 
   _renderMainMovieList() {
     render(this._moviesContainer, this._mainMoviesListComponent, RenderPosition.BEFOREEND);
+    this._renderMovies(0, Math.min(this._listMovies.length, MOVIES_COUNT_PER_STEP), this._mainMoviesListComponent);
   }
 
   _renderTopRatedMovieList() {

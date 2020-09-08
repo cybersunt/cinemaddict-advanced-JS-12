@@ -4,10 +4,8 @@ import {remove, render, RenderPosition} from "../utils/render";
 
 export default class Movie {
   constructor(movieListContainer) {
-    this._movieListContainer = movieListContainer;
     this._bodyElement = document.querySelector(`body`);
-    this._movieListElementContainer = this._movieListContainer.querySelector(`.films-list__container`);
-
+    this._movieListElementContainer = movieListContainer.querySelector(`.films-list__container`);
     this._movieCardComponent = null;
     this._movieCardDetailsComponent = null;
 
