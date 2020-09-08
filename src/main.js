@@ -11,7 +11,6 @@ import MovieCardView from "./view/movie-card";
 import MoviesView from "./view/movies";
 import ShowMoreButtonView from "./view/show-more-button";
 import MovieCardDetailsView from "./view/movie-card-details";
-import BoardPresenter from "../../taskmanager-12/src/presenter/board";
 import Board from "./presenter/board";
 
 const MOVIES_COUNT = 22;
@@ -26,8 +25,6 @@ const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
 const moviesComponent = new MoviesView();
-
-console.log(moviesComponent)
 
 const renderMovie = (movieListElement, movie) => {
   const bodyElement = document.querySelector(`body`);
@@ -63,56 +60,57 @@ const renderMovie = (movieListElement, movie) => {
   render(movieListElementContainer, movieCardComponent, RenderPosition.BEFOREEND);
 };
 
-const renderMovieList = (listMovies, id, title, isHidden) => {
+const renderMovieList = (moviesContainer, listMovies) => {
   const emptyMoviesListComponent = new MoviesListView(0, `There are no movies in our database`, false, true);
-  const moviesListComponent = new MoviesListView(id, title, isHidden);
+  const mainMoviesListComponent = new MoviesListView(0, `All movies. Upcoming`, true);
+  const topRatedMoviesListComponent = new MoviesListView(1, `Top rated`);
+  const mostCommentedMoviesListComponent = new MoviesListView(2, `Most commented`);
 
   if (listMovies.length === 0) {
-    render(moviesComponent, emptyMoviesListComponent, RenderPosition.BEFOREEND);
+    render(moviesContainer, emptyMoviesListComponent, RenderPosition.BEFOREEND);
     return;
   }
 
-  render(moviesComponent, moviesListComponent, RenderPosition.BEFOREEND);
+  render(moviesContainer, mainMoviesListComponent, RenderPosition.BEFOREEND);
 
-  if (isHidden) {
-    listMovies
-      .slice(0, Math.min(movies.length, MOVIES_COUNT_PER_STEP))
-      .forEach((listMovie) => renderMovie(moviesListComponent.getElement(), listMovie));
+  listMovies
+    .slice(0, Math.min(movies.length, MOVIES_COUNT_PER_STEP))
+    .forEach((listMovie) => renderMovie(mainMoviesListComponent.getElement(), listMovie));
 
-    if (listMovies.length > MOVIES_COUNT_PER_STEP) {
-      let renderedMoviesCount = MOVIES_COUNT_PER_STEP;
+  if (listMovies.length > MOVIES_COUNT_PER_STEP) {
+    let renderedMoviesCount = MOVIES_COUNT_PER_STEP;
 
-      const showMoreButtonComponent = new ShowMoreButtonView();
+    const showMoreButtonComponent = new ShowMoreButtonView();
 
-      render(moviesListComponent, showMoreButtonComponent, RenderPosition.BEFOREEND);
+    render(mainMoviesListComponent, showMoreButtonComponent, RenderPosition.BEFOREEND);
 
-      showMoreButtonComponent.setClickHandler(() => {
-        listMovies
-          .slice(renderedMoviesCount, renderedMoviesCount + MOVIES_COUNT_PER_STEP)
-          .forEach((listMovie) => renderMovie(moviesListComponent.getElement(), listMovie));
+    showMoreButtonComponent.setClickHandler(() => {
+      listMovies
+        .slice(renderedMoviesCount, renderedMoviesCount + MOVIES_COUNT_PER_STEP)
+        .forEach((listMovie) => renderMovie(mainMoviesListComponent.getElement(), listMovie));
 
-        renderedMoviesCount += MOVIES_COUNT_PER_STEP;
+      renderedMoviesCount += MOVIES_COUNT_PER_STEP;
 
-        if (renderedMoviesCount >= listMovies.length) {
-          remove(showMoreButtonComponent);
-        }
-      });
-    }
-  } else {
-    listMovies
-      .slice(0, Math.min(movies.length, MOVIES_EXTRA_COUNT))
-      .forEach((listMovie) => renderMovie(moviesListComponent.getElement(), listMovie));
+      if (renderedMoviesCount >= listMovies.length) {
+        remove(showMoreButtonComponent);
+      }
+    });
   }
+
+  listMovies
+    .slice(0, Math.min(movies.length, MOVIES_EXTRA_COUNT))
+    .forEach((listMovie) => renderMovie(topRatedMoviesListComponent.getElement(), listMovie));
+  listMovies
+    .slice(0, Math.min(movies.length, MOVIES_EXTRA_COUNT))
+    .forEach((listMovie) => renderMovie(mostCommentedMoviesListComponent.getElement(), listMovie));
 };
 
 render(siteHeaderElement, new UserInfoView(), RenderPosition.BEFOREEND);
 
-const mainInner = new Board(siteMainElement, filters);
-mainInner.init(movies);
+// const mainInner = new Board(siteMainElement, filters);
+// mainInner.init(movies);
 
-renderMovieList(movies, 0, `All movies. Upcoming`, true);
-renderMovieList(movies, 1, `Top rated`);
-renderMovieList(movies, 2, `Most commented`);
+renderMovieList(moviesComponent, movies);
 
 render(siteFooterElement, new MovieStatsView(movies), RenderPosition.BEFOREEND);
 
