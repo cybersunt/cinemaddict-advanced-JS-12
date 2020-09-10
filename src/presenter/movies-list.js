@@ -16,6 +16,8 @@ export default class MoviesList {
     this._mostCommentedMoviesListComponent = new MoviesListView(2, `Most commented`);
     this._topRatedMoviesListComponent = new MoviesListView(1, `Top rated`);
     this._showMoreButtonComponent = new ShowMoreButtonView();
+
+    this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
   }
 
   init(listMovies) {
