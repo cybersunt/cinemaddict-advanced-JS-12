@@ -1,7 +1,6 @@
 import Abstract from "./abstract";
 
 const IS_HIDDEN = false;
-const IS_EMPTY = null;
 
 const createMoviesListTemplate = (id, title, isHidden, isEmpty) => {
   return (
@@ -12,13 +11,13 @@ const createMoviesListTemplate = (id, title, isHidden, isEmpty) => {
   );
 };
 
-export default class MoviesList extends Abstract {
+export default class MoviesListView extends Abstract {
   constructor(id, title, isHidden, isEmpty) {
     super();
     this._id = id;
     this._title = title;
     this._isHidden = isHidden || IS_HIDDEN;
-    this._isEmpty = isEmpty || IS_EMPTY;
+    this._isEmpty = isEmpty;
   }
 
   getTemplate() {

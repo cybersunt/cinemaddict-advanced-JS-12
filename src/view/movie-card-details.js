@@ -195,12 +195,20 @@ const createMovieCardDetailsTemplate = (movie)=> {
   );
 };
 
-export default class MovieCardDetails extends Abstract {
+export default class MovieCardDetailsView extends Abstract {
   constructor(movie) {
     super();
     this._movie = movie;
+    this._buttonCloseClickHandler = this._buttonCloseClickHandler.bind(this);
   }
   getTemplate() {
     return createMovieCardDetailsTemplate(this._movie);
+  }
+  _buttonCloseClickHandler() {
+    this._callback.buttonCloseClick();
+  }
+  setButtonCloseClickHandler(callback) {
+    this._callback.buttonCloseClick = callback;
+    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._buttonCloseClickHandler);
   }
 }
