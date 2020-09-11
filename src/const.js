@@ -1,5 +1,11 @@
 export const ONE_HOUR = 60;
 
+export const SortType = {
+  DEFAULT: `default`,
+  DATE: `date`,
+  RATING: `rating`
+};
+
 export const movieDetailsData = {
   RATING_MIN: 1,
   RATING_MAX: 10,
