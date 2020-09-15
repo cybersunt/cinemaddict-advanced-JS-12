@@ -3,6 +3,7 @@ import SortView from "../view/sort";
 import SiteMenuView from "../view/site-menu";
 import {render, RenderPosition} from "../utils/render";
 import MoviesList from "./movies-list";
+import {SortType} from "../const";
 
 export default class Board {
   constructor(boardContainer, filters) {
@@ -11,11 +12,19 @@ export default class Board {
     this._siteMenuComponent = new SiteMenuView(filters);
     this._sortComponent = new SortView();
     this._moviesComponent = new MoviesView();
+    this._currentSortType = SortType.DEFAULT;
 
   }
   init(listMovies) {
-    this._listMovies = listMovies;
+    this._listMovies = listMovies.slice();
     this._renderBoard();
+    this._sourcedListMovies = listMovies.slice();
+  }
+
+  handleSortTypeChange(sortType) {
+    // - Сортируем задачи
+    // - Очищаем список
+    // - Рендерим список заново
   }
 
   _renderSiteMenu() {
@@ -24,6 +33,7 @@ export default class Board {
 
   _renderSort() {
     render(this._boardContainer, this._sortComponent, RenderPosition.BEFOREEND);
+    this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
   _renderMovies() {

@@ -37,3 +37,31 @@ export const getCommentDate = (date) => {
 
   return `${year}/${day}/${month} ${time}`;
 };
+
+// Функция помещает задачи без даты в конце списка,
+// возвращая нужный вес для колбэка sort
+const getWeightForNullDate = (dateA, dateB) => {
+  if (dateA === null && dateB === null) {
+    return 0;
+  }
+
+  if (dateA === null) {
+    return 1;
+  }
+
+  if (dateB === null) {
+    return -1;
+  }
+
+  return null;
+};
+
+export const sortMovieDate = (movieA, movieB) => {
+  const weight = getWeightForNullDate(movieA.realaseDate, movieB.realaseDate);
+
+  if (weight !== null) {
+    return weight;
+  }
+
+  return movieA.realaseDate.getTime() - movieB.realaseDate.getTime();
+};
