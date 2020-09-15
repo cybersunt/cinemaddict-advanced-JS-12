@@ -2,6 +2,7 @@ import MoviesListView from "../view/movies-list";
 import {remove, render, RenderPosition} from "../utils/render";
 import Movie from "./movie";
 import ShowMoreButtonView from "../view/show-more-button";
+import MainMoviesListView from "../view/main-movies-list";
 
 const MOVIES_COUNT_PER_STEP = 5;
 const MOVIES_EXTRA_COUNT = 2;
@@ -11,10 +12,10 @@ export default class MoviesList {
     this._moviesContainer = moviesContainer;
     this._renderedMoviesCount = MOVIES_COUNT_PER_STEP;
 
-    this._emptyMoviesListComponent = new MoviesListView(0, `There are no movies in our database`, false, true);
-    this._mainMoviesListComponent = new MoviesListView(0, `All movies. Upcoming`, true);
-    this._mostCommentedMoviesListComponent = new MoviesListView(2, `Most commented`);
+    this._emptyMoviesListComponent = new MainMoviesListView(0, `There are no movies in our database`, false, true);
+    this._mainMoviesListComponent = new MainMoviesListView(0, `All movies. Upcoming`, true);
     this._topRatedMoviesListComponent = new MoviesListView(1, `Top rated`);
+    this._mostCommentedMoviesListComponent = new MoviesListView(2, `Most commented`);
     this._showMoreButtonComponent = new ShowMoreButtonView();
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);

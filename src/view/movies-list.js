@@ -1,26 +1,22 @@
 import Abstract from "./abstract";
 
-const IS_HIDDEN = false;
-
-const createMoviesListTemplate = (id, title, isHidden, isEmpty) => {
+const createMoviesListTemplate = (id, title) => {
   return (
-    `<section class="films-list${id !== 0 && !isEmpty ? `--extra` : ``}">
-      <h2 class="films-list__title ${isHidden ? `visually-hidden` : ``}">${title}</h2>
-      ${isEmpty ? `` : `<div class="films-list__container"></div>`}
+    `<section class="films-list--extra">
+      <h2 class="films-list__title">${title}</h2>
+      <div class="films-list__container"></div>
     </section>`
   );
 };
 
 export default class MoviesListView extends Abstract {
-  constructor(id, title, isHidden, isEmpty) {
+  constructor(id, title) {
     super();
     this._id = id;
     this._title = title;
-    this._isHidden = isHidden || IS_HIDDEN;
-    this._isEmpty = isEmpty;
   }
 
   getTemplate() {
-    return createMoviesListTemplate(this._id, this._title, this._isHidden, this._isEmpty);
+    return createMoviesListTemplate(this._id, this._title);
   }
 }
