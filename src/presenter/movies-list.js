@@ -82,6 +82,5 @@ export default class MoviesList {
   updateMainMovieList(sortMoviesList) {
     this._listMovies = sortMoviesList;
     this._clearMainMovieList();
-    this._renderMovieList(this._mainMoviesListComponent, MOVIES_COUNT_PER_STEP);
   }
 }
