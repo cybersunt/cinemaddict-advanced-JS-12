@@ -84,4 +84,4 @@ export default class MoviesList {
     this._clearMainMovieList();
     this._renderMovieList(this._mainMoviesListComponent, MOVIES_COUNT_PER_STEP);
   }
-};
+}
