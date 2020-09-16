@@ -4,6 +4,7 @@ import SiteMenuView from "../view/site-menu";
 import {render, RenderPosition} from "../utils/render";
 import MoviesList from "./movies-list";
 import {SortType} from "../const";
+import {sortMovieDate, sortMovieRating} from "../utils/movie";
 
 export default class Board {
   constructor(boardContainer, filters) {
@@ -12,19 +13,40 @@ export default class Board {
     this._siteMenuComponent = new SiteMenuView(filters);
     this._sortComponent = new SortView();
     this._moviesComponent = new MoviesView();
+
+    this._moviesListPresenter = new MoviesList(this._moviesComponent);
     this._currentSortType = SortType.DEFAULT;
+
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
   }
   init(listMovies) {
     this._listMovies = listMovies.slice();
-    this._renderBoard();
     this._sourcedListMovies = listMovies.slice();
+    this._renderBoard();
   }
 
-  handleSortTypeChange(sortType) {
-    // - Сортируем задачи
-    // - Очищаем список
-    // - Рендерим список заново
+  _handleSortTypeChange(sortType) {
+    if (this._currentSortType === sortType) {
+      return;
+    }
+    this._sortMovies(sortType);
+    this._moviesListPresenter.updateMainMovieList(this._listMovies);
+    this._renderMoviesList();
+  }
+
+  _sortMovies(sortType) {
+    switch (sortType) {
+      case SortType.DATE:
+        this._listMovies.sort(sortMovieDate);
+        break;
+      case SortType.RATING:
+        this._listMovies.sort(sortMovieRating);
+        break;
+      default:
+        this._listMovies = this._sourcedListMovies.slice();
+    }
+    this._currentSortType = sortType;
   }
 
   _renderSiteMenu() {
@@ -41,8 +63,7 @@ export default class Board {
   }
 
   _renderMoviesList() {
-    const moviesListPresenter = new MoviesList(this._moviesComponent);
-    moviesListPresenter.init(this._listMovies);
+    this._moviesListPresenter.init(this._listMovies);
   }
 
   _renderBoard() {

@@ -1,7 +1,7 @@
-import MoviesListView from "../view/movies-list";
 import {remove, render, RenderPosition} from "../utils/render";
 import Movie from "./movie";
 import ShowMoreButtonView from "../view/show-more-button";
+import MoviesListView from "../view/movies-list";
 import MainMoviesListView from "../view/main-movies-list";
 
 const MOVIES_COUNT_PER_STEP = 5;
@@ -23,6 +23,7 @@ export default class MoviesList {
 
   init(listMovies) {
     this._listMovies = listMovies;
+    this._renderMainMovieList();
     this._renderMoviesList();
   }
 
@@ -60,13 +61,27 @@ export default class MoviesList {
     this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
   }
 
-  _renderMoviesList() {
+  _renderMainMovieList() {
     if (this._listMovies.length === 0) {
       render(this._moviesContainer, this._emptyMoviesListComponent, RenderPosition.BEFOREEND);
       return;
     }
     this._renderMovieList(this._mainMoviesListComponent, MOVIES_COUNT_PER_STEP);
+  }
+
+  _renderMoviesList() {
     this._renderMovieList(this._topRatedMoviesListComponent, MOVIES_EXTRA_COUNT);
     this._renderMovieList(this._mostCommentedMoviesListComponent, MOVIES_EXTRA_COUNT);
   }
-}
+
+  _clearMainMovieList() {
+    this._mainMoviesListComponent.clearMoviesList();
+    this._renderedMoviesCount = MOVIES_COUNT_PER_STEP;
+  }
+
+  updateMainMovieList(sortMoviesList) {
+    this._listMovies = sortMoviesList;
+    this._clearMainMovieList();
+    this._renderMovieList(this._mainMoviesListComponent, MOVIES_COUNT_PER_STEP);
+  }
+};
