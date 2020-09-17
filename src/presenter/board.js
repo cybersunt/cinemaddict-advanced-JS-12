@@ -10,6 +10,9 @@ export default class Board {
   constructor(boardContainer, filters) {
     this._boardContainer = boardContainer;
 
+    this._listMovies = null;
+    this._sourcedListMovies = null;
+
     this._siteMenuComponent = new SiteMenuView(filters);
     this._sortComponent = new SortView();
     this._moviesComponent = new MoviesView();
@@ -32,7 +35,6 @@ export default class Board {
     }
     this._sortMovies(sortType);
     this._moviesListPresenter.updateMainMovieList(this._listMovies);
-    this._renderMoviesList();
   }
 
   _sortMovies(sortType) {

@@ -1,8 +1,8 @@
 import {remove, render, RenderPosition} from "../utils/render";
 import Movie from "./movie";
 import ShowMoreButtonView from "../view/show-more-button";
-import MoviesListView from "../view/movies-list";
 import MainMoviesListView from "../view/main-movies-list";
+import ExtraMoviesListView from "../view/extra-movies-list";
 
 const MOVIES_COUNT_PER_STEP = 5;
 const MOVIES_EXTRA_COUNT = 2;
@@ -12,10 +12,10 @@ export default class MoviesList {
     this._moviesContainer = moviesContainer;
     this._renderedMoviesCount = MOVIES_COUNT_PER_STEP;
 
-    this._emptyMoviesListComponent = new MainMoviesListView(0, `There are no movies in our database`, false, true);
-    this._mainMoviesListComponent = new MainMoviesListView(0, `All movies. Upcoming`, true);
-    this._topRatedMoviesListComponent = new MoviesListView(1, `Top rated`);
-    this._mostCommentedMoviesListComponent = new MoviesListView(2, `Most commented`);
+    this._emptyMoviesListComponent = new MainMoviesListView(`There are no movies in our database`, false, true);
+    this._mainMoviesListComponent = new MainMoviesListView(`All movies. Upcoming`, true);
+    this._topRatedMoviesListComponent = new ExtraMoviesListView(`Top rated`);
+    this._mostCommentedMoviesListComponent = new ExtraMoviesListView(`Most commented`);
     this._showMoreButtonComponent = new ShowMoreButtonView();
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
@@ -24,7 +24,7 @@ export default class MoviesList {
   init(listMovies) {
     this._listMovies = listMovies;
     this._renderMainMovieList();
-    this._renderMoviesList();
+    this._renderExtraMoviesList();
   }
 
   _renderMovie(movieListElement, movie) {
@@ -43,6 +43,7 @@ export default class MoviesList {
     this._renderMovies(0, Math.min(this._listMovies.length, countMovies), component);
 
     if (this._listMovies.length > countMovies && countMovies > MOVIES_EXTRA_COUNT) {
+      render(this._moviesContainer, component, RenderPosition.AFTERBEGIN);
       this._renderShowMoreButton();
     }
   }
@@ -63,13 +64,13 @@ export default class MoviesList {
 
   _renderMainMovieList() {
     if (this._listMovies.length === 0) {
-      render(this._moviesContainer, this._emptyMoviesListComponent, RenderPosition.BEFOREEND);
+      render(this._moviesContainer, this._emptyMoviesListComponent, RenderPosition.AFTERBEGIN);
       return;
     }
     this._renderMovieList(this._mainMoviesListComponent, MOVIES_COUNT_PER_STEP);
   }
 
-  _renderMoviesList() {
+  _renderExtraMoviesList() {
     this._renderMovieList(this._topRatedMoviesListComponent, MOVIES_EXTRA_COUNT);
     this._renderMovieList(this._mostCommentedMoviesListComponent, MOVIES_EXTRA_COUNT);
   }
@@ -82,5 +83,6 @@ export default class MoviesList {
   updateMainMovieList(sortMoviesList) {
     this._listMovies = sortMoviesList;
     this._clearMainMovieList();
+    this._renderMainMovieList();
   }
 }

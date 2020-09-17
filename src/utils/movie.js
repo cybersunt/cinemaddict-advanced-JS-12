@@ -66,6 +66,4 @@ export const sortMovieDate = (movieA, movieB) => {
   return movieB.releaseDate.getTime() - movieA.releaseDate.getTime();
 };
 
-export const sortMovieRating = (movieA, movieB) => {
-  return movieB.rating - movieA.rating;
-};
+export const sortMovieRating = (movieA, movieB) => movieB.rating - movieA.rating;
