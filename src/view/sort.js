@@ -36,7 +36,6 @@ export default class SortView extends Abstract {
 
     evt.preventDefault();
     this._callback.sortTypeChange(evt.target.dataset.sortType);
-    debugger
     this._changeActiveButton(evt);
   }
 
