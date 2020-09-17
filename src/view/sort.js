@@ -14,12 +14,19 @@ const createSortTemplate = () => {
 export default class SortView extends Abstract {
   constructor() {
     super();
-
+    this._sortButtons = this.getElement().querySelectorAll(`.sort__button`);
     this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
   }
 
   getTemplate() {
     return createSortTemplate();
+  }
+
+  _changeActiveButton(evt) {
+    this._sortButtons.forEach(function (element) {
+      element.classList.remove(element, `sort__button--active`);
+    });
+    evt.target.classList.add(evt.target, `sort__button--active`);
   }
 
   _sortTypeChangeHandler(evt) {
@@ -29,6 +36,8 @@ export default class SortView extends Abstract {
 
     evt.preventDefault();
     this._callback.sortTypeChange(evt.target.dataset.sortType);
+    debugger
+    this._changeActiveButton(evt);
   }
 
   setSortTypeChangeHandler(callback) {
