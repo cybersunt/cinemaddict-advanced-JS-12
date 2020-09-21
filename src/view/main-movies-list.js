@@ -22,8 +22,4 @@ export default class MainMoviesListView extends Abstract {
   getTemplate() {
     return createMainMoviesListTemplate(this._title, this._isHidden, this._isEmpty);
   }
-
-  clearMoviesList() {
-    this.getElement().querySelector(`.films-list__container`).innerHTML = ``;
-  }
 }

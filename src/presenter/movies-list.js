@@ -11,6 +11,7 @@ export default class MoviesList {
   constructor(moviesContainer) {
     this._moviesContainer = moviesContainer;
     this._renderedMoviesCount = MOVIES_COUNT_PER_STEP;
+    this._moviePresenter = {};
 
     this._emptyMoviesListComponent = new MainMoviesListView(`There are no movies in our database`, false, true);
     this._mainMoviesListComponent = new MainMoviesListView(`All movies. Upcoming`, true);
@@ -30,6 +31,7 @@ export default class MoviesList {
   _renderMovie(movieListElement, movie) {
     const moviePresenter = new Movie(movieListElement);
     moviePresenter.init(movie);
+    this._moviePresenter[movie.id] = moviePresenter;
   }
 
   _renderMovies(from, to, container) {
@@ -76,7 +78,11 @@ export default class MoviesList {
   }
 
   _clearMainMovieList() {
-    this._mainMoviesListComponent.clearMoviesList();
+    Object
+      .values(this._moviePresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._moviePresenter = {};
+
     this._renderedMoviesCount = MOVIES_COUNT_PER_STEP;
   }
 

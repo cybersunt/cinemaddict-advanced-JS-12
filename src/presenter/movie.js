@@ -16,6 +16,9 @@ export default class Movie {
   init(movie) {
     this._movie = movie;
 
+    const prevMovieCardComponent = this._movieCardComponent;
+    const prevMovieCardDetailsComponent = this._movieCardDetailsComponent;
+
     this._movieCardComponent = new MovieCardView(movie);
     this._movieCardDetailsComponent = new MovieCardDetailsView(movie);
 
@@ -23,8 +26,24 @@ export default class Movie {
       this._handleMovieCardClick();
     });
 
-    render(this._movieListElementContainer, this._movieCardComponent, RenderPosition.BEFOREEND);
+    if (prevMovieCardComponent === null || prevMovieCardDetailsComponent === null) {
+      render(this._movieListElementContainer, this._movieCardComponent, RenderPosition.BEFOREEND);
+      return;
+    }
+
+    if (this._movieListElementContainer.contains(prevMovieCardComponent.getElement())) {
+      render(this._bodyElement, prevMovieCardDetailsComponent, RenderPosition.BEFOREEND);
+    }
+
+    remove(prevMovieCardComponent);
+    remove(prevMovieCardDetailsComponent);
   }
+
+  destroy() {
+    remove(this._movieCardComponent);
+    remove(this._movieCardDetailsComponent);
+  }
+
   _showMovieCardDetails() {
     render(this._bodyElement, this._movieCardDetailsComponent, RenderPosition.BEFOREEND);
   }
