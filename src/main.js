@@ -17,7 +17,7 @@ const siteFooterElement = document.querySelector(`.footer`);
 
 render(siteHeaderElement, new UserInfoView(), RenderPosition.BEFOREEND);
 
-const mainInner = new Board(siteMainElement, filters);
+export const mainInner = new Board(siteMainElement, filters);
 mainInner.init(movies);
 render(siteFooterElement, new MovieStatsView(movies), RenderPosition.BEFOREEND);
 
