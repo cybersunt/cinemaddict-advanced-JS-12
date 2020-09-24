@@ -16,6 +16,8 @@ export default class Movie {
 
     this._handleMovieCardClick = this._handleMovieCardClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
+    this._enterKeyDownHandler = this._enterKeyDownHandler.bind(this);
+    this._handleFormSubmit = this._handleFormSubmit.bind(this);
   }
 
   init(movie) {
@@ -97,6 +99,10 @@ export default class Movie {
     remove(this._movieCardDetailsComponent);
   }
 
+  _handleFormSubmit(movie) {
+    this._changeData(movie);
+  }
+
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
@@ -104,6 +110,14 @@ export default class Movie {
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
     }
   }
+
+  _enterKeyDownHandler(evt) {
+    const textarea = this._movieCardDetailsComponent.getElement().querySelector(`.film-details__comment-input`);
+    if (evt.key === `Enter` && document.activeElement === textarea) {
+      this._movieCardDetailsComponent.setFormSubmitHandler(this._handleFormSubmit());
+    }
+  }
+
   _handleMovieCardClick() {
     this._showMovieCardDetails();
     this._movieCardDetailsComponent.setButtonCloseClickHandler(()=> {
@@ -113,5 +127,6 @@ export default class Movie {
     this._movieCardDetailsComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._movieCardDetailsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
+    document.addEventListener(`keydown`, this._enterKeyDownHandler);
   }
 }

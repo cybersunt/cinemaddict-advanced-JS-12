@@ -88,7 +88,7 @@ const createMovieCardDetailsCommentsListTemplate = (comments) => {
 const createMovieCardDetailsEmojiListTemplate = () => {
   const content = EMOJI.map((emoji) =>
     `<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emoji}" value="${emoji}">
-        <label class="film-details__emoji-label" for="emoji-smile">
+        <label class="film-details__emoji-label" for="emoji-${emoji}">
           <img src="${getPictureUrl(`emoji`, emoji)}.png" width="30" height="30" alt="emoji">
           </label>`
   ).join(``);
@@ -205,6 +205,8 @@ export default class MovieCardDetailsView extends Abstract {
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
 
     this._buttonCloseClickHandler = this._buttonCloseClickHandler.bind(this);
+    this._textareaKeydownHandler = this._textareaKeydownHandler.bind(this);
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
   }
   getTemplate() {
     return createMovieCardDetailsTemplate(this._movie);
@@ -242,8 +244,28 @@ export default class MovieCardDetailsView extends Abstract {
   _buttonCloseClickHandler() {
     this._callback.buttonCloseClick();
   }
+
   setButtonCloseClickHandler(callback) {
     this._callback.buttonCloseClick = callback;
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._buttonCloseClickHandler);
+  }
+
+  _textareaKeydownHandler() {
+    this._callback.textareaKeyDown();
+  }
+
+  setTextareaKeydownHandler(callback) {
+    this._callback.textareaKeyDown = callback;
+    this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`keyup`, this._textareaKeydownHandler);
+  }
+
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit(this._movie);
+  }
+
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector(`form`).addEventListener(`submit`, this._formSubmitHandler);
   }
 }
