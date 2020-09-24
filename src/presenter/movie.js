@@ -109,6 +109,9 @@ export default class Movie {
     this._movieCardDetailsComponent.setButtonCloseClickHandler(()=> {
       this._hideMovieCardDetails();
     });
+    this._movieCardDetailsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._movieCardDetailsComponent.setHistoryClickHandler(this._handleHistoryClick);
+    this._movieCardDetailsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
   }
 }

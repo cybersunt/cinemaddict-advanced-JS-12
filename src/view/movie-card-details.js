@@ -199,11 +199,46 @@ export default class MovieCardDetailsView extends Abstract {
   constructor(movie) {
     super();
     this._movie = movie;
+
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
+    this._historyClickHandler = this._historyClickHandler.bind(this);
+    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
+
     this._buttonCloseClickHandler = this._buttonCloseClickHandler.bind(this);
   }
   getTemplate() {
     return createMovieCardDetailsTemplate(this._movie);
   }
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClick();
+  }
+
+  _historyClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.historyClick();
+  }
+
+  _watchlistClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watchlistClick();
+  }
+
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+    this.getElement().querySelector(`input#favorite`).addEventListener(`change`, this._favoriteClickHandler);
+  }
+
+  setHistoryClickHandler(callback) {
+    this._callback.historyClick = callback;
+    this.getElement().querySelector(`input#watched`).addEventListener(`change`, this._historyClickHandler);
+  }
+
+  setWatchlistClickHandler(callback) {
+    this._callback.watchlistClick = callback;
+    this.getElement().querySelector(`input#watchlist`).addEventListener(`change`, this._watchlistClickHandler);
+  }
+
   _buttonCloseClickHandler() {
     this._callback.buttonCloseClick();
   }
