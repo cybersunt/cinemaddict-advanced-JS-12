@@ -1,6 +1,6 @@
 import {EMOJI} from "../const";
 import {getCommentDate, getPictureUrl, getReleaseDate, getRuntimeInHours, getStringFromArray} from "../utils/movie";
-import Abstract from "./abstract";
+import Smart from "./smart";
 
 const createMovieCardDetailsInfoHeadTemplate = ({title, originalTitle, rating}) => {
 
@@ -195,7 +195,7 @@ const createMovieCardDetailsTemplate = (movie)=> {
   );
 };
 
-export default class MovieCardDetailsView extends Abstract {
+export default class MovieCardDetailsView extends Smart {
   constructor(movie) {
     super();
     this._movie = movie;
