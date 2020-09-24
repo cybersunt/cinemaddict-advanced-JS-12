@@ -11,14 +11,10 @@ export default class Board {
   constructor(boardContainer, filters) {
     this._boardContainer = boardContainer;
 
-    this._listMovies = null;
-    this._sourcedListMovies = null;
-
     this._siteMenuComponent = new SiteMenuView(filters);
     this._sortComponent = new SortView();
     this._moviesComponent = new MoviesView();
-
-    this._moviesListPresenter = new MoviesList(this._moviesComponent, this._handleMovieChange);
+    this._moviesListPresenter = new MoviesList(this._moviesComponent);
     this._currentSortType = SortType.DEFAULT;
 
     this._handleMovieChange = this._handleMovieChange.bind(this);
@@ -27,13 +23,11 @@ export default class Board {
   }
   init(listMovies) {
     this._listMovies = listMovies.slice();
-
     this._sourcedListMovies = listMovies.slice();
     this._renderBoard();
   }
 
   _handleMovieChange(updatedMovie) {
-    console.log(updatedMovie)
     this._listMovies = updateItem(this._listMovies, updatedMovie);
     this._sourcedListMovies = updateItem(this._sourcedListMovies, updatedMovie);
     this._moviesListPresenter.movieChange(updatedMovie);
@@ -75,7 +69,7 @@ export default class Board {
   }
 
   _renderMoviesList() {
-    this._moviesListPresenter.init(this._listMovies);
+    this._moviesListPresenter.init(this._listMovies, this._handleMovieChange);
   }
 
   _renderBoard() {

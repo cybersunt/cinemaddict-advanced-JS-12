@@ -11,8 +11,8 @@ export default class Movie {
     this._changeData = changeData;
 
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
-    // this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
-    // this._handleHistoryClick = this._handleHistoryClick.bind(this);
+    this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
+    this._handleHistoryClick = this._handleHistoryClick.bind(this);
 
     this._handleMovieCardClick = this._handleMovieCardClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
@@ -28,6 +28,8 @@ export default class Movie {
     this._movieCardDetailsComponent = new MovieCardDetailsView(movie);
 
     this._movieCardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._movieCardComponent.setHistoryClickHandler(this._handleHistoryClick);
+    this._movieCardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
 
     this._movieCardComponent.setMovieCardClickHandler(() => {
       this._handleMovieCardClick();
@@ -58,6 +60,30 @@ export default class Movie {
         this._movie,
         {
           isFavorite: !this._movie.isFavorite
+        }
+      )
+    );
+  }
+
+  _handleHistoryClick() {
+    this._changeData(
+      Object.assign(
+        {},
+        this._movie,
+        {
+          isHistory: !this._movie.isHistory
+        }
+      )
+    );
+  }
+
+  _handleWatchlistClick() {
+    this._changeData(
+      Object.assign(
+        {},
+        this._movie,
+        {
+          isWatchlist: !this._movie.isWatchlist
         }
       )
     );

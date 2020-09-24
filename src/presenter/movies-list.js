@@ -8,11 +8,10 @@ const MOVIES_COUNT_PER_STEP = 5;
 const MOVIES_EXTRA_COUNT = 2;
 
 export default class MoviesList {
-  constructor(moviesContainer, changeData) {
+  constructor(moviesContainer) {
     this._moviesContainer = moviesContainer;
     this._renderedMoviesCount = MOVIES_COUNT_PER_STEP;
     this._moviePresenter = {};
-    this._changeData = changeData;
 
     this._emptyMoviesListComponent = new MainMoviesListView(`There are no movies in our database`, false, true);
     this._mainMoviesListComponent = new MainMoviesListView(`All movies. Upcoming`, true);
@@ -23,8 +22,9 @@ export default class MoviesList {
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
   }
 
-  init(listMovies) {
+  init(listMovies, changeData) {
     this._listMovies = listMovies;
+    this._changeData = changeData;
     this._renderMainMovieList();
     this._renderExtraMoviesList();
   }
