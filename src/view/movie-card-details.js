@@ -206,6 +206,8 @@ export default class MovieCardDetailsView extends Smart {
 
     this._buttonCloseClickHandler = this._buttonCloseClickHandler.bind(this);
     this._textareaKeydownHandler = this._textareaKeydownHandler.bind(this);
+
+    this._setIconHandler();
   }
 
   getTemplate() {
@@ -257,5 +259,18 @@ export default class MovieCardDetailsView extends Smart {
   setTextareaKeydownHandler(callback) {
     this._callback.textareaKeyDown = callback;
     this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`keyup`, this._textareaKeydownHandler);
+  }
+
+  _getIconForNewComment(icon) {
+    return `<img src="images/emoji/${icon}.png" width="55" height="55" alt="emoji-${icon}">`;
+  }
+
+  _setIconHandler() {
+    const iconContainer = this.getElement().querySelector(`.film-details__add-emoji-label`);
+    this.getElement().querySelector(`.film-details__emoji-list`).addEventListener(`click`, (evt) => {
+      if (evt.target.tagName === `INPUT`) {
+        iconContainer.innerHTML = this._getIconForNewComment(evt.target.value);
+      }
+    });
   }
 }

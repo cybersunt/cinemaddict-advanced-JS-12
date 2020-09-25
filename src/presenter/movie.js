@@ -117,7 +117,8 @@ export default class Movie {
   _enterKeyDownHandler(evt) {
     const textarea = this._movieCardDetailsComponent.getElement().querySelector(`.film-details__comment-input`);
     if (evt.key === `Enter` && document.activeElement === textarea) {
-      this._handleFormSubmit();
+      // отправляем новый комментарий
+      // this._handleFormSubmit();
     }
   }
 
