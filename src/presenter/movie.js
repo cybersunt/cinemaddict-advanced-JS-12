@@ -109,6 +109,7 @@ export default class Movie {
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
+      this._movieCardDetailsComponent.reset(this._movie);
       this._hideMovieCardDetails();
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
     }

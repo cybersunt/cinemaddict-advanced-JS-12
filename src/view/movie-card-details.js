@@ -215,6 +215,12 @@ export default class MovieCardDetailsView extends Smart {
   getTemplate() {
     return createMovieCardDetailsTemplate(this._movie);
   }
+  reset(movie) {
+    // this.updateData(
+    //    MovieOpen.parseMovieToData(movie)
+    // );
+  }
+
   restoreHandlers() {
     this._setNewCommnetHandler();
     this.setTextareaKeydownHandler(this._callback.textareaKeyDown);
