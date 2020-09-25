@@ -206,8 +206,8 @@ export default class MovieCardDetailsView extends Smart {
 
     this._buttonCloseClickHandler = this._buttonCloseClickHandler.bind(this);
     this._textareaKeydownHandler = this._textareaKeydownHandler.bind(this);
-    this._formSubmitHandler = this._formSubmitHandler.bind(this);
   }
+
   getTemplate() {
     return createMovieCardDetailsTemplate(this._movie);
   }
@@ -257,15 +257,5 @@ export default class MovieCardDetailsView extends Smart {
   setTextareaKeydownHandler(callback) {
     this._callback.textareaKeyDown = callback;
     this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`keyup`, this._textareaKeydownHandler);
-  }
-
-  _formSubmitHandler(evt) {
-    evt.preventDefault();
-    this._callback.formSubmit(this._movie);
-  }
-
-  setFormSubmitHandler(callback) {
-    this._callback.formSubmit = callback;
-    this.getElement().querySelector(`form`).addEventListener(`submit`, this._formSubmitHandler);
   }
 }

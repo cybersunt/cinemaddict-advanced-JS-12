@@ -47,7 +47,7 @@ export default class Movie {
     }
 
     replace(this._movieCardComponent, prevMovieCardComponent);
-    replace(this._movieCardDetailsComponent, prevMovieCardDetailsComponent);
+    // replace(this._movieCardDetailsComponent, prevMovieCardDetailsComponent);
 
     remove(prevMovieCardComponent);
     remove(prevMovieCardDetailsComponent);
@@ -117,7 +117,7 @@ export default class Movie {
   _enterKeyDownHandler(evt) {
     const textarea = this._movieCardDetailsComponent.getElement().querySelector(`.film-details__comment-input`);
     if (evt.key === `Enter` && document.activeElement === textarea) {
-      this._movieCardDetailsComponent.setFormSubmitHandler(this._handleFormSubmit());
+      this._handleFormSubmit();
     }
   }
 
