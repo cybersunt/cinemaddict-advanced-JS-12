@@ -1,6 +1,6 @@
 import MovieCardView from "../view/movie-card";
 import MovieCardDetailsView from "../view/movie-card-details";
-import {remove, render, RenderPosition} from "../utils/render";
+import {remove, render, RenderPosition, replace} from "../utils/render";
 
 export default class Movie {
   constructor(movieListContainer, changeData) {
@@ -45,6 +45,9 @@ export default class Movie {
     if (this._movieListElementContainer.contains(prevMovieCardComponent.getElement())) {
       render(this._bodyElement, prevMovieCardDetailsComponent, RenderPosition.BEFOREEND);
     }
+
+    replace(this._movieCardComponent, prevMovieCardComponent);
+    replace(this._movieCardDetailsComponent, prevMovieCardDetailsComponent);
 
     remove(prevMovieCardComponent);
     remove(prevMovieCardDetailsComponent);

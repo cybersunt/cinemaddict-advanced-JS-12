@@ -11,7 +11,9 @@ export default class MoviesList {
   constructor(moviesContainer) {
     this._moviesContainer = moviesContainer;
     this._renderedMoviesCount = MOVIES_COUNT_PER_STEP;
-    this._moviePresenter = {};
+    this._movieMainPresenter = {};
+    this._movieTopRatedPresenter = {};
+    this._movieMostCommentedPresenter = {};
 
     this._emptyMoviesListComponent = new MainMoviesListView(`There are no movies in our database`, false, true);
     this._mainMoviesListComponent = new MainMoviesListView(`All movies. Upcoming`, true);
@@ -30,24 +32,26 @@ export default class MoviesList {
   }
 
   movieChange(updatedMovie) {
-    this._moviePresenter[updatedMovie.id].init(updatedMovie);
+    this._movieMainPresenter[updatedMovie.id].init(updatedMovie);
+    this._movieTopRatedPresenter[updatedMovie.id].init(updatedMovie);
+    this._movieMostCommentedPresenter[updatedMovie.id].init(updatedMovie);
   }
 
-  _renderMovie(movieListElement, movie) {
+  _renderMovie(movieListElement, movie, presenterStore) {
     const moviePresenter = new Movie(movieListElement, this._changeData);
     moviePresenter.init(movie);
-    this._moviePresenter[movie.id] = moviePresenter;
+    presenterStore[movie.id] = moviePresenter;
   }
 
-  _renderMovies(from, to, container) {
+  _renderMovies(from, to, container, presenterStore) {
     this._listMovies
       .slice(from, to)
-      .forEach((listMovie) => this._renderMovie(container.getElement(), listMovie));
+      .forEach((listMovie) => this._renderMovie(container.getElement(), listMovie, presenterStore));
   }
 
-  _renderMovieList(component, countMovies) {
+  _renderMovieList(component, countMovies, presenterStore) {
     render(this._moviesContainer, component, RenderPosition.BEFOREEND);
-    this._renderMovies(0, Math.min(this._listMovies.length, countMovies), component);
+    this._renderMovies(0, Math.min(this._listMovies.length, countMovies), component, presenterStore);
 
     if (this._listMovies.length > countMovies && countMovies > MOVIES_EXTRA_COUNT) {
       render(this._moviesContainer, component, RenderPosition.AFTERBEGIN);
@@ -74,19 +78,19 @@ export default class MoviesList {
       render(this._moviesContainer, this._emptyMoviesListComponent, RenderPosition.AFTERBEGIN);
       return;
     }
-    this._renderMovieList(this._mainMoviesListComponent, MOVIES_COUNT_PER_STEP);
+    this._renderMovieList(this._mainMoviesListComponent, MOVIES_COUNT_PER_STEP, this._movieMainPresenter);
   }
 
   _renderExtraMoviesList() {
-    this._renderMovieList(this._topRatedMoviesListComponent, MOVIES_EXTRA_COUNT);
-    this._renderMovieList(this._mostCommentedMoviesListComponent, MOVIES_EXTRA_COUNT);
+    this._renderMovieList(this._topRatedMoviesListComponent, MOVIES_EXTRA_COUNT, this._movieTopRatedPresenter);
+    this._renderMovieList(this._mostCommentedMoviesListComponent, MOVIES_EXTRA_COUNT, this._movieMostCommentedPresenter);
   }
 
   _clearMainMovieList() {
     Object
-      .values(this._moviePresenter)
+      .values(this._movieMainPresenter)
       .forEach((presenter) => presenter.destroy());
-    this._moviePresenter = {};
+    this._movieMainPresenter = {};
 
     this._renderedMoviesCount = MOVIES_COUNT_PER_STEP;
   }
