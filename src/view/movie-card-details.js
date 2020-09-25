@@ -207,12 +207,23 @@ export default class MovieCardDetailsView extends Smart {
     this._buttonCloseClickHandler = this._buttonCloseClickHandler.bind(this);
     this._textareaKeydownHandler = this._textareaKeydownHandler.bind(this);
 
-    this._setIconHandler();
+    this._setNewCommentHandler = this._setNewCommentHandler.bind(this);
+
+    this._setNewCommentHandler();
   }
 
   getTemplate() {
     return createMovieCardDetailsTemplate(this._movie);
   }
+  restoreHandlers() {
+    this._setNewCommnetHandler();
+    this.setTextareaKeydownHandler(this._callback.textareaKeyDown);
+    this.setButtonCloseClickHandler(this._callback.buttonCloseClick);
+    this.setFavoriteClickHandler(this._callback.favoriteClick);
+    this.setHistoryClickHandler(this._callback.historyClick);
+    this.setWatchlistClickHandler(this._callback.watchlistClick);
+  }
+
   _favoriteClickHandler(evt) {
     evt.preventDefault();
     this._callback.favoriteClick();
@@ -265,12 +276,23 @@ export default class MovieCardDetailsView extends Smart {
     return `<img src="images/emoji/${icon}.png" width="55" height="55" alt="emoji-${icon}">`;
   }
 
-  _setIconHandler() {
+  _commentInputHandler(evt) {
+    evt.preventDefault();
+    // this.updateData({
+    //   message: evt.target.value
+    // }, true);
+  }
+
+  _setNewCommentHandler() {
     const iconContainer = this.getElement().querySelector(`.film-details__add-emoji-label`);
     this.getElement().querySelector(`.film-details__emoji-list`).addEventListener(`click`, (evt) => {
       if (evt.target.tagName === `INPUT`) {
+        evt.preventDefault();
         iconContainer.innerHTML = this._getIconForNewComment(evt.target.value);
       }
     });
+    this.getElement()
+      .querySelector(`.film-details__comment-input`)
+      .addEventListener(`input`, this._commentInputHandler);
   }
 }
