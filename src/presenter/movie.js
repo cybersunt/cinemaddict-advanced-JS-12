@@ -2,13 +2,22 @@ import MovieCardView from "../view/movie-card";
 import MovieCardDetailsView from "../view/movie-card-details";
 import {remove, render, RenderPosition, replace} from "../utils/render";
 
+const Mode = {
+  DEFAULT: `DEFAULT`,
+  OPENED: `OPENED`
+};
+
 export default class Movie {
-  constructor(movieListContainer, changeData) {
+  constructor(movieListContainer, changeData, changeMode) {
     this._bodyElement = document.querySelector(`body`);
     this._movieListElementContainer = movieListContainer.querySelector(`.films-list__container`);
+
     this._movieCardComponent = null;
     this._movieCardDetailsComponent = null;
+    this._mode = Mode.DEFAULT;
+
     this._changeData = changeData;
+    this._changeMode = changeMode;
 
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
@@ -46,8 +55,13 @@ export default class Movie {
       render(this._bodyElement, prevMovieCardDetailsComponent, RenderPosition.BEFOREEND);
     }
 
-    replace(this._movieCardComponent, prevMovieCardComponent);
-    // replace(this._movieCardDetailsComponent, prevMovieCardDetailsComponent);
+    if (this._mode === Mode.DEFAULT) {
+      replace(this._movieCardComponent, prevMovieCardComponent);
+    }
+
+    if (this._mode === Mode.OPENED) {
+      replace(this._movieCardDetailsComponent, prevMovieCardDetailsComponent);
+    }
 
     remove(prevMovieCardComponent);
     remove(prevMovieCardDetailsComponent);
@@ -56,6 +70,12 @@ export default class Movie {
   destroy() {
     remove(this._movieCardComponent);
     remove(this._movieCardDetailsComponent);
+  }
+
+  resetView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._hideMovieCardDetails();
+    }
   }
 
   _handleFavoriteClick() {
@@ -83,12 +103,12 @@ export default class Movie {
   }
 
   _handleWatchlistClick() {
-    this._changeData(
-      Object.assign(
-        {},
-        this._movie,
-        {
-          isWatchlist: !this._movie.isWatchlist
+      this._changeData(
+        Object.assign(
+          {},
+           this._movie,
+          {
+           isWatchlist: !this._movie.isWatchlist
         }
       )
     );
@@ -96,10 +116,13 @@ export default class Movie {
 
   _showMovieCardDetails() {
     render(this._bodyElement, this._movieCardDetailsComponent, RenderPosition.BEFOREEND);
+    this._changeMode();
+    this._mode = Mode.OPENED;
   }
 
   _hideMovieCardDetails() {
     remove(this._movieCardDetailsComponent);
+    this._mode = Mode.DEFAULT;
   }
 
   _handleFormSubmit(movie) {

@@ -3,8 +3,6 @@ import Movie from "./movie";
 import ShowMoreButtonView from "../view/show-more-button";
 import MainMoviesListView from "../view/main-movies-list";
 import ExtraMoviesListView from "../view/extra-movies-list";
-import {SortType} from "../const";
-import {sortMovieDate, sortMovieRating} from "../utils/movie";
 
 const MOVIES_COUNT_PER_STEP = 5;
 const MOVIES_EXTRA_COUNT = 2;
@@ -45,8 +43,20 @@ export default class MoviesList {
     }
   }
 
+  _handleModeChange() {
+    Object
+      .values(this._movieMainPresenter)
+      .forEach((presenter) => presenter.resetView());
+    Object
+      .values(this._movieTopRatedPresenter)
+      .forEach((presenter) => presenter.resetView());
+    Object
+      .values(this._movieMostCommentedPresenter)
+      .forEach((presenter) => presenter.resetView());
+  }
+
   _renderMovie(movieListElement, movie, presenterStore) {
-    const moviePresenter = new Movie(movieListElement, this._changeData);
+    const moviePresenter = new Movie(movieListElement, this._changeData, this._handleModeChange);
     moviePresenter.init(movie);
     presenterStore[movie.id] = moviePresenter;
   }

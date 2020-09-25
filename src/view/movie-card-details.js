@@ -289,13 +289,17 @@ export default class MovieCardDetailsView extends Smart {
     // }, true);
   }
 
+
+
   _setNewCommentHandler() {
     const iconContainer = this.getElement().querySelector(`.film-details__add-emoji-label`);
-    this.getElement().querySelector(`.film-details__emoji-list`).addEventListener(`click`, (evt) => {
-      if (evt.target.tagName === `INPUT`) {
-        evt.preventDefault();
-        iconContainer.innerHTML = this._getIconForNewComment(evt.target.value);
-      }
+    this.getElement().querySelectorAll(`.film-details__emoji-list`).forEach((item) => {
+      item.addEventListener(`click`, (evt) => {
+        if (evt.target.tagName === `INPUT`) {
+          evt.preventDefault();
+          iconContainer.innerHTML = this._getIconForNewComment(evt.target.value);
+        }
+      });
     });
     this.getElement()
       .querySelector(`.film-details__comment-input`)
