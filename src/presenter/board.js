@@ -8,8 +8,9 @@ import {sortMovieDate, sortMovieRating} from "../utils/movie";
 import {updateItem} from "../utils/common";
 
 export default class Board {
-  constructor(boardContainer, filters) {
+  constructor(boardContainer, filters, moviesModel) {
     this._boardContainer = boardContainer;
+    this._moviesModel = moviesModel;
 
     this._siteMenuComponent = new SiteMenuView(filters);
     this._sortComponent = new SortView();
@@ -25,6 +26,10 @@ export default class Board {
     this._listMovies = listMovies.slice();
     this._sourcedListMovies = listMovies.slice();
     this._renderBoard();
+  }
+
+  _getMovies() {
+    return this._moviesModel.getMovies();
   }
 
   _handleMovieChange(updatedMovie) {
