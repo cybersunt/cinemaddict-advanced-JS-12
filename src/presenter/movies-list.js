@@ -22,6 +22,7 @@ export default class MoviesList {
     this._showMoreButtonComponent = new ShowMoreButtonView();
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
+    this._handleModeChange = this._handleModeChange.bind(this);
   }
 
   init(listMovies, changeData) {
@@ -31,28 +32,24 @@ export default class MoviesList {
     this._renderExtraMoviesList();
   }
 
-  movieChange(updatedMovie) {
-    if (this._movieMainPresenter[updatedMovie.id]) {
-      this._movieMainPresenter[updatedMovie.id].init(updatedMovie);
-    }
-    if (this._movieTopRatedPresenter[updatedMovie.id]) {
-      this._movieTopRatedPresenter[updatedMovie.id].init(updatedMovie);
-    }
-    if (this._movieMostCommentedPresenter[updatedMovie.id]) {
-      this._movieMostCommentedPresenter[updatedMovie.id].init(updatedMovie);
+  _updatePresenter(presenter, updatedMovie) {
+    if (presenter[updatedMovie.id]) {
+      presenter[updatedMovie.id].init(updatedMovie);
     }
   }
 
+  movieChange(updatedMovie) {
+    this._updatePresenter(this._movieMainPresenter, updatedMovie);
+    this._updatePresenter(this._movieTopRatedPresenter, updatedMovie);
+    this._updatePresenter(this._movieMostCommentedPresenter, updatedMovie);
+  }
+
   _handleModeChange() {
-    Object
-      .values(this._movieMainPresenter)
-      .forEach((presenter) => presenter.resetView());
-    Object
-      .values(this._movieTopRatedPresenter)
-      .forEach((presenter) => presenter.resetView());
-    Object
-      .values(this._movieMostCommentedPresenter)
-      .forEach((presenter) => presenter.resetView());
+    [
+      ...Object.values(this._movieMainPresenter),
+      ...Object.values(this._movieTopRatedPresenter),
+      ...Object.values(this._movieMostCommentedPresenter)
+    ].forEach((presenter) => presenter.resetView());
   }
 
   _renderMovie(movieListElement, movie, presenterStore) {

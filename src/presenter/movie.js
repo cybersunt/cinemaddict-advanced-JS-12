@@ -55,9 +55,7 @@ export default class Movie {
       render(this._bodyElement, prevMovieCardDetailsComponent, RenderPosition.BEFOREEND);
     }
 
-    if (this._mode === Mode.DEFAULT) {
-      replace(this._movieCardComponent, prevMovieCardComponent);
-    }
+    replace(this._movieCardComponent, prevMovieCardComponent);
 
     if (this._mode === Mode.OPENED) {
       replace(this._movieCardDetailsComponent, prevMovieCardDetailsComponent);
