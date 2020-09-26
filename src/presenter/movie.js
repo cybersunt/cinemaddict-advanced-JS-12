@@ -78,37 +78,34 @@ export default class Movie {
 
   _handleFavoriteClick() {
     this._changeData(
-      Object.assign(
-        {},
-        this._movie,
-        {
-          isFavorite: !this._movie.isFavorite
-        }
-      )
+        Object.assign(
+            {},
+            this._movie,
+            {
+              isFavorite: !this._movie.isFavorite
+            })
     );
   }
 
   _handleHistoryClick() {
     this._changeData(
-      Object.assign(
-        {},
-        this._movie,
-        {
-          isHistory: !this._movie.isHistory
-        }
-      )
+        Object.assign(
+            {},
+            this._movie,
+            {
+              isHistory: !this._movie.isHistory
+            })
     );
   }
 
   _handleWatchlistClick() {
-      this._changeData(
+    this._changeData(
         Object.assign(
-          {},
-           this._movie,
-          {
-           isWatchlist: !this._movie.isWatchlist
-        }
-      )
+            {},
+            this._movie,
+            {
+              isWatchlist: !this._movie.isWatchlist
+            })
     );
   }
 

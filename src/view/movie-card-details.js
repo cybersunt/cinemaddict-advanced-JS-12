@@ -215,7 +215,7 @@ export default class MovieCardDetailsView extends Smart {
   getTemplate() {
     return createMovieCardDetailsTemplate(this._movie);
   }
-  reset(movie) {
+  reset() {
     // this.updateData(
     //    MovieOpen.parseMovieToData(movie)
     // );
@@ -288,8 +288,6 @@ export default class MovieCardDetailsView extends Smart {
     //   message: evt.target.value
     // }, true);
   }
-
-
 
   _setNewCommentHandler() {
     const iconContainer = this.getElement().querySelector(`.film-details__add-emoji-label`);
