@@ -1,5 +1,3 @@
-export const ONE_HOUR = 60;
-
 export const SortType = {
   DEFAULT: `default`,
   DATE: `date`,
@@ -14,8 +12,8 @@ export const movieDetailsData = {
   ACTORS_MIN: 3,
   RELEASE_DATE_START: `01/01/1970`,
   RELEASE_DATE_END: `01/08/2020`,
-  RUNTIME_MIN: 90,
-  RUNTIME_MAX: 180,
+  RUNTIME_MIN: 900000,
+  RUNTIME_MAX: 18000000,
   GENRES_MIN: 1,
   GENRES_MAX: 4,
   AGE_LIMITATIONS_MIN: 0,
