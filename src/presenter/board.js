@@ -5,21 +5,19 @@ import {render, RenderPosition} from "../utils/render";
 import MoviesList from "./movies-list";
 import {SortType} from "../const";
 import {sortMovieDate, sortMovieRating} from "../utils/movie";
+import {updateItem} from "../utils/common";
 
 export default class Board {
   constructor(boardContainer, filters) {
     this._boardContainer = boardContainer;
 
-    this._listMovies = null;
-    this._sourcedListMovies = null;
-
     this._siteMenuComponent = new SiteMenuView(filters);
     this._sortComponent = new SortView();
     this._moviesComponent = new MoviesView();
-
     this._moviesListPresenter = new MoviesList(this._moviesComponent);
     this._currentSortType = SortType.DEFAULT;
 
+    this._handleMovieChange = this._handleMovieChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
   }
@@ -27,6 +25,12 @@ export default class Board {
     this._listMovies = listMovies.slice();
     this._sourcedListMovies = listMovies.slice();
     this._renderBoard();
+  }
+
+  _handleMovieChange(updatedMovie) {
+    this._listMovies = updateItem(this._listMovies, updatedMovie);
+    this._sourcedListMovies = updateItem(this._sourcedListMovies, updatedMovie);
+    this._moviesListPresenter.movieChange(updatedMovie);
   }
 
   _handleSortTypeChange(sortType) {
@@ -65,7 +69,7 @@ export default class Board {
   }
 
   _renderMoviesList() {
-    this._moviesListPresenter.init(this._listMovies);
+    this._moviesListPresenter.init(this._listMovies, this._handleMovieChange);
   }
 
   _renderBoard() {
