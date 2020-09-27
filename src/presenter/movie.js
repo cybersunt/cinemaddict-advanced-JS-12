@@ -27,7 +27,6 @@ export default class Movie {
     this._handleMovieCardClick = this._handleMovieCardClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._enterKeyDownHandler = this._enterKeyDownHandler.bind(this);
-    this._handleFormSubmit = this._handleFormSubmit.bind(this);
   }
 
   init(movie) {
@@ -42,6 +41,15 @@ export default class Movie {
     this._movieCardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._movieCardComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._movieCardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+
+    this._movieCardDetailsComponent.setButtonCloseClickHandler(()=> {
+      this._hideMovieCardDetails();
+    });
+    this._movieCardDetailsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._movieCardDetailsComponent.setHistoryClickHandler(this._handleHistoryClick);
+    this._movieCardDetailsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+    document.addEventListener(`keydown`, this._escKeyDownHandler);
+    document.addEventListener(`keydown`, this._enterKeyDownHandler);
 
     this._movieCardComponent.setMovieCardClickHandler(() => {
       this._handleMovieCardClick();
@@ -80,7 +88,7 @@ export default class Movie {
   _handleFavoriteClick() {
     this._changeData(
         UserAction.UPDATE_MOVIE,
-        UpdateType.MAJOR,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._movie,
@@ -93,7 +101,7 @@ export default class Movie {
   _handleHistoryClick() {
     this._changeData(
         UserAction.UPDATE_MOVIE,
-        UpdateType.MAJOR,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._movie,
@@ -106,7 +114,7 @@ export default class Movie {
   _handleWatchlistClick() {
     this._changeData(
         UserAction.UPDATE_MOVIE,
-        UpdateType.MAJOR,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._movie,
@@ -127,14 +135,6 @@ export default class Movie {
     this._mode = Mode.DEFAULT;
   }
 
-  _handleFormSubmit(movie) {
-    this._changeData(
-        UserAction.UPDATE_MOVIE,
-        UpdateType.MAJOR,
-        movie
-    );
-  }
-
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
@@ -148,19 +148,10 @@ export default class Movie {
     const textarea = this._movieCardDetailsComponent.getElement().querySelector(`.film-details__comment-input`);
     if (evt.key === `Enter` && document.activeElement === textarea) {
       // отправляем новый комментарий
-      // this._handleFormSubmit();
     }
   }
 
   _handleMovieCardClick() {
     this._showMovieCardDetails();
-    this._movieCardDetailsComponent.setButtonCloseClickHandler(()=> {
-      this._hideMovieCardDetails();
-    });
-    this._movieCardDetailsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
-    this._movieCardDetailsComponent.setHistoryClickHandler(this._handleHistoryClick);
-    this._movieCardDetailsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
-    document.addEventListener(`keydown`, this._escKeyDownHandler);
-    document.addEventListener(`keydown`, this._enterKeyDownHandler);
   }
 }

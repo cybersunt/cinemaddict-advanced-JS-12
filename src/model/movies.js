@@ -15,7 +15,7 @@ export default class MoviesModel extends Observer {
   }
 
   updateMovie(updateType, update) {
-    const index = this._movie.findIndex((movie) => movie.id === update.id);
+    const index = this._movies.findIndex((movie) => movie.id === update.id);
 
     if (index === -1) {
       throw new Error(`Can't update unexisting movie`);

@@ -33,10 +33,10 @@ export default class Board {
   _getMovies() {
     switch (this._currentSortType) {
       case SortType.DATE:
-        this._moviesModel.getMovies().slice().sort(sortMovieDate);
+        return  this._moviesModel.getMovies().slice().sort(sortMovieDate);
         break;
       case SortType.RATING:
-        this._moviesModel.getMovies().slice().sort(sortMovieRating);
+        return this._moviesModel.getMovies().slice().sort(sortMovieRating);
         break;
     }
     return this._moviesModel.getMovies();
@@ -62,8 +62,7 @@ export default class Board {
         this._moviesListPresenter.movieChange(data);
         break;
       case UpdateType.MAJOR:
-        this._updateBoard();
-        this._moviesListPresenter.updateMainMovieList(this._getMovies(), {resetRenderedMovieCount: true});
+        this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
         break;
     }
   }
@@ -73,8 +72,7 @@ export default class Board {
       return;
     }
     this._currentSortType = sortType;
-    this._updateBoard({resetSortType: true});
-    this._moviesListPresenter.updateMainMovieList(this._getMovies(), {resetRenderedMovieCount: true});
+    this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
   }
 
   _renderSiteMenu() {
@@ -97,12 +95,6 @@ export default class Board {
 
   _renderMoviesList() {
     this._moviesListPresenter.init(this._getMovies().slice(), this._handleViewAction);
-  }
-
-  _updateBoard({resetSortType = false} = {}) {
-    if (resetSortType) {
-      this._currentSortType = SortType.DEFAULT;
-    }
   }
 
   _renderBoard() {

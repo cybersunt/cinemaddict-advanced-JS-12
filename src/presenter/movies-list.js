@@ -112,7 +112,7 @@ export default class MoviesList {
     this._renderMovieList(this._mostCommentedMoviesListComponent, MOVIES_EXTRA_COUNT, this._movieMostCommentedPresenter);
   }
 
-  _clearMainMovieList({resetRenderedMovieCount = false} = {}) {
+  _clearMainMovieList(resetRenderedMovieCount = false) {
     Object
       .values(this._movieMainPresenter)
       .forEach((presenter) => presenter.destroy());
