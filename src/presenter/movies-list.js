@@ -3,7 +3,6 @@ import Movie from "./movie";
 import ShowMoreButtonView from "../view/show-more-button";
 import MainMoviesListView from "../view/main-movies-list";
 import ExtraMoviesListView from "../view/extra-movies-list";
-import {SortType} from "../const";
 
 const MOVIES_COUNT_PER_STEP = 5;
 const MOVIES_EXTRA_COUNT = 2;

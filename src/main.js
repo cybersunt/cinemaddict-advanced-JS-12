@@ -5,7 +5,6 @@ import {render, RenderPosition} from "./utils/render";
 import UserInfoView from "./view/user-info";
 import MovieStatsView from "./view/movie-stats";
 import Board from "./presenter/board";
-import Movies from "./model/movies";
 import MoviesModel from "./model/movies";
 
 const MOVIES_COUNT = 22;

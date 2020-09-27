@@ -1,7 +1,7 @@
 import MoviesView from "../view/movies";
 import SortView from "../view/sort";
 import SiteMenuView from "../view/site-menu";
-import {remove, render, RenderPosition} from "../utils/render";
+import {render, RenderPosition} from "../utils/render";
 import MoviesList from "./movies-list";
 import {SortType, UserAction} from "../const";
 import {sortMovieDate, sortMovieRating} from "../utils/movie";
