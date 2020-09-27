@@ -3,6 +3,7 @@ import Movie from "./movie";
 import ShowMoreButtonView from "../view/show-more-button";
 import MainMoviesListView from "../view/main-movies-list";
 import ExtraMoviesListView from "../view/extra-movies-list";
+import {SortType} from "../const";
 
 const MOVIES_COUNT_PER_STEP = 5;
 const MOVIES_EXTRA_COUNT = 2;
@@ -15,11 +16,12 @@ export default class MoviesList {
     this._movieTopRatedPresenter = {};
     this._movieMostCommentedPresenter = {};
 
+    this._showMoreButtonComponent = null;
+
     this._emptyMoviesListComponent = new MainMoviesListView(`There are no movies in our database`, false, true);
     this._mainMoviesListComponent = new MainMoviesListView(`All movies. Upcoming`, true);
     this._topRatedMoviesListComponent = new ExtraMoviesListView(`Top rated`);
     this._mostCommentedMoviesListComponent = new ExtraMoviesListView(`Most commented`);
-    this._showMoreButtonComponent = new ShowMoreButtonView();
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
@@ -67,11 +69,6 @@ export default class MoviesList {
     const movies = this._listMovies.slice(0, Math.min(this._moviesCount, countMovies));
     render(this._moviesContainer, component, RenderPosition.BEFOREEND);
     this._renderMovies(movies, component, presenterStore);
-
-    if (this._moviesCount > countMovies && countMovies > MOVIES_EXTRA_COUNT) {
-      render(this._moviesContainer, component, RenderPosition.AFTERBEGIN);
-      this._renderShowMoreButton();
-    }
   }
 
   _handleShowMoreButtonClick() {
@@ -84,10 +81,14 @@ export default class MoviesList {
       remove(this._showMoreButtonComponent);
     }
   }
-
   _renderShowMoreButton() {
-    render(this._mainMoviesListComponent, this._showMoreButtonComponent, RenderPosition.BEFOREEND);
+    if (this._showMoreButtonComponent !== null) {
+      this._showMoreButtonComponent = null;
+    }
+
+    this._showMoreButtonComponent = new ShowMoreButtonView();
     this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
+    render(this._mainMoviesListComponent, this._showMoreButtonComponent, RenderPosition.BEFOREEND);
   }
 
   _renderMainMovieList() {
@@ -95,7 +96,16 @@ export default class MoviesList {
       render(this._moviesContainer, this._emptyMoviesListComponent, RenderPosition.AFTERBEGIN);
       return;
     }
-    this._renderMovieList(this._mainMoviesListComponent, MOVIES_COUNT_PER_STEP, this._movieMainPresenter);
+
+    const movies = this._listMovies.slice(0, Math.min(this._moviesCount, this._renderedMoviesCount));
+    render(this._moviesContainer, this._mainMoviesListComponent, RenderPosition.BEFOREEND);
+
+    this._renderMovies(movies, this._mainMoviesListComponent, this._movieMainPresenter);
+
+    if (this._moviesCount > this._renderedMoviesCount) {
+      render(this._moviesContainer, this._mainMoviesListComponent, RenderPosition.AFTERBEGIN);
+      this._renderShowMoreButton();
+    }
   }
 
   _renderExtraMoviesList() {
@@ -103,18 +113,25 @@ export default class MoviesList {
     this._renderMovieList(this._mostCommentedMoviesListComponent, MOVIES_EXTRA_COUNT, this._movieMostCommentedPresenter);
   }
 
-  _clearMainMovieList() {
+  _clearMainMovieList({resetRenderedMovieCount = false} = {}) {
     Object
       .values(this._movieMainPresenter)
       .forEach((presenter) => presenter.destroy());
     this._movieMainPresenter = {};
 
-    this._renderedMoviesCount = MOVIES_COUNT_PER_STEP;
+    remove(this._emptyMoviesListComponent);
+    remove(this._showMoreButtonComponent);
+
+    if (resetRenderedMovieCount) {
+      this._renderedMoviesCount = MOVIES_COUNT_PER_STEP;
+    } else {
+      this._renderedMoviesCount = Math.min(this._moviesCount, this._renderedMoviesCount);
+    }
   }
 
-  updateMainMovieList(sortMoviesList) {
+  updateMainMovieList(sortMoviesList, resetRenderedMovieCount) {
     this._listMovies = sortMoviesList;
-    this._clearMainMovieList();
+    this._clearMainMovieList(resetRenderedMovieCount);
     this._renderMainMovieList();
   }
 }
