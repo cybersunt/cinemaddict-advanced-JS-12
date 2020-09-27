@@ -3,9 +3,8 @@ import SortView from "../view/sort";
 import SiteMenuView from "../view/site-menu";
 import {render, RenderPosition} from "../utils/render";
 import MoviesList from "./movies-list";
-import {SortType, UserAction} from "../const";
+import {SortType, UpdateType, UserAction} from "../const";
 import {sortMovieDate, sortMovieRating} from "../utils/movie";
-import {UpdateType} from "../../../taskmanager-12/src/const";
 
 export default class Board {
   constructor(boardContainer, filters, moviesModel) {
@@ -33,11 +32,9 @@ export default class Board {
   _getMovies() {
     switch (this._currentSortType) {
       case SortType.DATE:
-        return  this._moviesModel.getMovies().slice().sort(sortMovieDate);
-        break;
+        return this._moviesModel.getMovies().slice().sort(sortMovieDate);
       case SortType.RATING:
         return this._moviesModel.getMovies().slice().sort(sortMovieRating);
-        break;
     }
     return this._moviesModel.getMovies();
   }
