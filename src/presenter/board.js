@@ -5,7 +5,6 @@ import {render, RenderPosition} from "../utils/render";
 import MoviesList from "./movies-list";
 import {SortType} from "../const";
 import {sortMovieDate, sortMovieRating} from "../utils/movie";
-import {updateItem} from "../utils/common";
 
 export default class Board {
   constructor(boardContainer, filters, moviesModel) {
@@ -22,19 +21,23 @@ export default class Board {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
   }
-  init(listMovies) {
-    this._listMovies = listMovies.slice();
-    this._sourcedListMovies = listMovies.slice();
+  init() {
     this._renderBoard();
   }
 
   _getMovies() {
+    switch (this._currentSortType) {
+      case SortType.DATE:
+        this._moviesModel.getMovies().slice().sort(sortMovieDate);
+        break;
+      case SortType.RATING:
+        this._moviesModel.getMovies().slice().sort(sortMovieRating);
+        break;
+    }
     return this._moviesModel.getMovies();
   }
 
   _handleMovieChange(updatedMovie) {
-    this._listMovies = updateItem(this._listMovies, updatedMovie);
-    this._sourcedListMovies = updateItem(this._sourcedListMovies, updatedMovie);
     this._moviesListPresenter.movieChange(updatedMovie);
   }
 
@@ -42,22 +45,8 @@ export default class Board {
     if (this._currentSortType === sortType) {
       return;
     }
-    this._sortMovies(sortType);
-    this._moviesListPresenter.updateMainMovieList(this._listMovies);
-  }
-
-  _sortMovies(sortType) {
-    switch (sortType) {
-      case SortType.DATE:
-        this._listMovies.sort(sortMovieDate);
-        break;
-      case SortType.RATING:
-        this._listMovies.sort(sortMovieRating);
-        break;
-      default:
-        this._listMovies = this._sourcedListMovies.slice();
-    }
     this._currentSortType = sortType;
+    this._moviesListPresenter.updateMainMovieList(this._getMovies());
   }
 
   _renderSiteMenu() {
@@ -74,12 +63,12 @@ export default class Board {
   }
 
   _renderMoviesList() {
-    this._moviesListPresenter.init(this._listMovies, this._handleMovieChange);
+    this._moviesListPresenter.init(this._getMovies().slice(), this._handleMovieChange);
   }
 
   _renderBoard() {
     this._renderSiteMenu();
-    if (this._listMovies.length !== 0) {
+    if (this._getMovies().length !== 0) {
       this._renderSort();
     }
     this._renderMovies();

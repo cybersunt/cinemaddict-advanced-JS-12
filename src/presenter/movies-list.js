@@ -26,6 +26,7 @@ export default class MoviesList {
   }
 
   init(listMovies, changeData) {
+    this._moviesCount = listMovies.length;
     this._listMovies = listMovies;
     this._changeData = changeData;
     this._renderMainMovieList();
@@ -58,27 +59,28 @@ export default class MoviesList {
     presenterStore[movie.id] = moviePresenter;
   }
 
-  _renderMovies(from, to, container, presenterStore) {
-    this._listMovies
-      .slice(from, to)
-      .forEach((listMovie) => this._renderMovie(container.getElement(), listMovie, presenterStore));
+  _renderMovies(movies, container, presenterStore) {
+    movies.forEach((movie) => this._renderMovie(container.getElement(), movie, presenterStore));
   }
 
   _renderMovieList(component, countMovies, presenterStore) {
+    const movies = this._listMovies.slice(0, Math.min(this._moviesCount, countMovies));
     render(this._moviesContainer, component, RenderPosition.BEFOREEND);
-    this._renderMovies(0, Math.min(this._listMovies.length, countMovies), component, presenterStore);
+    this._renderMovies(movies, component, presenterStore);
 
-    if (this._listMovies.length > countMovies && countMovies > MOVIES_EXTRA_COUNT) {
+    if (this._moviesCount > countMovies && countMovies > MOVIES_EXTRA_COUNT) {
       render(this._moviesContainer, component, RenderPosition.AFTERBEGIN);
       this._renderShowMoreButton();
     }
   }
 
   _handleShowMoreButtonClick() {
-    this._renderMovies(this._renderedMoviesCount, this._renderedMoviesCount + MOVIES_COUNT_PER_STEP, this._mainMoviesListComponent);
-    this._renderedMoviesCount += MOVIES_COUNT_PER_STEP;
+    const newRenderedMovieCount = Math.min(this._moviesCount, this._renderedMoviesCount + MOVIES_COUNT_PER_STEP);
+    const movies = this._listMovies.slice(this._renderedMoviesCount, newRenderedMovieCount);
+    this._renderMovies(movies, this._mainMoviesListComponent, this._mainMoviesListComponent);
+    this._renderedMoviesCount = newRenderedMovieCount;
 
-    if (this._renderedMoviesCount >= this._listMovies.length) {
+    if (this._renderedMoviesCount >= this._moviesCount) {
       remove(this._showMoreButtonComponent);
     }
   }
@@ -89,7 +91,7 @@ export default class MoviesList {
   }
 
   _renderMainMovieList() {
-    if (this._listMovies.length === 0) {
+    if (this._moviesCount === 0) {
       render(this._moviesContainer, this._emptyMoviesListComponent, RenderPosition.AFTERBEGIN);
       return;
     }

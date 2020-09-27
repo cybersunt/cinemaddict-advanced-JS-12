@@ -23,6 +23,6 @@ const siteFooterElement = document.querySelector(`.footer`);
 render(siteHeaderElement, new UserInfoView(), RenderPosition.BEFOREEND);
 
 const mainInner = new Board(siteMainElement, filters, moviesModel);
-mainInner.init(movies);
+mainInner.init();
 render(siteFooterElement, new MovieStatsView(movies), RenderPosition.BEFOREEND);
 
