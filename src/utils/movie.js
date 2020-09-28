@@ -1,5 +1,6 @@
 import {getRandomInteger} from "./common";
 import moment from "moment";
+import {ONE_HOUR} from "../const";
 
 export const getRandomElement = (array) => array[getRandomInteger(0, array.length - 1)];
 
@@ -14,7 +15,10 @@ export const getСapitalizedString = (str) => str.replace(/(^|\s)\S/g, (a) =>a.t
 export const getPictureUrl = (dir, picture) => `./images/${dir}/${picture}`;
 
 export const getRuntimeInHours = (runtime) => {
-  return moment.duration(runtime).humanize({precision: 2});
+  const hours = Math.floor(runtime / ONE_HOUR);
+  const minutes = runtime % ONE_HOUR;
+
+  return `${hours}h ${minutes}m`;
 };
 
 export const getReleaseDate = (date) => {
