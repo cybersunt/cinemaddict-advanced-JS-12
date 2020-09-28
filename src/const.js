@@ -1,5 +1,12 @@
 export const ONE_HOUR = 60;
 
+export const FilterType = {
+  ALL: `all`,
+  FAVORITES: `favorites`,
+  HISTORY: `history`,
+  WATCHLIST: `watchlist`
+};
+
 export const UserAction = {
   ADD_COMMENT: `ADD_COMMENT`,
   DELETE_COMMENT: `DELETE_COMMENT`,
