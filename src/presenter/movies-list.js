@@ -27,7 +27,6 @@ export default class MoviesList {
   }
 
   init(listMovies, changeData) {
-    this._moviesCount = listMovies.length;
     this._listMovies = listMovies;
     this._changeData = changeData;
     this._renderMainMovieList();
@@ -65,18 +64,18 @@ export default class MoviesList {
   }
 
   _renderMovieList(component, countMovies, presenterStore) {
-    const movies = this._listMovies.slice(0, Math.min(this._moviesCount, countMovies));
+    const movies = this._listMovies.slice(0, Math.min(this._listMovies.length, countMovies));
     render(this._moviesContainer, component, RenderPosition.BEFOREEND);
     this._renderMovies(movies, component, presenterStore);
   }
 
   _handleShowMoreButtonClick() {
-    const newRenderedMovieCount = Math.min(this._moviesCount, this._renderedMoviesCount + MOVIES_COUNT_PER_STEP);
+    const newRenderedMovieCount = Math.min(this._listMovies.length, this._renderedMoviesCount + MOVIES_COUNT_PER_STEP);
     const movies = this._listMovies.slice(this._renderedMoviesCount, newRenderedMovieCount);
-    this._renderMovies(movies, this._mainMoviesListComponent, this._mainMoviesListComponent);
+    this._renderMovies(movies, this._mainMoviesListComponent, this._movieMainPresenter);
     this._renderedMoviesCount = newRenderedMovieCount;
 
-    if (this._renderedMoviesCount >= this._moviesCount) {
+    if (this._renderedMoviesCount >= this._listMovies.length) {
       remove(this._showMoreButtonComponent);
     }
   }
@@ -91,18 +90,18 @@ export default class MoviesList {
   }
 
   _renderMainMovieList() {
-    if (this._moviesCount === 0) {
+    if (this._listMovies.length === 0) {
       render(this._moviesContainer, this._emptyMoviesListComponent, RenderPosition.AFTERBEGIN);
       return;
     }
 
-    const movies = this._listMovies.slice(0, Math.min(this._moviesCount, this._renderedMoviesCount));
+    const movies = this._listMovies.slice(0, Math.min(this._listMovies.length, this._renderedMoviesCount));
     render(this._moviesContainer, this._mainMoviesListComponent, RenderPosition.BEFOREEND);
 
     this._renderMovies(movies, this._mainMoviesListComponent, this._movieMainPresenter);
 
-    if (this._moviesCount > this._renderedMoviesCount) {
-      render(this._moviesContainer, this._mainMoviesListComponent, RenderPosition.AFTERBEGIN);
+    render(this._moviesContainer, this._mainMoviesListComponent, RenderPosition.AFTERBEGIN);
+    if (this._listMovies.length > this._renderedMoviesCount) {
       this._renderShowMoreButton();
     }
   }
@@ -124,7 +123,7 @@ export default class MoviesList {
     if (resetRenderedMovieCount) {
       this._renderedMoviesCount = MOVIES_COUNT_PER_STEP;
     } else {
-      this._renderedMoviesCount = Math.min(this._moviesCount, this._renderedMoviesCount);
+      this._renderedMoviesCount = Math.min(this._listMovies.length, this._renderedMoviesCount);
     }
   }
 
