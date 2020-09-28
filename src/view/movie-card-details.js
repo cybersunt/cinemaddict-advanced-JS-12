@@ -209,6 +209,9 @@ export default class MovieCardDetailsView extends Smart {
 
     this._setNewCommentHandler = this._setNewCommentHandler.bind(this);
 
+    this._emoji = null;
+    this._message = null;
+
     this._setNewCommentHandler();
   }
 
@@ -282,25 +285,27 @@ export default class MovieCardDetailsView extends Smart {
     return `<img src="images/emoji/${icon}.png" width="55" height="55" alt="emoji-${icon}">`;
   }
 
-  _commentInputHandler(evt) {
-    evt.preventDefault();
-    // this.updateData({
-    //   message: evt.target.value
-    // }, true);
-  }
-
   _setNewCommentHandler() {
     const iconContainer = this.getElement().querySelector(`.film-details__add-emoji-label`);
+    const textContainer = this.getElement().querySelector(`.film-details__comment-input`);
     this.getElement().querySelectorAll(`.film-details__emoji-list`).forEach((item) => {
       item.addEventListener(`click`, (evt) => {
         if (evt.target.tagName === `INPUT`) {
           evt.preventDefault();
           iconContainer.innerHTML = this._getIconForNewComment(evt.target.value);
+          this._emoji = evt.target.value;
         }
       });
     });
-    this.getElement()
-      .querySelector(`.film-details__comment-input`)
-      .addEventListener(`input`, this._commentInputHandler);
+    textContainer.addEventListener(`change`, (evt) => {
+      this._message = evt.target.value;
+    });
+  }
+  getEmojiForNewComment() {
+    return this._emoji;
+  }
+
+  getTextForNewComment() {
+    return this._message;
   }
 }

@@ -31,10 +31,11 @@ export default class MoviesModel extends Observer {
   }
 
   addComment(updateType, update) {
-    this._movies = [
-      update,
-      ...this._movies
-    ];
+    const newMovie = update.film.slice();
+    const commentsCopy = update.film.comments.slice();
+    commentsCopy.push(update.comment);
+    newMovie.comments = commentsCopy;
+    this._moviesModel.updateMovie(updateType, newMovie);
 
     this._notify(updateType, update);
   }

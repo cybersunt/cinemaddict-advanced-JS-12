@@ -1,7 +1,8 @@
 import MovieCardView from "../view/movie-card";
 import MovieCardDetailsView from "../view/movie-card-details";
 import {remove, render, RenderPosition, replace} from "../utils/render";
-import {UserAction, UpdateType} from "../const.js";
+import {UserAction, UpdateType, EMOJI, ACTORS, movieDetailsData, DESCRIPTIONS} from "../const.js";
+import {getArrayRandomLength, getRandomElement} from "../utils/movie";
 
 const Mode = {
   DEFAULT: `DEFAULT`,
@@ -147,7 +148,20 @@ export default class Movie {
   _enterKeyDownHandler(evt) {
     const textarea = this._movieCardDetailsComponent.getElement().querySelector(`.film-details__comment-input`);
     if (evt.key === `Enter` && document.activeElement === textarea) {
-      // отправляем новый комментарий
+      const newComment = {
+        emoji: this._movieCardDetailsComponent.getEmojiForNewComment(),
+        author: `Author`,
+        message: this._movieCardDetailsComponent.getTextForNewComment(),
+        date: new Date();
+      };
+      this._changeData(
+        UserAction.UPDATE_MOVIE,
+        UpdateType.PATCH,
+        {
+          film: this._movie,
+          comment: newComment
+        }
+      );
     }
   }
 
