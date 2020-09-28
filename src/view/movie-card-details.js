@@ -1,6 +1,7 @@
 import {EMOJI} from "../const";
 import {getCommentDate, getPictureUrl, getReleaseDate, getRuntimeInHours, getStringFromArray} from "../utils/movie";
 import Smart from "./smart";
+import he from "he";
 
 const createMovieCardDetailsInfoHeadTemplate = ({title, originalTitle, rating}) => {
 
@@ -71,7 +72,7 @@ const createMovieCardDetailsCommentsListTemplate = (comments) => {
           <img src="${getPictureUrl(`emoji`, comment.emoji)}.png" width="55" height="55" alt="emoji-smile">
         </span>
         <div>
-          <p class="film-details__comment-text">${comment.message}</p>
+          <p class="film-details__comment-text">${he.encode(comment.message)}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.author}</span>
             <span class="film-details__comment-day">${getCommentDate(comment.date)}</span>
