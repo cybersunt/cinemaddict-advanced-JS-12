@@ -26,7 +26,7 @@ export default class SiteMenuFilter {
   }
 
   init() {
-    this._currentFilter = this._filterModel.getFilter();
+    this._currentFilter = `all`;
 
     const filters = this._getFilters();
     const prevFilterComponent = this._siteMenuFilterComponent;
@@ -44,6 +44,7 @@ export default class SiteMenuFilter {
   }
 
   _handleModelEvent() {
+    this._currentFilter = this._filterModel.getFilter();
     this.init();
   }
 
@@ -62,7 +63,7 @@ export default class SiteMenuFilter {
       {
         type: FilterType.ALL,
         name: `All movies`,
-        count: filter[FilterType.ALL](movies).length
+        count: filter[FilterType.ALL](movies).length,
       },
       {
         type: FilterType.FAVORITES,
