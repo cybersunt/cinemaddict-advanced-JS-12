@@ -11,7 +11,6 @@ export default class Board {
     this._boardContainer = boardContainer;
     this._moviesModel = moviesModel;
     this._filterModel = filterModel;
-    this._currentSortType = `all`;
 
     this._sortComponent = null;
 
@@ -34,7 +33,7 @@ export default class Board {
 
   _getMovies() {
     const filterType = this._filterModel.getFilter();
-    const movies = this._moviesModel.getMovies();
+    const movies = this._moviesModel.getMovies().slice();
     const filtredMovies = filter[filterType](movies);
     switch (this._currentSortType) {
       case SortType.DATE:
