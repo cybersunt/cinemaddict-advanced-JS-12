@@ -31,12 +31,12 @@ export default class MoviesModel extends Observer {
   }
 
   addComment(updateType, update) {
-    const newMovie = update.film.slice();
     const commentsCopy = update.film.comments.slice();
     commentsCopy.push(update.comment);
-    newMovie.comments = commentsCopy;
-    this._moviesModel.updateMovie(updateType, newMovie);
-
+    const newMovie = Object.assign({}, update.film, {
+      comments: commentsCopy
+    });
+    this.updateMovie(updateType, newMovie);
     this._notify(updateType, update);
   }
 

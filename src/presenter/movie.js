@@ -152,15 +152,15 @@ export default class Movie {
         emoji: this._movieCardDetailsComponent.getEmojiForNewComment(),
         author: `Author`,
         message: this._movieCardDetailsComponent.getTextForNewComment(),
-        date: new Date();
+        date: new Date()
       };
       this._changeData(
-        UserAction.UPDATE_MOVIE,
-        UpdateType.PATCH,
-        {
-          film: this._movie,
-          comment: newComment
-        }
+          UserAction.ADD_COMMENT,
+          UpdateType.PATCH,
+          {
+            film: this._movie,
+            comment: newComment
+          }
       );
     }
   }
