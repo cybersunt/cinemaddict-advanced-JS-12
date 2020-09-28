@@ -65,7 +65,7 @@ const createMovieCardDetailsTableTemplate = (movie) => {
 
 const createMovieCardDetailsCommentsListTemplate = (comments) => {
   const content = comments.map((comment) =>
-    `<li class="film-details__comment">
+    `<li class="film-details__comment" data-id="${comment.id}">
         <span class="film-details__comment-emoji">
 
           <img src="${getPictureUrl(`emoji`, comment.emoji)}.png" width="55" height="55" alt="emoji-smile">
@@ -209,6 +209,8 @@ export default class MovieCardDetailsView extends Smart {
 
     this._setNewCommentHandler = this._setNewCommentHandler.bind(this);
 
+    this.setDeleteClickHandler(this._callback.deleteClick);
+
     this._emoji = null;
     this._message = null;
 
@@ -307,5 +309,15 @@ export default class MovieCardDetailsView extends Smart {
 
   getTextForNewComment() {
     return this._message;
+  }
+
+  _commentDeleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick(evt.target.dataset.id);
+  }
+
+  setDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector(`.film-details__comment-delete`).addEventListener(`click`, this._commentDeleteClickHandler);
   }
 }

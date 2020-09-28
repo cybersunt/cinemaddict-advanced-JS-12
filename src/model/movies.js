@@ -41,16 +41,11 @@ export default class MoviesModel extends Observer {
   }
 
   deleteComment(updateType, update) {
-    const index = this._movies.findIndex((movie) => movie.id === update.id);
-
-    if (index === -1) {
-      throw new Error(`Can't delete unexisting task`);
-    }
-
-    this._movies = [
-      ...this._movies.slice(0, index),
-      ...this._movies.slice(index + 1)
-    ];
+    const commentsCopy = update.film.comments.slice().filter((comment) => comment.id = update.id);
+    const newMovie = Object.assign({}, update.film, {
+      comments: commentsCopy
+    });
+    this.updateMovie(updateType, newMovie);
 
     this._notify(updateType);
   }

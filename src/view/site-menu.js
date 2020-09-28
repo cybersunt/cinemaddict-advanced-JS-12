@@ -2,7 +2,6 @@ import Abstract from "./abstract";
 
 const createSiteMenuItemTemplate = (filter, currentFilterType) => {
   const {type, name, count} = filter;
-  console.log(currentFilterType)
   const activeClassName = currentFilterType === type ? `main-navigation__item--active` : ``;
 
   return (

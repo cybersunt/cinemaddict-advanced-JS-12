@@ -1,8 +1,8 @@
 import MovieCardView from "../view/movie-card";
 import MovieCardDetailsView from "../view/movie-card-details";
 import {remove, render, RenderPosition, replace} from "../utils/render";
-import {UserAction, UpdateType, EMOJI, ACTORS, movieDetailsData, DESCRIPTIONS} from "../const.js";
-import {getArrayRandomLength, getRandomElement} from "../utils/movie";
+import {UserAction, UpdateType} from "../const.js";
+import {nanoid} from "nanoid";
 
 const Mode = {
   DEFAULT: `DEFAULT`,
@@ -28,6 +28,7 @@ export default class Movie {
     this._handleMovieCardClick = this._handleMovieCardClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._enterKeyDownHandler = this._enterKeyDownHandler.bind(this);
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
   }
 
   init(movie) {
@@ -49,6 +50,7 @@ export default class Movie {
     this._movieCardDetailsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._movieCardDetailsComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._movieCardDetailsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+    this._movieCardDetailsComponent.setDeleteClickHandler(this._handleDeleteClick);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
     document.addEventListener(`keydown`, this._enterKeyDownHandler);
 
@@ -125,6 +127,14 @@ export default class Movie {
     );
   }
 
+  _handleDeleteClick(movie) {
+    this._changeData(
+        UserAction.DELETE_COMMENT,
+        UpdateType.PATCH,
+        movie
+    );
+  }
+
   _showMovieCardDetails() {
     render(this._bodyElement, this._movieCardDetailsComponent, RenderPosition.BEFOREEND);
     this._changeMode();
@@ -149,6 +159,7 @@ export default class Movie {
     const textarea = this._movieCardDetailsComponent.getElement().querySelector(`.film-details__comment-input`);
     if (evt.key === `Enter` && document.activeElement === textarea) {
       const newComment = {
+        id: nanoid(),
         emoji: this._movieCardDetailsComponent.getEmojiForNewComment(),
         author: `Author`,
         message: this._movieCardDetailsComponent.getTextForNewComment(),
