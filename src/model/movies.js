@@ -41,7 +41,7 @@ export default class MoviesModel extends Observer {
   }
 
   deleteComment(updateType, update) {
-    const commentsCopy = update.film.comments.slice().filter((comment) => comment.id = update.id);
+    const commentsCopy = update.film.comments.slice().filter((comment) => comment.id !== update.id);
     const newMovie = Object.assign({}, update.film, {
       comments: commentsCopy
     });

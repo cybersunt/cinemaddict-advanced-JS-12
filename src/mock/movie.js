@@ -38,7 +38,7 @@ const generateRandomDate = (start, end) => {
   );
 };
 
-const generateComments = (idx) => {
+const generateComments = () => {
   const messages = [];
 
   const countComments = getRandomInteger(movieDetailsData.COMMENTS_COUNT_MIN, movieDetailsData.COMMENTS_COUNT_MAX);
