@@ -149,7 +149,7 @@ export default class Movie {
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
-      this._movieCardDetailsComponent.reset(this._movie);
+      this._movieCardDetailsCom9ponent.reset(this._movie);
       this._hideMovieCardDetails();
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
     }
@@ -157,7 +157,7 @@ export default class Movie {
 
   _enterKeyDownHandler(evt) {
     const textarea = this._movieCardDetailsComponent.getElement().querySelector(`.film-details__comment-input`);
-    if (evt.key === `Enter` && document.activeElement === textarea) {
+    if ((evt.ctrlKey || evt.metaKey) && evt.key === `Enter` && document.activeElement === textarea) {
       const newComment = {
         id: nanoid(),
         emoji: this._movieCardDetailsComponent.getEmojiForNewComment(),
