@@ -4,7 +4,7 @@ import {render, RenderPosition} from "../utils/render";
 import MoviesList from "./movies-list";
 import {SortType, UpdateType, UserAction} from "../const";
 import {sortMovieDate, sortMovieRating} from "../utils/movie";
-import SiteMenuFilter from "./site-menu-filter";
+import SiteMenuFilter, {filter} from "./site-menu-filter";
 
 export default class Board {
   constructor(boardContainer, moviesModel, filterModel) {
@@ -26,20 +26,23 @@ export default class Board {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
     this._moviesModel.addObserver(this._handleModelEvent);
-
+    this._filterModel.addObserver(this._handleModelEvent);
   }
   init() {
     this._renderBoard();
   }
 
   _getMovies() {
+    const filterType = this._filterModel.getFilter();
+    const movies = this._moviesModel.getMovies();
+    const filtredMovies = filter[filterType](movies);
     switch (this._currentSortType) {
       case SortType.DATE:
-        return this._moviesModel.getMovies().slice().sort(sortMovieDate);
+        return filtredMovies.sort(sortMovieDate);
       case SortType.RATING:
-        return this._moviesModel.getMovies().slice().sort(sortMovieRating);
+        return filtredMovies.sort(sortMovieRating);
     }
-    return this._moviesModel.getMovies();
+    return filtredMovies;
   }
 
   _handleViewAction(actionType, updateType, update) {

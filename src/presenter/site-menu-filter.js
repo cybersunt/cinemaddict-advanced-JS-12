@@ -2,7 +2,7 @@ import {render, RenderPosition, replace, remove} from "../utils/render.js";
 import {FilterType, UpdateType} from "../const.js";
 import SiteMenuView from "../view/site-menu";
 
-const filter = {
+export const filter = {
   [FilterType.ALL]: (movies) => movies,
   [FilterType.FAVORITES]: (movies) => movies.filter((movie) => movie.isFavorite),
   [FilterType.HISTORY]: (movies) => movies.filter((movie) => movie.isHistory),
@@ -16,7 +16,7 @@ export default class SiteMenuFilter {
     this._moviesModel = moviesModel;
     this._currentFilter = null;
 
-    this._filterComponent = null;
+    this._siteMenuFilterComponent = null;
 
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
@@ -29,7 +29,7 @@ export default class SiteMenuFilter {
     this._currentFilter = this._filterModel.getFilter();
 
     const filters = this._getFilters();
-    const prevFilterComponent = this._filterComponent;
+    const prevFilterComponent = this._siteMenuFilterComponent;
 
     this._siteMenuFilterComponent = new SiteMenuView(filters, this._currentFilter);
     this._siteMenuFilterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
@@ -39,7 +39,7 @@ export default class SiteMenuFilter {
       return;
     }
 
-    replace(this._filterComponent, prevFilterComponent);
+    replace(this._siteMenuFilterComponent, prevFilterComponent);
     remove(prevFilterComponent);
   }
 
