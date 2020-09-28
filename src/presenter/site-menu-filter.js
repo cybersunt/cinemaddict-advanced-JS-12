@@ -26,7 +26,7 @@ export default class SiteMenuFilter {
   }
 
   init() {
-    this._currentFilter = `all`;
+    this._currentFilter = this._filterModel.getFilter();
 
     const filters = this._getFilters();
     const prevFilterComponent = this._siteMenuFilterComponent;
@@ -44,7 +44,6 @@ export default class SiteMenuFilter {
   }
 
   _handleModelEvent() {
-    this._currentFilter = this._filterModel.getFilter();
     this.init();
   }
 

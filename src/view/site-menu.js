@@ -2,10 +2,11 @@ import Abstract from "./abstract";
 
 const createSiteMenuItemTemplate = (filter, currentFilterType) => {
   const {type, name, count} = filter;
+  console.log(currentFilterType)
   const activeClassName = currentFilterType === type ? `main-navigation__item--active` : ``;
 
   return (
-    `<a href="#${type}" class="main-navigation__item ${activeClassName}">
+    `<a href="#${type}" data-type="${type}" class="main-navigation__item ${activeClassName}">
        ${name} ${type !== `all` ? `<span class="main-navigation__item-count">${count}</span>` : ``}
     </a>`
   );
@@ -49,7 +50,7 @@ export default class SiteMenuView extends Abstract {
   _filterTypeChangeHandler(evt) {
     evt.preventDefault();
     this._changeActiveButton(evt);
-    this._callback.filterTypeChange(evt.target.href);
+    this._callback.filterTypeChange(evt.target.dataset.type);
   }
 
   setFilterTypeChangeHandler(callback) {
