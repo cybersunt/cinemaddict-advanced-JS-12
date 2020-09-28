@@ -1,19 +1,22 @@
 import MoviesView from "../view/movies";
 import SortView from "../view/sort";
-import SiteMenuView from "../view/site-menu";
 import {render, RenderPosition} from "../utils/render";
 import MoviesList from "./movies-list";
 import {SortType, UpdateType, UserAction} from "../const";
 import {sortMovieDate, sortMovieRating} from "../utils/movie";
+import SiteMenuFilter from "./site-menu-filter";
 
 export default class Board {
-  constructor(boardContainer, filters, moviesModel) {
+  constructor(boardContainer, moviesModel, filterModel) {
     this._boardContainer = boardContainer;
     this._moviesModel = moviesModel;
+    this._filterModel = filterModel;
+    this._currentSortType = `all`;
 
     this._sortComponent = null;
 
-    this._siteMenuComponent = new SiteMenuView(filters);
+    this._filterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel);
+
     this._moviesComponent = new MoviesView();
     this._moviesListPresenter = new MoviesList(this._moviesComponent);
     this._currentSortType = SortType.DEFAULT;
@@ -73,7 +76,7 @@ export default class Board {
   }
 
   _renderSiteMenu() {
-    render(this._boardContainer, this._siteMenuComponent, RenderPosition.BEFOREEND);
+    this._filterPresenter.init();
   }
 
   _renderSort() {
