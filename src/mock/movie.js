@@ -48,7 +48,7 @@ const generateComments = () => {
       id: nanoid(),
       emoji: getRandomElement(EMOJI),
       author: getRandomElement(ACTORS),
-      message: getArrayRandomLength(movieDetailsData.MESSAGE_MIN_LENGTH, movieDetailsData.MESSAGE_MAX_LENGTH, DESCRIPTIONS),
+      message: getRandomElement(DESCRIPTIONS),
       date: generateDate()
     });
   }

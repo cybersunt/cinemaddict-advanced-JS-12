@@ -51,8 +51,6 @@ export default class Movie {
     this._movieCardDetailsComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._movieCardDetailsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     this._movieCardDetailsComponent.setDeleteClickHandler(this._handleDeleteClick);
-    document.addEventListener(`keydown`, this._escKeyDownHandler);
-    document.addEventListener(`keydown`, this._enterKeyDownHandler);
 
     this._movieCardComponent.setMovieCardClickHandler(() => {
       this._handleMovieCardClick();
@@ -62,6 +60,9 @@ export default class Movie {
       render(this._movieListElementContainer, this._movieCardComponent, RenderPosition.BEFOREEND);
       return;
     }
+
+    document.addEventListener(`keydown`, this._escKeyDownHandler);
+    document.addEventListener(`keydown`, this._enterKeyDownHandler);
 
     if (this._movieListElementContainer.contains(prevMovieCardComponent.getElement())) {
       render(this._bodyElement, prevMovieCardDetailsComponent, RenderPosition.BEFOREEND);
@@ -142,6 +143,9 @@ export default class Movie {
     render(this._bodyElement, this._movieCardDetailsComponent, RenderPosition.BEFOREEND);
     this._changeMode();
     this._mode = Mode.OPENED;
+    this._movieCardDetailsComponent.restoreHandlers();
+    document.addEventListener(`keydown`, this._escKeyDownHandler);
+    document.addEventListener(`keydown`, this._enterKeyDownHandler);
   }
 
   _hideMovieCardDetails() {
@@ -152,7 +156,7 @@ export default class Movie {
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
-      this._movieCardDetailsCom9ponent.reset(this._movie);
+      this._movieCardDetailsComponent.reset(this._movie);
       this._hideMovieCardDetails();
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
     }

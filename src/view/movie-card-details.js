@@ -72,7 +72,7 @@ const createMovieCardDetailsCommentsListTemplate = (comments) => {
           <img src="${getPictureUrl(`emoji`, comment.emoji)}.png" width="55" height="55" alt="emoji-smile">
         </span>
         <div>
-          <p class="film-details__comment-text">${he.encode(comment.message.toString())}</p>
+          <p class="film-details__comment-text">${he.encode(comment.message)}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.author}</span>
             <span class="film-details__comment-day">${getCommentDate(comment.date)}</span>
@@ -206,7 +206,6 @@ export default class MovieCardDetailsView extends Smart {
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
 
     this._buttonCloseClickHandler = this._buttonCloseClickHandler.bind(this);
-    this._textareaKeydownHandler = this._textareaKeydownHandler.bind(this);
 
     this._setNewCommentHandler = this._setNewCommentHandler.bind(this);
     this._commentDeleteClickHandler = this._commentDeleteClickHandler.bind(this);
@@ -229,8 +228,7 @@ export default class MovieCardDetailsView extends Smart {
   }
 
   restoreHandlers() {
-    this._setNewCommnetHandler();
-    this.setTextareaKeydownHandler(this._callback.textareaKeyDown);
+    this._setNewCommentHandler();
     this.setButtonCloseClickHandler(this._callback.buttonCloseClick);
     this.setFavoriteClickHandler(this._callback.favoriteClick);
     this.setHistoryClickHandler(this._callback.historyClick);
@@ -274,15 +272,6 @@ export default class MovieCardDetailsView extends Smart {
   setButtonCloseClickHandler(callback) {
     this._callback.buttonCloseClick = callback;
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._buttonCloseClickHandler);
-  }
-
-  _textareaKeydownHandler() {
-    this._callback.textareaKeyDown();
-  }
-
-  setTextareaKeydownHandler(callback) {
-    this._callback.textareaKeyDown = callback;
-    this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`keyup`, this._textareaKeydownHandler);
   }
 
   _getIconForNewComment(icon) {

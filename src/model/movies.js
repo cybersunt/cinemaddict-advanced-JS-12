@@ -37,7 +37,6 @@ export default class MoviesModel extends Observer {
       comments: commentsCopy
     });
     this.updateMovie(updateType, newMovie);
-    this._notify(updateType, update);
   }
 
   deleteComment(updateType, update) {
@@ -47,6 +46,5 @@ export default class MoviesModel extends Observer {
     });
 
     this.updateMovie(updateType, newMovie);
-    this._notify(updateType);
   }
 }
