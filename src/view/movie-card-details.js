@@ -208,6 +208,7 @@ export default class MovieCardDetailsView extends Smart {
     this._buttonCloseClickHandler = this._buttonCloseClickHandler.bind(this);
 
     this._setNewCommentHandler = this._setNewCommentHandler.bind(this);
+    this._setEmojiForNewComment = this._setEmojiForNewComment.bind(this);
     this._commentDeleteClickHandler = this._commentDeleteClickHandler.bind(this);
 
     this._emoji = null;
@@ -278,17 +279,19 @@ export default class MovieCardDetailsView extends Smart {
     return `<img src="images/emoji/${icon}.png" width="55" height="55" alt="emoji-${icon}">`;
   }
 
-  _setNewCommentHandler() {
+  _setEmojiForNewComment(evt) {
     const iconContainer = this.getElement().querySelector(`.film-details__add-emoji-label`);
+    if (evt.target.tagName === `INPUT`) {
+      evt.preventDefault();
+      iconContainer.innerHTML = this._getIconForNewComment(evt.target.value);
+      this._emoji = evt.target.value;
+    }
+  }
+
+  _setNewCommentHandler() {
     const textContainer = this.getElement().querySelector(`.film-details__comment-input`);
     this.getElement().querySelectorAll(`.film-details__emoji-list`).forEach((item) => {
-      item.addEventListener(`click`, (evt) => {
-        if (evt.target.tagName === `INPUT`) {
-          evt.preventDefault();
-          iconContainer.innerHTML = this._getIconForNewComment(evt.target.value);
-          this._emoji = evt.target.value;
-        }
-      });
+      item.addEventListener(`click`, this._setEmojiForNewComment);
     });
     textContainer.addEventListener(`change`, (evt) => {
       this._message = evt.target.value;

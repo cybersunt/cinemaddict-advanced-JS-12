@@ -14,7 +14,7 @@ export default class Board {
 
     this._sortComponent = null;
 
-    this._filterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel);
+    this._siteMenuFilterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel);
 
     this._moviesComponent = new MoviesView();
     this._moviesListPresenter = new MoviesList(this._moviesComponent);
@@ -78,7 +78,7 @@ export default class Board {
   }
 
   _renderSiteMenu() {
-    this._filterPresenter.init();
+    this._siteMenuFilterPresenter.init();
   }
 
   _renderSort() {
