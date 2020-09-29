@@ -32,8 +32,8 @@ export default class Board {
   }
 
   _getMovies() {
-    const filterType = this._filterModel.getFilter();
-    const movies = this._moviesModel.getMovies().slice();
+    const filterType = this._filterModel.get();
+    const movies = this._moviesModel.get().slice();
     const filtredMovies = filter[filterType](movies);
     switch (this._currentSortType) {
       case SortType.DATE:

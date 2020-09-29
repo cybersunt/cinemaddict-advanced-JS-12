@@ -11,7 +11,7 @@ const MOVIES_COUNT = 22;
 export const movies = new Array(MOVIES_COUNT).fill(``).map((array, index) => generateMovie(index));
 
 const moviesModel = new MoviesModel();
-moviesModel.setMovies(movies);
+moviesModel.set(movies);
 
 const filterModel = new FilterModel();
 

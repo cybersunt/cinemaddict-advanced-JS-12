@@ -72,7 +72,7 @@ const createMovieCardDetailsCommentsListTemplate = (comments) => {
           <img src="${getPictureUrl(`emoji`, comment.emoji)}.png" width="55" height="55" alt="emoji-smile">
         </span>
         <div>
-          <p class="film-details__comment-text">${he.encode(comment.message)}</p>
+          <p class="film-details__comment-text">${he.encode(comment.message.toString())}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.author}</span>
             <span class="film-details__comment-day">${getCommentDate(comment.date)}</span>
@@ -209,13 +209,14 @@ export default class MovieCardDetailsView extends Smart {
     this._textareaKeydownHandler = this._textareaKeydownHandler.bind(this);
 
     this._setNewCommentHandler = this._setNewCommentHandler.bind(this);
-
-    this.setDeleteClickHandler(this._callback.deleteClick);
+    this._commentDeleteClickHandler = this._commentDeleteClickHandler.bind(this);
 
     this._emoji = null;
     this._message = null;
+    this._commentID = null;
 
     this._setNewCommentHandler();
+    this.setDeleteClickHandler(this._callback.deleteClick);
   }
 
   getTemplate() {
@@ -312,13 +313,20 @@ export default class MovieCardDetailsView extends Smart {
     return this._message;
   }
 
+  getCommentID() {
+    return this._commentID;
+  }
+
   _commentDeleteClickHandler(evt) {
     evt.preventDefault();
-    this._callback.deleteClick(evt.target.dataset.id);
+    this._commentID = evt.target.closest(`.film-details__comment`).dataset.id;
+    this._callback.deleteClick();
   }
 
   setDeleteClickHandler(callback) {
     this._callback.deleteClick = callback;
-    this.getElement().querySelector(`.film-details__comment-delete`).addEventListener(`click`, this._commentDeleteClickHandler);
+    this.getElement().querySelectorAll(`.film-details__comment-delete`).forEach((item) => {
+      item.addEventListener(`click`, this._commentDeleteClickHandler);
+    });
   }
 }

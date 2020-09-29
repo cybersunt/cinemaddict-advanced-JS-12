@@ -127,11 +127,14 @@ export default class Movie {
     );
   }
 
-  _handleDeleteClick(movie) {
+  _handleDeleteClick() {
     this._changeData(
         UserAction.DELETE_COMMENT,
         UpdateType.PATCH,
-        movie
+      {
+        film: this._movie,
+        comment: this._movieCardDetailsComponent.getCommentID()
+      }
     );
   }
 

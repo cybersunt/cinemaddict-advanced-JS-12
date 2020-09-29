@@ -6,11 +6,11 @@ export default class MoviesModel extends Observer {
     this._movies = [];
   }
 
-  setMovies(movies) {
+  set(movies) {
     this._movies = movies.slice();
   }
 
-  getMovies() {
+  get() {
     return this._movies;
   }
 
@@ -41,12 +41,12 @@ export default class MoviesModel extends Observer {
   }
 
   deleteComment(updateType, update) {
-    const commentsCopy = update.film.comments.slice().filter((comment) => comment.id !== update.id);
+    const commentsCopy = update.film.comments.slice().filter((comment) => comment.id !== update.comment);
     const newMovie = Object.assign({}, update.film, {
       comments: commentsCopy
     });
-    this.updateMovie(updateType, newMovie);
 
+    this.updateMovie(updateType, newMovie);
     this._notify(updateType);
   }
 }

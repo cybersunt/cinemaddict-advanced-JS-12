@@ -26,7 +26,7 @@ export default class SiteMenuFilter {
   }
 
   init() {
-    this._currentFilter = this._filterModel.getFilter();
+    this._currentFilter = this._filterModel.get();
 
     const filters = this._getFilters();
     const prevFilterComponent = this._siteMenuFilterComponent;
@@ -56,7 +56,7 @@ export default class SiteMenuFilter {
   }
 
   _getFilters() {
-    const movies = this._moviesModel.getMovies();
+    const movies = this._moviesModel.get();
 
     return [
       {
