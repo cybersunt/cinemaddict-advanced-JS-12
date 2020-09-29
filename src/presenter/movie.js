@@ -131,10 +131,10 @@ export default class Movie {
     this._changeData(
         UserAction.DELETE_COMMENT,
         UpdateType.PATCH,
-      {
-        film: this._movie,
-        comment: this._movieCardDetailsComponent.getCommentID()
-      }
+        {
+          film: this._movie,
+          comment: this._movieCardDetailsComponent.getCommentID()
+        }
     );
   }
 
