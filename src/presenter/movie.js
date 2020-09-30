@@ -21,6 +21,9 @@ export default class Movie {
     this._changeData = changeData;
     this._changeMode = changeMode;
 
+    this._newCommentEmoji = null;
+    this._newCommentMessage = null;
+
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleHistoryClick = this._handleHistoryClick.bind(this);
@@ -165,11 +168,16 @@ export default class Movie {
   _enterKeyDownHandler(evt) {
     const textarea = this._movieCardDetailsComponent.getElement().querySelector(`.film-details__comment-input`);
     if ((evt.ctrlKey || evt.metaKey) && evt.key === `Enter` && document.activeElement === textarea) {
+      this._newCommentEmoji = this._movieCardDetailsComponent.getEmojiForNewComment();
+      this._newCommentMessage = this._movieCardDetailsComponent.getTextForNewComment();
+      if (this._newCommentEmoji === null || this._newCommentMessage === ``) {
+        return;
+      }
       const newComment = {
         id: nanoid(),
-        emoji: this._movieCardDetailsComponent.getEmojiForNewComment(),
+        emoji: this._newCommentEmoji,
         author: `Author`,
-        message: this._movieCardDetailsComponent.getTextForNewComment(),
+        message: this._newCommentMessage,
         date: new Date()
       };
       this._changeData(

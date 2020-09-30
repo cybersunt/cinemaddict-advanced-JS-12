@@ -293,7 +293,7 @@ export default class MovieCardDetailsView extends Smart {
     this.getElement().querySelectorAll(`.film-details__emoji-list`).forEach((item) => {
       item.addEventListener(`click`, this._setEmojiForNewComment);
     });
-    textContainer.addEventListener(`change`, (evt) => {
+    textContainer.addEventListener(`keydown`, (evt) => {
       this._message = evt.target.value;
     });
   }
