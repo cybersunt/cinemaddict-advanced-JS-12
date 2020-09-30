@@ -1,5 +1,6 @@
-import {ONE_HOUR} from "../const";
 import {getRandomInteger} from "./common";
+import moment from "moment";
+import {ONE_HOUR} from "../const";
 
 export const getRandomElement = (array) => array[getRandomInteger(0, array.length - 1)];
 
@@ -21,21 +22,19 @@ export const getRuntimeInHours = (runtime) => {
 };
 
 export const getReleaseDate = (date) => {
-  const year = date.getFullYear();
-  const month = date.toLocaleString(`en-US`, {month: `long`});
-  const day = date.getDay();
+  if (!(date instanceof Date)) {
+    return ``;
+  }
 
-  return `${day} ${month} ${year}`;
+  return moment(date).format(`D MMMM YYYY`);
 };
 
 export const getCommentDate = (date) => {
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  const day = date.getDay();
+  if (!(date instanceof Date)) {
+    return ``;
+  }
 
-  const time = date.toLocaleTimeString([], {hour: `2-digit`, minute: `2-digit`}).replace(`PM`, ``);
-
-  return `${year}/${day}/${month} ${time}`;
+  return moment(date).format(`YYYY/MM/D h:mm`);
 };
 
 // Функция помещает задачи без даты в конце списка,
