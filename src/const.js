@@ -1,5 +1,23 @@
 export const ONE_HOUR = 60;
 
+export const FilterType = {
+  ALL: `all`,
+  FAVORITES: `favorites`,
+  HISTORY: `history`,
+  WATCHLIST: `watchlist`
+};
+
+export const UserAction = {
+  ADD_COMMENT: `ADD_COMMENT`,
+  DELETE_COMMENT: `DELETE_COMMENT`,
+  UPDATE_MOVIE: `UPDATE_MOVIE`
+};
+
+export const UpdateType = {
+  PATCH: `PATCH`,
+  MAJOR: `MAJOR`,
+};
+
 export const SortType = {
   DEFAULT: `default`,
   DATE: `date`,

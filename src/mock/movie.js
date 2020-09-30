@@ -12,6 +12,7 @@ import {
 } from "../const";
 import {getRandomArbitrary, getRandomFractionalNumber, getRandomInteger} from "../utils/common";
 import {getArrayRandomLength, getBooleanValue, getRandomElement} from "../utils/movie";
+import {nanoid} from 'nanoid';
 
 const generateDate = () => {
 
@@ -44,9 +45,10 @@ const generateComments = () => {
 
   for (let i = 0; i < countComments; i++) {
     messages.push({
+      id: nanoid(),
       emoji: getRandomElement(EMOJI),
       author: getRandomElement(ACTORS),
-      message: getArrayRandomLength(movieDetailsData.MESSAGE_MIN_LENGTH, movieDetailsData.MESSAGE_MAX_LENGTH, DESCRIPTIONS),
+      message: getRandomElement(DESCRIPTIONS),
       date: generateDate()
     });
   }

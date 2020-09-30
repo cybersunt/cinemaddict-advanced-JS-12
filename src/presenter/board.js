@@ -1,67 +1,94 @@
 import MoviesView from "../view/movies";
 import SortView from "../view/sort";
-import SiteMenuView from "../view/site-menu";
 import {render, RenderPosition} from "../utils/render";
 import MoviesList from "./movies-list";
-import {SortType} from "../const";
+import {SortType, UpdateType, UserAction} from "../const";
 import {sortMovieDate, sortMovieRating} from "../utils/movie";
-import {updateItem} from "../utils/common";
+import SiteMenuFilter, {filter} from "./site-menu-filter";
 
 export default class Board {
-  constructor(boardContainer, filters) {
+  constructor(boardContainer, moviesModel, filterModel) {
     this._boardContainer = boardContainer;
+    this._moviesModel = moviesModel;
+    this._filterModel = filterModel;
 
-    this._siteMenuComponent = new SiteMenuView(filters);
-    this._sortComponent = new SortView();
+    this._sortComponent = null;
+
+    this._siteMenuFilterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel);
+
     this._moviesComponent = new MoviesView();
     this._moviesListPresenter = new MoviesList(this._moviesComponent);
     this._currentSortType = SortType.DEFAULT;
 
-    this._handleMovieChange = this._handleMovieChange.bind(this);
+    this._handleViewAction = this._handleViewAction.bind(this);
+    this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
+    this._moviesModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
   }
-  init(listMovies) {
-    this._listMovies = listMovies.slice();
-    this._sourcedListMovies = listMovies.slice();
+  init() {
     this._renderBoard();
   }
 
-  _handleMovieChange(updatedMovie) {
-    this._listMovies = updateItem(this._listMovies, updatedMovie);
-    this._sourcedListMovies = updateItem(this._sourcedListMovies, updatedMovie);
-    this._moviesListPresenter.movieChange(updatedMovie);
+  _getMovies() {
+    const filterType = this._filterModel.get();
+    const movies = this._moviesModel.get().slice();
+    const filtredMovies = filter[filterType](movies);
+    switch (this._currentSortType) {
+      case SortType.DATE:
+        return filtredMovies.sort(sortMovieDate);
+      case SortType.RATING:
+        return filtredMovies.sort(sortMovieRating);
+    }
+    return filtredMovies;
+  }
+
+  _handleViewAction(actionType, updateType, update) {
+    switch (actionType) {
+      case UserAction.UPDATE_MOVIE:
+        this._moviesModel.updateMovie(updateType, update);
+        break;
+      case UserAction.ADD_COMMENT:
+        this._moviesModel.addComment(updateType, update);
+        break;
+      case UserAction.DELETE_COMMENT:
+        this._moviesModel.deleteComment(updateType, update);
+        break;
+    }
+  }
+
+  _handleModelEvent(updateType, data) {
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this._moviesListPresenter.movieChange(data);
+        break;
+      case UpdateType.MAJOR:
+        this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
+        break;
+    }
   }
 
   _handleSortTypeChange(sortType) {
     if (this._currentSortType === sortType) {
       return;
     }
-    this._sortMovies(sortType);
-    this._moviesListPresenter.updateMainMovieList(this._listMovies);
-  }
-
-  _sortMovies(sortType) {
-    switch (sortType) {
-      case SortType.DATE:
-        this._listMovies.sort(sortMovieDate);
-        break;
-      case SortType.RATING:
-        this._listMovies.sort(sortMovieRating);
-        break;
-      default:
-        this._listMovies = this._sourcedListMovies.slice();
-    }
     this._currentSortType = sortType;
+    this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
   }
 
   _renderSiteMenu() {
-    render(this._boardContainer, this._siteMenuComponent, RenderPosition.BEFOREEND);
+    this._siteMenuFilterPresenter.init();
   }
 
   _renderSort() {
-    render(this._boardContainer, this._sortComponent, RenderPosition.BEFOREEND);
+    if (this._sortComponent !== null) {
+      this._sortComponent = null;
+    }
+
+    this._sortComponent = new SortView();
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+    render(this._boardContainer, this._sortComponent, RenderPosition.BEFOREEND);
   }
 
   _renderMovies() {
@@ -69,12 +96,12 @@ export default class Board {
   }
 
   _renderMoviesList() {
-    this._moviesListPresenter.init(this._listMovies, this._handleMovieChange);
+    this._moviesListPresenter.init(this._getMovies().slice(), this._handleViewAction);
   }
 
   _renderBoard() {
     this._renderSiteMenu();
-    if (this._listMovies.length !== 0) {
+    if (this._getMovies().length !== 0) {
       this._renderSort();
     }
     this._renderMovies();

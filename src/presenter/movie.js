@@ -1,6 +1,8 @@
 import MovieCardView from "../view/movie-card";
 import MovieCardDetailsView from "../view/movie-card-details";
 import {remove, render, RenderPosition, replace} from "../utils/render";
+import {UserAction, UpdateType} from "../const.js";
+import {nanoid} from "nanoid";
 
 const Mode = {
   DEFAULT: `DEFAULT`,
@@ -19,6 +21,9 @@ export default class Movie {
     this._changeData = changeData;
     this._changeMode = changeMode;
 
+    this._newCommentEmoji = null;
+    this._newCommentMessage = null;
+
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleHistoryClick = this._handleHistoryClick.bind(this);
@@ -26,7 +31,7 @@ export default class Movie {
     this._handleMovieCardClick = this._handleMovieCardClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._enterKeyDownHandler = this._enterKeyDownHandler.bind(this);
-    this._handleFormSubmit = this._handleFormSubmit.bind(this);
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
   }
 
   init(movie) {
@@ -42,6 +47,14 @@ export default class Movie {
     this._movieCardComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._movieCardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
 
+    this._movieCardDetailsComponent.setButtonCloseClickHandler(()=> {
+      this._hideMovieCardDetails();
+    });
+    this._movieCardDetailsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._movieCardDetailsComponent.setHistoryClickHandler(this._handleHistoryClick);
+    this._movieCardDetailsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+    this._movieCardDetailsComponent.setDeleteClickHandler(this._handleDeleteClick);
+
     this._movieCardComponent.setMovieCardClickHandler(() => {
       this._handleMovieCardClick();
     });
@@ -50,6 +63,9 @@ export default class Movie {
       render(this._movieListElementContainer, this._movieCardComponent, RenderPosition.BEFOREEND);
       return;
     }
+
+    document.addEventListener(`keydown`, this._escKeyDownHandler);
+    document.addEventListener(`keydown`, this._enterKeyDownHandler);
 
     if (this._movieListElementContainer.contains(prevMovieCardComponent.getElement())) {
       render(this._bodyElement, prevMovieCardDetailsComponent, RenderPosition.BEFOREEND);
@@ -78,6 +94,8 @@ export default class Movie {
 
   _handleFavoriteClick() {
     this._changeData(
+        UserAction.UPDATE_MOVIE,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._movie,
@@ -89,6 +107,8 @@ export default class Movie {
 
   _handleHistoryClick() {
     this._changeData(
+        UserAction.UPDATE_MOVIE,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._movie,
@@ -100,6 +120,8 @@ export default class Movie {
 
   _handleWatchlistClick() {
     this._changeData(
+        UserAction.UPDATE_MOVIE,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._movie,
@@ -109,19 +131,29 @@ export default class Movie {
     );
   }
 
+  _handleDeleteClick() {
+    this._changeData(
+        UserAction.DELETE_COMMENT,
+        UpdateType.PATCH,
+        {
+          film: this._movie,
+          comment: this._movieCardDetailsComponent.getCommentID()
+        }
+    );
+  }
+
   _showMovieCardDetails() {
     render(this._bodyElement, this._movieCardDetailsComponent, RenderPosition.BEFOREEND);
     this._changeMode();
     this._mode = Mode.OPENED;
+    this._movieCardDetailsComponent.restoreHandlers();
+    document.addEventListener(`keydown`, this._escKeyDownHandler);
+    document.addEventListener(`keydown`, this._enterKeyDownHandler);
   }
 
   _hideMovieCardDetails() {
     remove(this._movieCardDetailsComponent);
     this._mode = Mode.DEFAULT;
-  }
-
-  _handleFormSubmit(movie) {
-    this._changeData(movie);
   }
 
   _escKeyDownHandler(evt) {
@@ -135,21 +167,31 @@ export default class Movie {
 
   _enterKeyDownHandler(evt) {
     const textarea = this._movieCardDetailsComponent.getElement().querySelector(`.film-details__comment-input`);
-    if (evt.key === `Enter` && document.activeElement === textarea) {
-      // отправляем новый комментарий
-      // this._handleFormSubmit();
+    if ((evt.ctrlKey || evt.metaKey) && evt.key === `Enter` && document.activeElement === textarea) {
+      this._newCommentEmoji = this._movieCardDetailsComponent.getEmojiForNewComment();
+      this._newCommentMessage = this._movieCardDetailsComponent.getTextForNewComment();
+      if (this._newCommentEmoji === null || this._newCommentMessage === ``) {
+        return;
+      }
+      const newComment = {
+        id: nanoid(),
+        emoji: this._newCommentEmoji,
+        author: `Author`,
+        message: this._newCommentMessage,
+        date: new Date()
+      };
+      this._changeData(
+          UserAction.ADD_COMMENT,
+          UpdateType.PATCH,
+          {
+            film: this._movie,
+            comment: newComment
+          }
+      );
     }
   }
 
   _handleMovieCardClick() {
     this._showMovieCardDetails();
-    this._movieCardDetailsComponent.setButtonCloseClickHandler(()=> {
-      this._hideMovieCardDetails();
-    });
-    this._movieCardDetailsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
-    this._movieCardDetailsComponent.setHistoryClickHandler(this._handleHistoryClick);
-    this._movieCardDetailsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
-    document.addEventListener(`keydown`, this._escKeyDownHandler);
-    document.addEventListener(`keydown`, this._enterKeyDownHandler);
   }
 }
