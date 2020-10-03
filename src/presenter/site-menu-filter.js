@@ -10,11 +10,12 @@ export const filter = {
 };
 
 export default class SiteMenuFilter {
-  constructor(filterContainer, filterModel, moviesModel) {
+  constructor(filterContainer, filterModel, moviesModel, onStatisticsClick) {
     this._filterContainer = filterContainer;
     this._filterModel = filterModel;
     this._moviesModel = moviesModel;
     this._currentFilter = null;
+    this._onStatisticsClick = onStatisticsClick;
 
     this._siteMenuFilterComponent = null;
 
@@ -33,7 +34,7 @@ export default class SiteMenuFilter {
 
     this._siteMenuFilterComponent = new SiteMenuView(filters, this._currentFilter);
     this._siteMenuFilterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
-    this._siteMenuFilterComponent.setSiteMenuClickHandler(this._handleSiteMenuClick);
+    this._siteMenuFilterComponent.setSiteMenuClickHandler(this._onStatisticsClick);
 
     if (prevFilterComponent === null) {
       render(this._filterContainer, this._siteMenuFilterComponent, RenderPosition.BEFOREEND);
@@ -54,10 +55,6 @@ export default class SiteMenuFilter {
     }
 
     this._filterModel.set(UpdateType.MAJOR, filterType);
-  }
-
-  _handleSiteMenuClick() {
-
   }
 
   _getFilters() {

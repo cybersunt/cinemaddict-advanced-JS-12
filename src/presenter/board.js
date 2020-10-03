@@ -1,6 +1,6 @@
 import MoviesView from "../view/movies";
 import SortView from "../view/sort";
-import {render, RenderPosition} from "../utils/render";
+import {remove, render, RenderPosition} from "../utils/render";
 import MoviesList from "./movies-list";
 import {SortType, UpdateType, UserAction} from "../const";
 import {sortMovieDate, sortMovieRating} from "../utils/movie";
@@ -14,8 +14,7 @@ export default class Board {
 
     this._sortComponent = null;
 
-    this._siteMenuFilterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel);
-
+    this._siteMenuFilterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel, this._clearBoard);
     this._moviesComponent = new MoviesView();
     this._moviesListPresenter = new MoviesList(this._moviesComponent);
     this._currentSortType = SortType.DEFAULT;
@@ -73,6 +72,7 @@ export default class Board {
     if (this._currentSortType === sortType) {
       return;
     }
+    console.log(this._sortComponent);
     this._currentSortType = sortType;
     this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
   }
@@ -99,6 +99,10 @@ export default class Board {
     this._moviesListPresenter.init(this._getMovies().slice(), this._handleViewAction);
   }
 
+  _clearBoard() {
+    console.log(this._sortComponent);
+  }
+
   _renderBoard() {
     this._renderSiteMenu();
     if (this._getMovies().length !== 0) {
@@ -108,3 +112,4 @@ export default class Board {
     this._renderMoviesList();
   }
 }
+
