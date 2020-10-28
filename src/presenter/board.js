@@ -13,6 +13,7 @@ export default class Board {
     this._filterModel = filterModel;
 
     this._sortComponent = null;
+    this._clearBoard = this._clearBoard.bind(this);
 
     this._siteMenuFilterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel, this._clearBoard);
     this._moviesComponent = new MoviesView();
@@ -63,7 +64,8 @@ export default class Board {
         this._moviesListPresenter.movieChange(data);
         break;
       case UpdateType.MAJOR:
-        this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
+        this._clearBoard();
+        this._updateBoard();
         break;
     }
   }
@@ -72,7 +74,6 @@ export default class Board {
     if (this._currentSortType === sortType) {
       return;
     }
-    console.log(this._sortComponent);
     this._currentSortType = sortType;
     this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
   }
@@ -100,7 +101,8 @@ export default class Board {
   }
 
   _clearBoard() {
-    console.log(this._sortComponent);
+    remove(this._sortComponent);
+    remove(this._moviesComponent);
   }
 
   _renderBoard() {
@@ -110,6 +112,15 @@ export default class Board {
     }
     this._renderMovies();
     this._renderMoviesList();
+  }
+
+  _updateBoard() {
+    if (this._getMovies().length !== 0) {
+      this._renderSort();
+    }
+    this._renderMovies();
+    this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
+    this._moviesListPresenter.updateExtraMoviesList();
   }
 }
 

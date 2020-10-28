@@ -132,4 +132,18 @@ export default class MoviesList {
     this._clearMainMovieList(resetRenderedMovieCount);
     this._renderMainMovieList();
   }
+
+  _clearExtraMoviesList() {
+    [
+      ...Object.values(this._movieTopRatedPresenter),
+      ...Object.values(this._movieMostCommentedPresenter)
+    ].forEach((presenter) => presenter.destroy());
+    this._movieTopRatedPresenter = {};
+    this._movieMostCommentedPresenter = {};
+  }
+
+  updateExtraMoviesList() {
+    this._clearExtraMoviesList();
+    this._renderExtraMoviesList();
+  }
 }
