@@ -5,6 +5,8 @@ import MoviesList from "./movies-list";
 import {SortType, UpdateType, UserAction} from "../const";
 import {sortMovieDate, sortMovieRating} from "../utils/movie";
 import SiteMenuFilter, {filter} from "./site-menu-filter";
+import StatsView from "../view/stats";
+
 
 export default class Board {
   constructor(boardContainer, moviesModel, filterModel) {
@@ -13,9 +15,10 @@ export default class Board {
     this._filterModel = filterModel;
 
     this._sortComponent = null;
-    this._clearBoard = this._clearBoard.bind(this);
+    this._statsComponent = null;
+    this._showStats = this._showStats.bind(this);
 
-    this._siteMenuFilterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel, this._clearBoard);
+    this._siteMenuFilterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel, this._showStats);
     this._moviesComponent = new MoviesView();
     this._moviesListPresenter = new MoviesList(this._moviesComponent);
     this._currentSortType = SortType.DEFAULT;
@@ -100,6 +103,15 @@ export default class Board {
     this._moviesListPresenter.init(this._getMovies().slice(), this._handleViewAction);
   }
 
+  _renderStats() {
+    if (this._statsComponent !== null) {
+      this._statsComponent = null;
+    }
+
+    this._statsComponent = new StatsView();
+    render(this._boardContainer, this._statsComponent, RenderPosition.BEFOREEND);
+  }
+
   _clearBoard() {
     remove(this._sortComponent);
     remove(this._moviesComponent);
@@ -115,12 +127,20 @@ export default class Board {
   }
 
   _updateBoard() {
+    if (this._statsComponent !== null) {
+      remove(this._statsComponent);
+    }
+
     if (this._getMovies().length !== 0) {
       this._renderSort();
     }
     this._renderMovies();
     this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
     this._moviesListPresenter.updateExtraMoviesList();
+  }
+  _showStats() {
+    this._clearBoard();
+    this._renderStats();
   }
 }
 
