@@ -32,6 +32,7 @@ export default class SiteMenuView extends Abstract {
     this._filters = filters;
     this._currentFilterType = currentFilterType;
     this._filterButtons = this.getElement().querySelectorAll(`.main-navigation__item`);
+    this._statsMenuItem = this.getElement().querySelector(`.main-navigation__additional`);
 
     this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
     this._siteMenuClickHandler = this._siteMenuClickHandler.bind(this);
@@ -42,10 +43,13 @@ export default class SiteMenuView extends Abstract {
 
   _changeActiveButton(evt) {
     evt.preventDefault();
+    if (evt.target === this._filterButtons) {
+      this._statsMenuItem.classList.remove(evt.target, `main-navigation__item--active`);
+    }
     this._filterButtons.forEach(function (element) {
       element.classList.remove(element, `main-navigation__item--active`);
     });
-    evt.target.classList.add(evt.target, `main-navigation__item--active`);
+    this._statsMenuItem.classList.add(evt.target, `main-navigation__item--active`);
   }
 
   _filterTypeChangeHandler(evt) {
