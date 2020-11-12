@@ -31,7 +31,7 @@ const createMovieCardDetailsTableRowTemplate = (term, value) => {
 const createMovieCardDetailsGenresTemplate = ({genres}) => {
   return genres.map((genre) =>
     `<span class="film-details__genre">${genre}</span>`
-  ).join(``);
+  ).join(`, `);
 };
 
 const createMovieCardDetailsTableTemplate = (movie) => {

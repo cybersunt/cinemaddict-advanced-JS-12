@@ -43,13 +43,15 @@ export default class SiteMenuView extends Abstract {
 
   _changeActiveButton(evt) {
     evt.preventDefault();
-    if (evt.target === this._filterButtons) {
+    if (evt.target !== this._statsMenuItem) {
       this._statsMenuItem.classList.remove(evt.target, `main-navigation__item--active`);
     }
     this._filterButtons.forEach(function (element) {
       element.classList.remove(element, `main-navigation__item--active`);
     });
-    this._statsMenuItem.classList.add(evt.target, `main-navigation__item--active`);
+
+
+    evt.target.classList.add(evt.target, `main-navigation__item--active`);
   }
 
   _filterTypeChangeHandler(evt) {

@@ -5,8 +5,7 @@ import MoviesList from "./movies-list";
 import {SortType, UpdateType, UserAction} from "../const";
 import {sortMovieDate, sortMovieRating} from "../utils/movie";
 import SiteMenuFilter, {filter} from "./site-menu-filter";
-import StatsView from "../view/stats";
-
+import Stats from "../view/stats";
 
 export default class Board {
   constructor(boardContainer, moviesModel, filterModel) {
@@ -108,7 +107,7 @@ export default class Board {
       this._statsComponent = null;
     }
 
-    this._statsComponent = new StatsView();
+    this._statsComponent = new Stats(this._getMovies());
     render(this._boardContainer, this._statsComponent, RenderPosition.BEFOREEND);
   }
 

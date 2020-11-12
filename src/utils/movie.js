@@ -66,3 +66,42 @@ export const sortMovieDate = (movieA, movieB) => {
 };
 
 export const sortMovieRating = (movieA, movieB) => movieB.rating - movieA.rating;
+
+export const getWatchedMovies = (movies) => movies.filter((movie) => movie.isHistory);
+
+export const getTotalDuration = (movies) => {
+
+  const moviesDurationList = movies.map((element) => element.runtime);
+
+  return moviesDurationList.reduce((a, b) => a + b);
+};
+
+export const getPopularGenre = (movies) => {
+
+  const genresList = movies.map((element) => element.genres).flat();
+
+  const resultReduce = genresList.reduce(function (accumulator, currentValue) {
+    if (!accumulator.hash[currentValue]) {
+      accumulator.hash[currentValue] = { [currentValue]: 1 };
+      accumulator.map.set(accumulator.hash[currentValue], 1);
+      accumulator.result.push(accumulator.hash[currentValue]);
+    } else {
+      accumulator.hash[currentValue][currentValue] += 1;
+      accumulator.map.set(accumulator.hash[currentValue], accumulator.hash[currentValue][currentValue]);
+    }
+
+    return accumulator;
+  }, {
+    hash: {},
+    map: new Map(),
+    result: []
+  });
+
+
+  const result = resultReduce.result.sort(function(a, b) {
+    return resultReduce.map.get(b) - resultReduce.map.get(a);
+  });
+
+  return Object.keys(result[0]);
+
+};

@@ -1,6 +1,21 @@
 import Smart from "./smart";
+import {getPopularGenre, getTotalDuration, getWatchedMovies} from "../utils/movie";
+import {ONE_HOUR} from "../const";
 
-const createStatsTemplate = () => {
+const createTotalDurationTemplate = (runtime) => {
+  const hours = Math.floor(runtime / ONE_HOUR);
+  const minutes = runtime % ONE_HOUR;
+
+  return `<p class="statistic__item-text"> ${hours} <span class="statistic__item-description">h</span> ${minutes} <span class="statistic__item-description">m</span></p>`
+};
+
+const createStatsTemplate = (movies) => {
+
+  const watchedMovies = getWatchedMovies(movies);
+
+  const totalDurationWatchedMovies = getTotalDuration(watchedMovies);
+
+  const mostPopularGenre = getPopularGenre(watchedMovies);
 
   return `<section class="statistic">
     <p class="statistic__rank">
@@ -31,15 +46,15 @@ const createStatsTemplate = () => {
     <ul class="statistic__text-list">
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">You watched</h4>
-        <p class="statistic__item-text">22 <span class="statistic__item-description">movies</span></p>
+        <p class="statistic__item-text">${watchedMovies.length} <span class="statistic__item-description">movies</span></p>
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Total duration</h4>
-        <p class="statistic__item-text">130 <span class="statistic__item-description">h</span> 22 <span class="statistic__item-description">m</span></p>
+        ${createTotalDurationTemplate(totalDurationWatchedMovies)}
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Top genre</h4>
-        <p class="statistic__item-text">Sci-Fi</p>
+        <p class="statistic__item-text">${mostPopularGenre}</p>
       </li>
     </ul>
 
@@ -50,9 +65,10 @@ const createStatsTemplate = () => {
   </section>`;
 };
 
-export default class StatsView extends Smart {
-  constructor() {
+export default class Stats extends Smart {
+  constructor(movies) {
     super();
+    this.movies = movies;
   }
 
   removeElement() {
@@ -60,6 +76,6 @@ export default class StatsView extends Smart {
   }
 
   getTemplate() {
-    return createStatsTemplate();
+    return createStatsTemplate(this.movies);
   }
 }
