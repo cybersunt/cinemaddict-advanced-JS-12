@@ -76,7 +76,7 @@ export const getTotalDuration = (movies) => {
   return moviesDurationList.reduce((a, b) => a + b);
 };
 
-export const getPopularGenre = (movies) => {
+export const getStatisticsGenre = (movies) => {
 
   const genresList = movies.map((element) => element.genres).flat();
 
@@ -102,6 +102,13 @@ export const getPopularGenre = (movies) => {
     return resultReduce.map.get(b) - resultReduce.map.get(a);
   });
 
-  return Object.keys(result[0]);
+  return result;
+};
 
+export const getPopularGenre = (watchedMovies) => {
+  return getStatisticsGenre(watchedMovies).map((element) => Object.keys(element)).flat();
+};
+
+export const getCountMoviesOfPopularGenres = (watchedMovies) => {
+  return getStatisticsGenre(watchedMovies).map((element) => Object.values(element)).flat();
 };

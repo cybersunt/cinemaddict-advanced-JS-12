@@ -1,6 +1,81 @@
 import Smart from "./smart";
-import {getPopularGenre, getTotalDuration, getWatchedMovies} from "../utils/movie";
+import Chart from "chart.js";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import {
+  getCountMoviesOfPopularGenres,
+  getPopularGenre,
+  getStatisticsGenre,
+  getTotalDuration,
+  getWatchedMovies
+} from "../utils/movie";
 import {ONE_HOUR} from "../const";
+
+
+const renderChart = (statisticsCtx, movies) => {
+
+  const watchedMovies = getWatchedMovies(movies);
+
+  const popularGenres = getPopularGenre(watchedMovies);
+
+  const countWatchedGenres = getCountMoviesOfPopularGenres(watchedMovies);
+
+  return new Chart(statisticsCtx, {
+    plugins: [ChartDataLabels],
+    type: `horizontalBar`,
+    data: {
+      labels: popularGenres,
+      datasets: [{
+        data: countWatchedGenres,
+        backgroundColor: `#ffe800`,
+        hoverBackgroundColor: `#ffe800`,
+        anchor: `start`
+      }]
+    },
+    options: {
+      plugins: {
+        datalabels: {
+          font: {
+            size: 20
+          },
+          color: `#ffffff`,
+          anchor: 'start',
+          align: 'start',
+          offset: 40,
+        }
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontColor: `#ffffff`,
+            padding: 100,
+            fontSize: 20
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false
+          },
+          barThickness: 24
+        }],
+        xAxes: [{
+          ticks: {
+            display: false,
+            beginAtZero: true
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false
+          },
+        }],
+      },
+      legend: {
+        display: false
+      },
+      tooltips: {
+        enabled: false
+      }
+    }
+  });
+};
 
 const createTotalDurationTemplate = (runtime) => {
   const hours = Math.floor(runtime / ONE_HOUR);
@@ -15,7 +90,7 @@ const createStatsTemplate = (movies) => {
 
   const totalDurationWatchedMovies = getTotalDuration(watchedMovies);
 
-  const mostPopularGenre = getPopularGenre(watchedMovies);
+  const mostPopularGenre = () => Object.keys(getStatisticsGenre(watchedMovies)[0]);
 
   return `<section class="statistic">
     <p class="statistic__rank">
@@ -54,7 +129,7 @@ const createStatsTemplate = (movies) => {
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Top genre</h4>
-        <p class="statistic__item-text">${mostPopularGenre}</p>
+        <p class="statistic__item-text">${mostPopularGenre()}</p>
       </li>
     </ul>
 
@@ -68,7 +143,23 @@ const createStatsTemplate = (movies) => {
 export default class Stats extends Smart {
   constructor(movies) {
     super();
-    this.movies = movies;
+
+    this._data = {
+      // movies,
+      // По условиям техзадания по умолчанию интервал - неделя от текущей даты
+      // dateFrom: (() => {
+      //   const daysToFullWeek = 6;
+      //   const date = getCurrentDate();
+      //   date.setDate(date.getDate() - daysToFullWeek);
+      //   return date;
+      // })(),
+      // dateTo: getCurrentDate()
+    };
+
+    this._movies = movies;
+    this._moviesCart = null;
+
+    this._setCharts();
   }
 
   removeElement() {
@@ -76,6 +167,20 @@ export default class Stats extends Smart {
   }
 
   getTemplate() {
-    return createStatsTemplate(this.movies);
+    return createStatsTemplate(this._movies);
+  }
+
+  restoreHandlers() {
+    this._setCharts();
+  }
+
+  _setCharts() {
+    if (this._statisticCtx !== null) {
+      this._statisticCtx = null;
+    }
+
+    const statisticsCtx = this.getElement().querySelector(`.statistic__chart`);
+
+    this._moviesCart = renderChart(statisticsCtx, this._movies);
   }
 }
