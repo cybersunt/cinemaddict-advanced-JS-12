@@ -36,14 +36,14 @@ export default class Board {
   _getMovies() {
     const filterType = this._filterModel.get();
     const movies = this._moviesModel.get().slice();
-    const filtredMovies = filter[filterType](movies);
+    const filteredMovies = filter[filterType](movies);
     switch (this._currentSortType) {
       case SortType.DATE:
-        return filtredMovies.sort(sortMovieDate);
+        return filteredMovies.sort(sortMovieDate);
       case SortType.RATING:
-        return filtredMovies.sort(sortMovieRating);
+        return filteredMovies.sort(sortMovieRating);
     }
-    return filtredMovies;
+    return filteredMovies;
   }
 
   _handleViewAction(actionType, updateType, update) {
@@ -107,7 +107,7 @@ export default class Board {
       this._statsComponent = null;
     }
 
-    this._statsComponent = new Stats(this._getMovies());
+    this._statsComponent = new Stats(this._moviesModel.getWatchedMovies());
     render(this._boardContainer, this._statsComponent, RenderPosition.BEFOREEND);
   }
 
