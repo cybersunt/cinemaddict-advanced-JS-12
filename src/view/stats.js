@@ -3,13 +3,10 @@ import Chart from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {
   getCountMoviesOfPopularGenres,
-  getPopularGenre,
+  getPopularGenre, getRuntimeInHours,
   getStatisticsGenre,
-  getTotalDuration,
-  getWatchedMovies
+  getTotalDuration
 } from "../utils/movie";
-import {ONE_HOUR} from "../const";
-
 
 const renderChart = (statisticsCtx, movies) => {
 
@@ -76,10 +73,11 @@ const renderChart = (statisticsCtx, movies) => {
 };
 
 const createTotalDurationTemplate = (runtime) => {
-  const hours = Math.floor(runtime / ONE_HOUR);
-  const minutes = runtime % ONE_HOUR;
+  const [hours, minutes] = getRuntimeInHours(runtime);
 
-  return `<p class="statistic__item-text"> ${hours} <span class="statistic__item-description">h</span> ${minutes} <span class="statistic__item-description">m</span></p>`;
+  return (
+    `<p class="statistic__item-text"> ${hours} <span class="statistic__item-description">h</span> ${minutes} <span class="statistic__item-description">m</span></p>`
+  );
 };
 
 const createStatsTemplate = (movies) => {

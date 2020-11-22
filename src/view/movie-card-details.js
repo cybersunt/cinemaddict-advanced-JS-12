@@ -44,12 +44,14 @@ const createMovieCardDetailsTableTemplate = (movie) => {
     country
   } = movie;
 
+  const [hours, minutes] = getRuntimeInHours(runtime);
+
   const detailsData = [
     [`Director`, director],
     [`Writers`, writers],
     [`Actors`, getStringFromArray(actors, `,`)],
     [`Release Date`, getReleaseDate(releaseDate)],
-    [`Runtime`, getRuntimeInHours(runtime)],
+    [`Runtime`, `${hours}h ${minutes}m`],
     [`Country`, country],
     [`Genres`, createMovieCardDetailsGenresTemplate(movie)]
   ];

@@ -18,7 +18,7 @@ export const getRuntimeInHours = (runtime) => {
   const hours = Math.floor(runtime / ONE_HOUR);
   const minutes = runtime % ONE_HOUR;
 
-  return `${hours}h ${minutes}m`;
+  return [hours, minutes];
 };
 
 export const getReleaseDate = (date) => {
@@ -66,8 +66,6 @@ export const sortMovieDate = (movieA, movieB) => {
 };
 
 export const sortMovieRating = (movieA, movieB) => movieB.rating - movieA.rating;
-
-export const getWatchedMovies = (movies) => movies.filter((movie) => movie.isHistory);
 
 export const getTotalDuration = (movies) => {
 
