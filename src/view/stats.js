@@ -13,11 +13,9 @@ import {ONE_HOUR} from "../const";
 
 const renderChart = (statisticsCtx, movies) => {
 
-  const watchedMovies = getWatchedMovies(movies);
+  const popularGenres = getPopularGenre(movies);
 
-  const popularGenres = getPopularGenre(watchedMovies);
-
-  const countWatchedGenres = getCountMoviesOfPopularGenres(watchedMovies);
+  const countWatchedGenres = getCountMoviesOfPopularGenres(movies);
 
   return new Chart(statisticsCtx, {
     plugins: [ChartDataLabels],
@@ -81,16 +79,14 @@ const createTotalDurationTemplate = (runtime) => {
   const hours = Math.floor(runtime / ONE_HOUR);
   const minutes = runtime % ONE_HOUR;
 
-  return `<p class="statistic__item-text"> ${hours} <span class="statistic__item-description">h</span> ${minutes} <span class="statistic__item-description">m</span></p>`
+  return `<p class="statistic__item-text"> ${hours} <span class="statistic__item-description">h</span> ${minutes} <span class="statistic__item-description">m</span></p>`;
 };
 
 const createStatsTemplate = (movies) => {
 
-  const watchedMovies = getWatchedMovies(movies);
+  const totalDurationWatchedMovies = getTotalDuration(movies);
 
-  const totalDurationWatchedMovies = getTotalDuration(watchedMovies);
-
-  const mostPopularGenre = () => Object.keys(getStatisticsGenre(watchedMovies)[0]);
+  const mostPopularGenre = () => Object.keys(getStatisticsGenre(movies)[0]);
 
   return `<section class="statistic">
     <p class="statistic__rank">
@@ -121,7 +117,7 @@ const createStatsTemplate = (movies) => {
     <ul class="statistic__text-list">
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">You watched</h4>
-        <p class="statistic__item-text">${watchedMovies.length} <span class="statistic__item-description">movies</span></p>
+        <p class="statistic__item-text">${movies.length} <span class="statistic__item-description">movies</span></p>
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Total duration</h4>

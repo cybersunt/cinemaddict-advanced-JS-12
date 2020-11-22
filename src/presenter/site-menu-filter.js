@@ -27,12 +27,10 @@ export default class SiteMenuFilter {
   }
 
   init() {
-    this._currentFilter = this._filterModel.get();
-
     const filters = this._getFilters();
     const prevFilterComponent = this._siteMenuFilterComponent;
 
-    this._siteMenuFilterComponent = new SiteMenuView(filters, this._currentFilter);
+    this._siteMenuFilterComponent = new SiteMenuView(filters, this._filterModel.get());
     this._siteMenuFilterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
     this._siteMenuFilterComponent.setSiteMenuClickHandler(this._onStatisticsClick);
 
@@ -53,7 +51,6 @@ export default class SiteMenuFilter {
     if (this._currentFilter === filterType) {
       return;
     }
-
     this._filterModel.set(UpdateType.MAJOR, filterType);
   }
 
