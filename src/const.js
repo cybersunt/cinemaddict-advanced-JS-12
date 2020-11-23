@@ -7,6 +7,14 @@ export const FilterType = {
   WATCHLIST: `watchlist`
 };
 
+export const StatsFilterType = {
+  ALL: `all-movies`,
+  TODAY: `today`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`
+};
+
 export const UserAction = {
   ADD_COMMENT: `ADD_COMMENT`,
   DELETE_COMMENT: `DELETE_COMMENT`,
@@ -16,6 +24,7 @@ export const UserAction = {
 export const UpdateType = {
   PATCH: `PATCH`,
   MAJOR: `MAJOR`,
+  STATS: `STATS`
 };
 
 export const SortType = {

@@ -5,19 +5,22 @@ import MoviesList from "./movies-list";
 import {SortType, UpdateType, UserAction} from "../const";
 import {sortMovieDate, sortMovieRating} from "../utils/movie";
 import SiteMenuFilter, {filter} from "./site-menu-filter";
-import Stats from "../view/stats";
+import StatsMenuFilter from "./stats-menu-filter";
 
 export default class Board {
-  constructor(boardContainer, moviesModel, filterModel) {
+  constructor(boardContainer, moviesModel, filterModel, statsFilterModel) {
     this._boardContainer = boardContainer;
     this._moviesModel = moviesModel;
     this._filterModel = filterModel;
+    this._statsFilterModel = statsFilterModel;
 
     this._sortComponent = null;
     this._statsComponent = null;
+
     this._showStats = this._showStats.bind(this);
 
     this._siteMenuFilterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel, this._showStats);
+    this._statsPresenter = new StatsMenuFilter(this._boardContainer, this._statsFilterModel, this._moviesModel);
     this._moviesComponent = new MoviesView();
     this._moviesListPresenter = new MoviesList(this._moviesComponent);
     this._currentSortType = SortType.DEFAULT;
@@ -69,6 +72,8 @@ export default class Board {
         this._clearBoard();
         this._updateBoard();
         break;
+      case UpdateType.STATS:
+        break;
     }
   }
 
@@ -103,12 +108,7 @@ export default class Board {
   }
 
   _renderStats() {
-    if (this._statsComponent !== null) {
-      this._statsComponent = null;
-    }
-
-    this._statsComponent = new Stats(this._moviesModel.getWatchedMovies());
-    render(this._boardContainer, this._statsComponent, RenderPosition.BEFOREEND);
+    this._statsPresenter.init();
   }
 
   _clearBoard() {
@@ -137,6 +137,7 @@ export default class Board {
     this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
     this._moviesListPresenter.updateExtraMoviesList();
   }
+
   _showStats() {
     this._clearBoard();
     this._renderStats();

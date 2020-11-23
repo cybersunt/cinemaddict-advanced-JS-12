@@ -80,7 +80,35 @@ const createTotalDurationTemplate = (runtime) => {
   );
 };
 
-const createStatsTemplate = (movies) => {
+const createStatsFilterItemTemplate = (filter, currentFilterType) => {
+  const {type, name} = filter;
+
+  return (
+    `<input
+      type="radio"
+      class="statistic__filters-input visually-hidden"
+      name="statistic-filter"
+      id="statistic-${type}"
+      ${type === currentFilterType ? `checked` : ``}
+      value="${type}">
+    <label for="statistic-${type}" class="statistic__filters-label">${name}</label>`
+  );
+};
+
+const createStatsFilterTemplate = (filterItems, currentFilterType) => {
+  const statsFilterItemsTemplate = filterItems
+    .map((filter) => createStatsFilterItemTemplate(filter, currentFilterType))
+    .join(``);
+
+  return (
+    `<form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
+      <p class="statistic__filters-description">Show stats:</p>
+      ${statsFilterItemsTemplate}
+    </form>`
+  );
+};
+
+const createStatsTemplate = (filters, currentFilterType, movies) => {
 
   const totalDurationWatchedMovies = getTotalDuration(movies);
 
@@ -93,24 +121,7 @@ const createStatsTemplate = (movies) => {
       <span class="statistic__rank-label">Sci-Fighter</span>
     </p>
 
-    <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
-      <p class="statistic__filters-description">Show stats:</p>
-
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-all-time" value="all-time" checked>
-      <label for="statistic-all-time" class="statistic__filters-label">All time</label>
-
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-today" value="today">
-      <label for="statistic-today" class="statistic__filters-label">Today</label>
-
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-week" value="week">
-      <label for="statistic-week" class="statistic__filters-label">Week</label>
-
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-month" value="month">
-      <label for="statistic-month" class="statistic__filters-label">Month</label>
-
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-year" value="year">
-      <label for="statistic-year" class="statistic__filters-label">Year</label>
-    </form>
+    ${createStatsFilterTemplate(filters, currentFilterType)}
 
     <ul class="statistic__text-list">
       <li class="statistic__text-item">
@@ -134,23 +145,12 @@ const createStatsTemplate = (movies) => {
   </section>`;
 };
 
-export default class Stats extends Smart {
-  constructor(movies) {
+export default class StatsView extends Smart {
+  constructor(filters, currentFilterType, movies) {
     super();
-
-    this._data = {
-      // movies,
-      // По условиям техзадания по умолчанию интервал - неделя от текущей даты
-      // dateFrom: (() => {
-      //   const daysToFullWeek = 6;
-      //   const date = getCurrentDate();
-      //   date.setDate(date.getDate() - daysToFullWeek);
-      //   return date;
-      // })(),
-      // dateTo: getCurrentDate()
-    };
-
     this._movies = movies;
+    this._filters = filters;
+    this._currentFilter = currentFilterType;
     this._moviesCart = null;
 
     this._setCharts();
@@ -161,7 +161,7 @@ export default class Stats extends Smart {
   }
 
   getTemplate() {
-    return createStatsTemplate(this._movies);
+    return createStatsTemplate(this._filters,  this._currentFilter, this._movies);
   }
 
   restoreHandlers() {
@@ -176,5 +176,15 @@ export default class Stats extends Smart {
     const statisticsCtx = this.getElement().querySelector(`.statistic__chart`);
 
     this._moviesCart = renderChart(statisticsCtx, this._movies);
+  }
+
+  _filterTypeChangeHandler(evt) {
+    evt.preventDefault();
+    this._callback.filterTypeChange(evt.target.value);
+  }
+
+  setStatsFilterTypeChangeHandler(callback) {
+    this._callback.filterTypeChange = callback;
+    this.getElement().addEventListener(`change`, this._filterTypeChangeHandler);
   }
 }
