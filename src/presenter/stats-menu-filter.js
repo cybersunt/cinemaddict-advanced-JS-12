@@ -3,13 +3,12 @@ import {remove, render, RenderPosition, replace} from "../utils/render";
 import StatsView from "../view/stats";
 
 export const filter = {
-    [StatsFilterType.ALL]: (movies) => movies,
-    [StatsFilterType.TODAY]: (movies) => movies.filter((movie) => movie.isFavorite),
-    [StatsFilterType.WEEK]: (movies) => movies.filter((movie) => movie.isFavorite),
-    [StatsFilterType.MONTH]: (movies) => movies.filter((movie) => movie.isFavorite),
-    [StatsFilterType.YEAR]: (movies) => movies.filter((movie) => movie.isFavorite)
-  }
-;
+  [StatsFilterType.ALL]: (movies) => movies,
+  [StatsFilterType.TODAY]: (movies) => movies.filter((movie) => movie.isFavorite),
+  [StatsFilterType.WEEK]: (movies) => movies.filter((movie) => movie.isFavorite),
+  [StatsFilterType.MONTH]: (movies) => movies.filter((movie) => movie.isFavorite),
+  [StatsFilterType.YEAR]: (movies) => movies.filter((movie) => movie.isFavorite)
+};
 
 export default class StatsMenuFilter {
   constructor(statsContainer, statsFilterModel, moviesModel) {
@@ -50,6 +49,7 @@ export default class StatsMenuFilter {
   }
 
   _handleFilterTypeChange(filterType) {
+    console.log(filterType)
     if (this._currentFilter === filterType) {
       return;
     }
@@ -63,27 +63,27 @@ export default class StatsMenuFilter {
       {
         type: StatsFilterType.ALL,
         name: `All time`,
-        films: filter[StatsFilterType.ALL](movies)
+        movies: filter[StatsFilterType.ALL](movies)
       },
       {
         type: StatsFilterType.TODAY,
         name: `Today`,
-        films: filter[StatsFilterType.TODAY](movies)
+        movies: filter[StatsFilterType.TODAY](movies)
       },
       {
         type: StatsFilterType.WEEK,
         name: `Week`,
-        films: filter[StatsFilterType.WEEK](movies)
+        movies: filter[StatsFilterType.WEEK](movies)
       },
       {
         type: StatsFilterType.MONTH,
         name: `Month`,
-        films: filter[StatsFilterType.MONTH](movies)
+        movies: filter[StatsFilterType.MONTH](movies)
       },
       {
         type: StatsFilterType.YEAR,
         name: `Year`,
-        films: filter[StatsFilterType.YEAR](movies)
+        movies: filter[StatsFilterType.YEAR](movies)
       }
     ];
   }

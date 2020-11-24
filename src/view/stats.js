@@ -2,7 +2,7 @@ import Smart from "./smart";
 import Chart from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {
-  getCountMoviesOfPopularGenres,
+  getCountMoviesOfPopularGenres, getFilteredMovies,
   getPopularGenre, getRuntimeInHours,
   getStatisticsGenre,
   getTotalDuration
@@ -108,7 +108,9 @@ const createStatsFilterTemplate = (filterItems, currentFilterType) => {
   );
 };
 
-const createStatsTemplate = (filters, currentFilterType, movies) => {
+const createStatsTemplate = (filters, currentFilterType) => {
+
+  const { movies } = getFilteredMovies(filters, currentFilterType);
 
   const totalDurationWatchedMovies = getTotalDuration(movies);
 
@@ -148,12 +150,14 @@ const createStatsTemplate = (filters, currentFilterType, movies) => {
 export default class StatsView extends Smart {
   constructor(filters, currentFilterType, movies) {
     super();
-    this._movies = movies;
     this._filters = filters;
+    this._movies = movies;
     this._currentFilter = currentFilterType;
     this._moviesCart = null;
 
     this._setCharts();
+
+    this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
   }
 
   removeElement() {
@@ -161,7 +165,7 @@ export default class StatsView extends Smart {
   }
 
   getTemplate() {
-    return createStatsTemplate(this._filters,  this._currentFilter, this._movies);
+    return createStatsTemplate(this._filters, this._currentFilter);
   }
 
   restoreHandlers() {
@@ -169,13 +173,15 @@ export default class StatsView extends Smart {
   }
 
   _setCharts() {
+    const { movies } = getFilteredMovies(this._filters, this._currentFilter);
+
     if (this._statisticCtx !== null) {
       this._statisticCtx = null;
     }
 
     const statisticsCtx = this.getElement().querySelector(`.statistic__chart`);
 
-    this._moviesCart = renderChart(statisticsCtx, this._movies);
+    this._moviesCart = renderChart(statisticsCtx, movies);
   }
 
   _filterTypeChangeHandler(evt) {

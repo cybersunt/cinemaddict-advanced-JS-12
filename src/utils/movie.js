@@ -110,3 +110,5 @@ export const getPopularGenre = (watchedMovies) => {
 export const getCountMoviesOfPopularGenres = (watchedMovies) => {
   return getStatisticsGenre(watchedMovies).map((element) => Object.values(element)).flat();
 };
+
+export const getFilteredMovies = (filters, currentFilterType) => filters.find((filter) => filter.type === currentFilterType);
