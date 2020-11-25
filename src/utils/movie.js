@@ -80,7 +80,7 @@ export const getStatisticsGenre = (movies) => {
 
   const resultReduce = genresList.reduce(function (accumulator, currentValue) {
     if (!accumulator.hash[currentValue]) {
-      accumulator.hash[currentValue] = { [currentValue]: 1 };
+      accumulator.hash[currentValue] = {[currentValue]: 1};
       accumulator.map.set(accumulator.hash[currentValue], 1);
       accumulator.result.push(accumulator.hash[currentValue]);
     } else {
@@ -96,7 +96,7 @@ export const getStatisticsGenre = (movies) => {
   });
 
 
-  const result = resultReduce.result.sort(function(a, b) {
+  const result = resultReduce.result.sort(function (a, b) {
     return resultReduce.map.get(b) - resultReduce.map.get(a);
   });
 

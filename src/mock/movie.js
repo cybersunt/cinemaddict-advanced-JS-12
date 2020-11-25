@@ -80,6 +80,6 @@ export const generateMovie = (idx) => {
     isWatchlist: getBooleanValue(),
     isHistory: getBooleanValue(),
     isFavorite: getBooleanValue(),
-    watchingDate: generateRandomDate(movieDetailsData.RELEASE_DATE_START, movieDetailsData.RELEASE_DATE_END)
+    watchingDate: generateRandomDate(movieDetailsData.WATCHING_DATE_START, movieDetailsData.WATCHING_DATE_END)
   };
 };

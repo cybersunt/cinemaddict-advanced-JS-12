@@ -73,6 +73,8 @@ export default class Board {
         this._updateBoard();
         break;
       case UpdateType.STATS:
+        this._clearStats();
+        this._renderStats();
         break;
     }
   }
@@ -136,6 +138,12 @@ export default class Board {
     this._renderMovies();
     this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
     this._moviesListPresenter.updateExtraMoviesList();
+  }
+
+  _clearStats() {
+    if (this._statsComponent !== null) {
+      remove(this._statsComponent);
+    }
   }
 
   _showStats() {

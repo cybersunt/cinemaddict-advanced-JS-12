@@ -2,12 +2,19 @@ import {StatsFilterType, UpdateType} from "../const";
 import {remove, render, RenderPosition, replace} from "../utils/render";
 import StatsView from "../view/stats";
 
+const timeRange = {
+  TODAY: Number(new Date(2020, 10, 31)),
+  WEEK: Number(new Date(2020, 10, 31)) - 604800000,
+  MONTH: new Date(2020, 10, 31).setMonth(new Date(2020, 10, 31).getMonth() - 1),
+  YEAR: new Date(2020, 10, 31).setFullYear(new Date(2020, 10, 31).getFullYear() - 1),
+};
+
 export const filter = {
   [StatsFilterType.ALL]: (movies) => movies,
-  [StatsFilterType.TODAY]: (movies) => movies.filter((movie) => movie.isFavorite),
-  [StatsFilterType.WEEK]: (movies) => movies.filter((movie) => movie.isFavorite),
-  [StatsFilterType.MONTH]: (movies) => movies.filter((movie) => movie.isFavorite),
-  [StatsFilterType.YEAR]: (movies) => movies.filter((movie) => movie.isFavorite)
+  [StatsFilterType.TODAY]: (movies) => movies.filter((movie) => Number(movie.watchingDate) === timeRange.TODAY),
+  [StatsFilterType.WEEK]: (movies) => movies.filter((movie) => Number(movie.watchingDate) > timeRange.WEEK),
+  [StatsFilterType.MONTH]: (movies) => movies.filter((movie) => Number(movie.watchingDate) > timeRange.MONTH),
+  [StatsFilterType.YEAR]: (movies) => movies.filter((movie) => Number(movie.watchingDate) > timeRange.YEAR)
 };
 
 export default class StatsMenuFilter {
@@ -49,7 +56,6 @@ export default class StatsMenuFilter {
   }
 
   _handleFilterTypeChange(filterType) {
-    console.log(filterType)
     if (this._currentFilter === filterType) {
       return;
     }
@@ -87,4 +93,4 @@ export default class StatsMenuFilter {
       }
     ];
   }
-};
+}

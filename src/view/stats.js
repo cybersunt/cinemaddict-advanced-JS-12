@@ -33,8 +33,8 @@ const renderChart = (statisticsCtx, movies) => {
             size: 20
           },
           color: `#ffffff`,
-          anchor: 'start',
-          align: 'start',
+          anchor: `start`,
+          align: `start`,
           offset: 40,
         }
       },
@@ -110,7 +110,7 @@ const createStatsFilterTemplate = (filterItems, currentFilterType) => {
 
 const createStatsTemplate = (filters, currentFilterType) => {
 
-  const { movies } = getFilteredMovies(filters, currentFilterType);
+  const {movies} = getFilteredMovies(filters, currentFilterType);
 
   const totalDurationWatchedMovies = getTotalDuration(movies);
 
@@ -173,7 +173,7 @@ export default class StatsView extends Smart {
   }
 
   _setCharts() {
-    const { movies } = getFilteredMovies(this._filters, this._currentFilter);
+    const {movies} = getFilteredMovies(this._filters, this._currentFilter);
 
     if (this._statisticCtx !== null) {
       this._statisticCtx = null;
