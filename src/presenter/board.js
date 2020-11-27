@@ -15,7 +15,6 @@ export default class Board {
     this._statsFilterModel = statsFilterModel;
 
     this._sortComponent = null;
-    this._statsComponent = null;
 
     this._showStats = this._showStats.bind(this);
 
@@ -72,10 +71,6 @@ export default class Board {
         this._clearBoard();
         this._updateBoard();
         break;
-      case UpdateType.STATS:
-        this._clearStats();
-        this._renderStats();
-        break;
     }
   }
 
@@ -110,12 +105,14 @@ export default class Board {
   }
 
   _renderStats() {
+    this._statsPresenter.destroy();
     this._statsPresenter.init();
   }
 
   _clearBoard() {
     remove(this._sortComponent);
     remove(this._moviesComponent);
+    this._statsPresenter.destroy();
   }
 
   _renderBoard() {
@@ -128,22 +125,12 @@ export default class Board {
   }
 
   _updateBoard() {
-    if (this._statsComponent !== null) {
-      remove(this._statsComponent);
-    }
-
     if (this._getMovies().length !== 0) {
       this._renderSort();
     }
     this._renderMovies();
     this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
     this._moviesListPresenter.updateExtraMoviesList();
-  }
-
-  _clearStats() {
-    if (this._statsComponent !== null) {
-      remove(this._statsComponent);
-    }
   }
 
   _showStats() {

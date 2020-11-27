@@ -37,6 +37,11 @@ export default class StatsMenuFilter {
     this._currentFilter = this._statsFilterModel.get();
 
     const filters = this._getFilters();
+
+    if (this._statsMenuFilterComponent !== null) {
+      this._statsMenuFilterComponent = null;
+    }
+
     const prevFilterComponent = this._statsMenuFilterComponent;
 
     this._statsMenuFilterComponent = new StatsView(filters, this._currentFilter, this._moviesModel.getWatchedMovies());
@@ -49,9 +54,17 @@ export default class StatsMenuFilter {
 
     replace(this._statsMenuFilterComponent, prevFilterComponent);
     remove(prevFilterComponent);
+
+  }
+
+  destroy() {
+    if (this._statsMenuFilterComponent !== null) {
+      remove(this._statsMenuFilterComponent);
+    }
   }
 
   _handleModelEvent() {
+    this.destroy();
     this.init();
   }
 
@@ -59,7 +72,7 @@ export default class StatsMenuFilter {
     if (this._currentFilter === filterType) {
       return;
     }
-    this._statsFilterModel.set(UpdateType.STATS, filterType);
+    this._statsFilterModel.set(UpdateType.MAJOR, filterType);
   }
 
   _getFilters() {
