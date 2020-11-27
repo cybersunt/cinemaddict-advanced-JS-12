@@ -23969,8 +23969,7 @@ const UserAction = {
 
 const UpdateType = {
   PATCH: `PATCH`,
-  MAJOR: `MAJOR`,
-  STATS: `STATS`
+  MAJOR: `MAJOR`
 };
 
 const SortType = {
@@ -24438,7 +24437,6 @@ class Board {
     this._statsFilterModel = statsFilterModel;
 
     this._sortComponent = null;
-    this._statsComponent = null;
 
     this._showStats = this._showStats.bind(this);
 
@@ -24495,10 +24493,6 @@ class Board {
         this._clearBoard();
         this._updateBoard();
         break;
-      case _const__WEBPACK_IMPORTED_MODULE_4__["UpdateType"].STATS:
-        this._clearStats();
-        this._renderStats();
-        break;
     }
   }
 
@@ -24533,12 +24527,14 @@ class Board {
   }
 
   _renderStats() {
+    this._statsPresenter.destroy();
     this._statsPresenter.init();
   }
 
   _clearBoard() {
     Object(_utils_render__WEBPACK_IMPORTED_MODULE_2__["remove"])(this._sortComponent);
     Object(_utils_render__WEBPACK_IMPORTED_MODULE_2__["remove"])(this._moviesComponent);
+    this._statsPresenter.destroy();
   }
 
   _renderBoard() {
@@ -24551,22 +24547,12 @@ class Board {
   }
 
   _updateBoard() {
-    if (this._statsComponent !== null) {
-      Object(_utils_render__WEBPACK_IMPORTED_MODULE_2__["remove"])(this._statsComponent);
-    }
-
     if (this._getMovies().length !== 0) {
       this._renderSort();
     }
     this._renderMovies();
     this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
     this._moviesListPresenter.updateExtraMoviesList();
-  }
-
-  _clearStats() {
-    if (this._statsComponent !== null) {
-      Object(_utils_render__WEBPACK_IMPORTED_MODULE_2__["remove"])(this._statsComponent);
-    }
   }
 
   _showStats() {
@@ -25117,6 +25103,11 @@ class StatsMenuFilter {
     this._currentFilter = this._statsFilterModel.get();
 
     const filters = this._getFilters();
+
+    if (this._statsMenuFilterComponent !== null) {
+      this._statsMenuFilterComponent = null;
+    }
+
     const prevFilterComponent = this._statsMenuFilterComponent;
 
     this._statsMenuFilterComponent = new _view_stats__WEBPACK_IMPORTED_MODULE_2__["default"](filters, this._currentFilter, this._moviesModel.getWatchedMovies());
@@ -25129,9 +25120,17 @@ class StatsMenuFilter {
 
     Object(_utils_render__WEBPACK_IMPORTED_MODULE_1__["replace"])(this._statsMenuFilterComponent, prevFilterComponent);
     Object(_utils_render__WEBPACK_IMPORTED_MODULE_1__["remove"])(prevFilterComponent);
+
+  }
+
+  destroy() {
+    if (this._statsMenuFilterComponent !== null) {
+      Object(_utils_render__WEBPACK_IMPORTED_MODULE_1__["remove"])(this._statsMenuFilterComponent);
+    }
   }
 
   _handleModelEvent() {
+    this.destroy();
     this.init();
   }
 
@@ -25139,7 +25138,7 @@ class StatsMenuFilter {
     if (this._currentFilter === filterType) {
       return;
     }
-    this._statsFilterModel.set(_const__WEBPACK_IMPORTED_MODULE_0__["UpdateType"].STATS, filterType);
+    this._statsFilterModel.set(_const__WEBPACK_IMPORTED_MODULE_0__["UpdateType"].MAJOR, filterType);
   }
 
   _getFilters() {
