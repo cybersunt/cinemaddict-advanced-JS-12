@@ -114,7 +114,7 @@ const createStatsTemplate = (filters, currentFilterType) => {
 
   const totalDurationWatchedMovies = getTotalDuration(movies);
 
-  const mostPopularGenre = () => Object.keys(getStatisticsGenre(movies)[0]);
+  const mostPopularGenre = () => movies.length !== 0 ? Object.keys(getStatisticsGenre(movies)[0]) : ``;
 
   return `<section class="statistic">
     <p class="statistic__rank">
@@ -174,6 +174,10 @@ export default class StatsView extends Smart {
 
   _setCharts() {
     const {movies} = getFilteredMovies(this._filters, this._currentFilter);
+
+    if (movies.length === 0) {
+      return;
+    }
 
     if (this._statisticCtx !== null) {
       this._statisticCtx = null;

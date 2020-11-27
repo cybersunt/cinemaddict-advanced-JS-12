@@ -3,15 +3,15 @@ import {remove, render, RenderPosition, replace} from "../utils/render";
 import StatsView from "../view/stats";
 
 const timeRange = {
-  TODAY: Number(new Date(2020, 10, 31)),
-  WEEK: Number(new Date(2020, 10, 31)) - 604800000,
-  MONTH: new Date(2020, 10, 31).setMonth(new Date(2020, 10, 31).getMonth() - 1),
-  YEAR: new Date(2020, 10, 31).setFullYear(new Date(2020, 10, 31).getFullYear() - 1),
+  TODAY: Number(new Date(`October 31, 2020`)),
+  WEEK: Number(new Date(`October 31, 2020`)) - 604800000,
+  MONTH: new Date(`October 31, 2020`).setMonth(new Date(`October 31, 2020`).getMonth() - 1),
+  YEAR: new Date(`October 31, 2020`).setFullYear(new Date(`October 31, 2020`).getFullYear() - 1),
 };
 
 export const filter = {
   [StatsFilterType.ALL]: (movies) => movies,
-  [StatsFilterType.TODAY]: (movies) => movies.filter((movie) => Number(movie.watchingDate) === timeRange.TODAY),
+  [StatsFilterType.TODAY]: (movies) => movies.filter((movie) => Number(movie.watchingDate) >= timeRange.TODAY),
   [StatsFilterType.WEEK]: (movies) => movies.filter((movie) => Number(movie.watchingDate) > timeRange.WEEK),
   [StatsFilterType.MONTH]: (movies) => movies.filter((movie) => Number(movie.watchingDate) > timeRange.MONTH),
   [StatsFilterType.YEAR]: (movies) => movies.filter((movie) => Number(movie.watchingDate) > timeRange.YEAR)

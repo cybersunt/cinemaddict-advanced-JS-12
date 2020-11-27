@@ -68,13 +68,17 @@ export const sortMovieDate = (movieA, movieB) => {
 export const sortMovieRating = (movieA, movieB) => movieB.rating - movieA.rating;
 
 export const getTotalDuration = (movies) => {
-
+  if (movies.length === 0) {
+    return 0;
+  }
   const moviesDurationList = movies.map((element) => element.runtime);
-
   return moviesDurationList.reduce((a, b) => a + b);
 };
 
 export const getStatisticsGenre = (movies) => {
+  if (movies.length === 0) {
+    return 0;
+  }
 
   const genresList = movies.map((element) => element.genres).flat();
 
