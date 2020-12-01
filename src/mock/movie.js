@@ -46,9 +46,9 @@ const generateComments = () => {
   for (let i = 0; i < countComments; i++) {
     messages.push({
       id: nanoid(),
-      emoji: getRandomElement(EMOJI),
+      emotion: getRandomElement(EMOJI),
       author: getRandomElement(ACTORS),
-      message: getRandomElement(DESCRIPTIONS),
+      comment: getRandomElement(DESCRIPTIONS),
       date: generateDate()
     });
   }
@@ -58,12 +58,10 @@ const generateComments = () => {
 
 export const generateMovie = (idx) => {
   const title = getRandomElement(TITLES);
-  const poster = getRandomElement(POSTERS);
 
   return {
     id: idx,
-    poster,
-    fullPoster: poster,
+    poster: getRandomElement(POSTERS),
     title,
     originalTitle: title,
     description: getArrayRandomLength(movieDetailsData.DESCRIPTION_MIN_LENGTH, movieDetailsData.DESCRIPTION_MAX_LENGTH, DESCRIPTIONS),
