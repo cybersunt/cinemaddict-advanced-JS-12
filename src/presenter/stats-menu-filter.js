@@ -3,10 +3,10 @@ import {remove, render, RenderPosition, replace} from "../utils/render";
 import StatsView from "../view/stats";
 
 const timeRange = {
-  TODAY: Number(new Date(`October 31, 2020`)),
-  WEEK: Number(new Date(`October 31, 2020`)) - 604800000,
-  MONTH: new Date(`October 31, 2020`).setMonth(new Date(`October 31, 2020`).getMonth() - 1),
-  YEAR: new Date(`October 31, 2020`).setFullYear(new Date(`October 31, 2020`).getFullYear() - 1),
+  TODAY: Number(new Date()),
+  WEEK: Number(new Date()) - 604800000,
+  MONTH: new Date().setMonth(new Date().getMonth() - 1),
+  YEAR: new Date().setFullYear(new Date().getFullYear() - 1),
 };
 
 export const filter = {
