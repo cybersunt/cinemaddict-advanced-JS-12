@@ -1,6 +1,6 @@
 import Observer from "../utils/observer.js";
 import {filter} from "../presenter/site-menu-filter";
-import {FilterType} from "../const";
+import { FilterType} from "../const";
 
 export default class MoviesModel extends Observer {
   constructor() {
@@ -52,5 +52,100 @@ export default class MoviesModel extends Observer {
     });
 
     this.updateMovie(updateType, newMovie);
+  }
+  static adaptToClient(movie) {
+    const adaptedMovie = Object.assign(
+        {},
+        movie,
+        {
+          poster: movie.film_info.poster,
+          title: movie.film_info.title,
+          originalTitle: movie.film_info.alternative_title,
+          description: movie.film_info.description,
+          releaseDate: movie.film_info.release.date !== null ? new Date(movie.film_info.release.date) : movie.film_info.release.date,
+          director: movie.film_info.director,
+          writers: movie.film_info.writers,
+          actors: movie.film_info.actors,
+          runtime: movie.film_info.runtime,
+          country: movie.film_info.release.release_country,
+          genres: movie.film_info.genre,
+          rating: movie.film_info.total_rating,
+          ageLimitations: movie.film_info.age_rating,
+          isWatchlist: movie.user_details.watchlist,
+          isHistory: movie.user_details.already_watched,
+          isFavorite: movie.user_details.favorite,
+          watchingDate: movie.user_details.watching_date !== null ? new Date(movie.user_details.watching_date) : movie.film_info.release.date,
+        }
+    );
+
+    // Ненужные ключи мы удаляем
+    delete adaptedMovie.film_info.poster;
+    delete adaptedMovie.film_info.title;
+    delete adaptedMovie.film_info.alternative_title;
+    delete adaptedMovie.film_info.director;
+    delete adaptedMovie.film_info.writers;
+    delete adaptedMovie.film_info.actors;
+    delete adaptedMovie.film_info.runtime;
+    delete adaptedMovie.film_info.release.date;
+    delete adaptedMovie.film_info.release.release_country;
+    delete adaptedMovie.film_info.genre;
+    delete adaptedMovie.film_info.age_rating;
+    delete adaptedMovie.user_details.watchlist;
+    delete adaptedMovie.user_details.already_watched;
+    delete adaptedMovie.user_details.favorite;
+    delete adaptedMovie.user_details.watching_date;
+
+    return adaptedMovie;
+  }
+
+  static adaptToServer(movie) {
+    const adaptedMovie = Object.assign(
+        {},
+        movie,
+        {
+          "film_info": {
+            "title": movie.title,
+            "alternative_title": movie.originalTitle,
+            "total_rating": movie.rating,
+            "poster": movie.poster,
+            "age_rating": movie.ageLimitations,
+            "director": movie.director,
+            "writers": movie.writes,
+            "actors": movie.actors,
+            "release": {
+              "date": movie.releaseDate instanceof Date ? movie.releaseDate.toISOString() : null, // На сервере дата хранится в ISO формате
+              "release_country": movie.country
+            },
+            "runtime": movie.runtime,
+            "genre": movie.genres,
+            "description": movie.description
+          },
+          "user_details": {
+            "watchlist": movie.isWatchlist,
+            "already_watched": movie.isHistory,
+            "watching_date": movie.watchingDate instanceof Date ? movie.watchingDate.toISOString() : null, // На сервере дата хранится в ISO формате
+            "favorite": movie.isFavorite
+          }
+        }
+    );
+
+    // Ненужные ключи мы удаляем
+    delete adaptedMovie.title;
+    delete adaptedMovie.originalTitle;
+    delete adaptedMovie.rating;
+    delete adaptedMovie.poster;
+    delete adaptedMovie.ageLimitations;
+    delete adaptedMovie.director;
+    delete adaptedMovie.writers;
+    delete adaptedMovie.actors;
+    delete adaptedMovie.releaseDate;
+    delete adaptedMovie.runtime;
+    delete adaptedMovie.genres;
+    delete adaptedMovie.isWatchlist;
+    delete adaptedMovie.isHistory;
+    delete adaptedMovie.isFavorite;
+    delete adaptedMovie.watchingDate;
+
+    return adaptedMovie;
   }
 }
