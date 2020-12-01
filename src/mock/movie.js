@@ -79,6 +79,7 @@ export const generateMovie = (idx) => {
     comments: generateComments(),
     isWatchlist: getBooleanValue(),
     isHistory: getBooleanValue(),
-    isFavorite: getBooleanValue()
+    isFavorite: getBooleanValue(),
+    watchingDate: generateRandomDate(movieDetailsData.WATCHING_DATE_START, movieDetailsData.WATCHING_DATE_END)
   };
 };

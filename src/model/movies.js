@@ -1,4 +1,6 @@
 import Observer from "../utils/observer.js";
+import {filter} from "../presenter/site-menu-filter";
+import {FilterType} from "../const";
 
 export default class MoviesModel extends Observer {
   constructor() {
@@ -12,6 +14,10 @@ export default class MoviesModel extends Observer {
 
   get() {
     return this._movies;
+  }
+
+  getWatchedMovies() {
+    return filter[FilterType.HISTORY](this._movies);
   }
 
   updateMovie(updateType, update) {

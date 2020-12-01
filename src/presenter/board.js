@@ -1,21 +1,25 @@
 import MoviesView from "../view/movies";
 import SortView from "../view/sort";
-import {render, RenderPosition} from "../utils/render";
+import {remove, render, RenderPosition} from "../utils/render";
 import MoviesList from "./movies-list";
 import {SortType, UpdateType, UserAction} from "../const";
 import {sortMovieDate, sortMovieRating} from "../utils/movie";
 import SiteMenuFilter, {filter} from "./site-menu-filter";
+import StatsMenuFilter from "./stats-menu-filter";
 
 export default class Board {
-  constructor(boardContainer, moviesModel, filterModel) {
+  constructor(boardContainer, moviesModel, filterModel, statsFilterModel) {
     this._boardContainer = boardContainer;
     this._moviesModel = moviesModel;
     this._filterModel = filterModel;
+    this._statsFilterModel = statsFilterModel;
 
     this._sortComponent = null;
 
-    this._siteMenuFilterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel);
+    this._showStats = this._showStats.bind(this);
 
+    this._siteMenuFilterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel, this._showStats);
+    this._statsPresenter = new StatsMenuFilter(this._boardContainer, this._statsFilterModel, this._moviesModel);
     this._moviesComponent = new MoviesView();
     this._moviesListPresenter = new MoviesList(this._moviesComponent);
     this._currentSortType = SortType.DEFAULT;
@@ -34,14 +38,14 @@ export default class Board {
   _getMovies() {
     const filterType = this._filterModel.get();
     const movies = this._moviesModel.get().slice();
-    const filtredMovies = filter[filterType](movies);
+    const filteredMovies = filter[filterType](movies);
     switch (this._currentSortType) {
       case SortType.DATE:
-        return filtredMovies.sort(sortMovieDate);
+        return filteredMovies.sort(sortMovieDate);
       case SortType.RATING:
-        return filtredMovies.sort(sortMovieRating);
+        return filteredMovies.sort(sortMovieRating);
     }
-    return filtredMovies;
+    return filteredMovies;
   }
 
   _handleViewAction(actionType, updateType, update) {
@@ -64,7 +68,8 @@ export default class Board {
         this._moviesListPresenter.movieChange(data);
         break;
       case UpdateType.MAJOR:
-        this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
+        this._clearBoard();
+        this._updateBoard();
         break;
     }
   }
@@ -99,6 +104,17 @@ export default class Board {
     this._moviesListPresenter.init(this._getMovies().slice(), this._handleViewAction);
   }
 
+  _renderStats() {
+    this._statsPresenter.destroy();
+    this._statsPresenter.init();
+  }
+
+  _clearBoard() {
+    remove(this._sortComponent);
+    remove(this._moviesComponent);
+    this._statsPresenter.destroy();
+  }
+
   _renderBoard() {
     this._renderSiteMenu();
     if (this._getMovies().length !== 0) {
@@ -107,4 +123,19 @@ export default class Board {
     this._renderMovies();
     this._renderMoviesList();
   }
+
+  _updateBoard() {
+    if (this._getMovies().length !== 0) {
+      this._renderSort();
+    }
+    this._renderMovies();
+    this._moviesListPresenter.updateMainMovieList(this._getMovies(), true);
+    this._moviesListPresenter.updateExtraMoviesList();
+  }
+
+  _showStats() {
+    this._clearBoard();
+    this._renderStats();
+  }
 }
+

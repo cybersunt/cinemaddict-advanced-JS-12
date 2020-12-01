@@ -7,6 +7,14 @@ export const FilterType = {
   WATCHLIST: `watchlist`
 };
 
+export const StatsFilterType = {
+  ALL: `all-movies`,
+  TODAY: `today`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`
+};
+
 export const UserAction = {
   ADD_COMMENT: `ADD_COMMENT`,
   DELETE_COMMENT: `DELETE_COMMENT`,
@@ -15,7 +23,7 @@ export const UserAction = {
 
 export const UpdateType = {
   PATCH: `PATCH`,
-  MAJOR: `MAJOR`,
+  MAJOR: `MAJOR`
 };
 
 export const SortType = {
@@ -31,7 +39,9 @@ export const movieDetailsData = {
   DESCRIPTION_MAX_LENGTH: 5,
   ACTORS_MIN: 3,
   RELEASE_DATE_START: `01/01/1970`,
-  RELEASE_DATE_END: `01/08/2020`,
+  RELEASE_DATE_END: `10/01/2020`,
+  WATCHING_DATE_START: `07/01/2019`,
+  WATCHING_DATE_END: `11/31/2020`,
   RUNTIME_MIN: 90,
   RUNTIME_MAX: 180,
   GENRES_MIN: 1,

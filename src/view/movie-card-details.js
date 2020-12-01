@@ -31,7 +31,7 @@ const createMovieCardDetailsTableRowTemplate = (term, value) => {
 const createMovieCardDetailsGenresTemplate = ({genres}) => {
   return genres.map((genre) =>
     `<span class="film-details__genre">${genre}</span>`
-  ).join(``);
+  ).join(`, `);
 };
 
 const createMovieCardDetailsTableTemplate = (movie) => {
@@ -44,12 +44,14 @@ const createMovieCardDetailsTableTemplate = (movie) => {
     country
   } = movie;
 
+  const [hours, minutes] = getRuntimeInHours(runtime);
+
   const detailsData = [
     [`Director`, director],
     [`Writers`, writers],
     [`Actors`, getStringFromArray(actors, `,`)],
     [`Release Date`, getReleaseDate(releaseDate)],
-    [`Runtime`, getRuntimeInHours(runtime)],
+    [`Runtime`, `${hours}h ${minutes}m`],
     [`Country`, country],
     [`Genres`, createMovieCardDetailsGenresTemplate(movie)]
   ];
