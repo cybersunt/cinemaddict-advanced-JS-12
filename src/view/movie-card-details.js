@@ -71,10 +71,10 @@ const createMovieCardDetailsCommentsListTemplate = (comments) => {
     `<li class="film-details__comment" data-id="${comment.id}">
         <span class="film-details__comment-emoji">
 
-          <img src="${getPictureUrl(`emoji`, comment.emoji)}.png" width="55" height="55" alt="emoji-smile">
+          <img src="${getPictureUrl(`emoji`, comment.emotion)}.png" width="55" height="55" alt="emoji-smile">
         </span>
         <div>
-          <p class="film-details__comment-text">${he.encode(comment.message)}</p>
+          <p class="film-details__comment-text">${he.encode(comment.comment)}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.author}</span>
             <span class="film-details__comment-day">${getCommentDate(comment.date)}</span>
@@ -89,10 +89,10 @@ const createMovieCardDetailsCommentsListTemplate = (comments) => {
 };
 
 const createMovieCardDetailsEmojiListTemplate = () => {
-  const content = EMOJI.map((emoji) =>
-    `<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emoji}" value="${emoji}">
-        <label class="film-details__emoji-label" for="emoji-${emoji}">
-          <img src="${getPictureUrl(`emoji`, emoji)}.png" width="30" height="30" alt="emoji">
+  const content = EMOJI.map((emotion) =>
+    `<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emotion}" value="${emotion}">
+        <label class="film-details__emoji-label" for="emoji-${emotion}">
+          <img src="${getPictureUrl(`emoji`, emotion)}.png" width="30" height="30" alt="emoji">
           </label>`
   ).join(``);
   return (
