@@ -175,9 +175,9 @@ export default class Movie {
       }
       const newComment = {
         id: nanoid(),
-        emoji: this._newCommentEmoji,
+        emotion: this._newCommentEmoji,
         author: `Author`,
-        message: this._newCommentMessage,
+        comment: this._newCommentMessage,
         date: new Date()
       };
       this._changeData(
