@@ -6,6 +6,7 @@ export default class MoviesModel extends Observer {
   constructor() {
     super();
     this._movies = [];
+    this._comments = [];
   }
 
   set(movies) {
@@ -36,6 +37,14 @@ export default class MoviesModel extends Observer {
     this._notify(updateType, update);
   }
 
+  setComments(comments) {
+    this._comments = comments.slice();
+  }
+
+  getComments() {
+    return this._comments;
+  }
+
   addComment(updateType, update) {
     const commentsCopy = update.film.comments.slice();
     commentsCopy.push(update.comment);
@@ -53,7 +62,8 @@ export default class MoviesModel extends Observer {
 
     this.updateMovie(updateType, newMovie);
   }
-  static adaptToClient(movie) {
+
+  static adaptToClient(movie, comments) {
     const adaptedMovie = Object.assign(
         {},
         movie,
@@ -70,6 +80,7 @@ export default class MoviesModel extends Observer {
           country: movie.film_info.release.release_country,
           genres: movie.film_info.genre,
           rating: movie.film_info.total_rating,
+          comments,
           ageLimitations: movie.film_info.age_rating,
           isWatchlist: movie.user_details.watchlist,
           isHistory: movie.user_details.already_watched,
@@ -79,21 +90,8 @@ export default class MoviesModel extends Observer {
     );
 
     // Ненужные ключи мы удаляем
-    delete adaptedMovie.film_info.poster;
-    delete adaptedMovie.film_info.title;
-    delete adaptedMovie.film_info.alternative_title;
-    delete adaptedMovie.film_info.director;
-    delete adaptedMovie.film_info.writers;
-    delete adaptedMovie.film_info.actors;
-    delete adaptedMovie.film_info.runtime;
-    delete adaptedMovie.film_info.release.date;
-    delete adaptedMovie.film_info.release.release_country;
-    delete adaptedMovie.film_info.genre;
-    delete adaptedMovie.film_info.age_rating;
-    delete adaptedMovie.user_details.watchlist;
-    delete adaptedMovie.user_details.already_watched;
-    delete adaptedMovie.user_details.favorite;
-    delete adaptedMovie.user_details.watching_date;
+    delete adaptedMovie.film_info;
+    delete adaptedMovie.user_details;
 
     return adaptedMovie;
   }

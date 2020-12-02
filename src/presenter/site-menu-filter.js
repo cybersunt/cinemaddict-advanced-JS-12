@@ -27,6 +27,8 @@ export default class SiteMenuFilter {
   }
 
   init() {
+    const comments = this._moviesModel.getComments();
+    console.log(comments)
     const filters = this._getFilters();
     const prevFilterComponent = this._siteMenuFilterComponent;
 

@@ -164,6 +164,8 @@ const createMovieCardDetailsTemplate = (movie)=> {
     isHistory,
     isFavorite} = movie;
 
+  console.log(comments)
+
   return (
     `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -183,7 +185,7 @@ const createMovieCardDetailsTemplate = (movie)=> {
 
           ${createMovieCardDetailsTableTemplate(movie)}
 
-          <p class="film-details__film-description">${getStringFromArray(description, `.`)}</p>
+          <p class="film-details__film-description">${description}</p>
         </div>
       </div>
 
@@ -223,11 +225,6 @@ export default class MovieCardDetailsView extends Smart {
 
   getTemplate() {
     return createMovieCardDetailsTemplate(this._movie);
-  }
-  reset() {
-    // this.updateData(
-    //    MovieOpen.parseMovieToData(movie)
-    // );
   }
 
   restoreHandlers() {
