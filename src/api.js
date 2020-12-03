@@ -19,7 +19,7 @@ export default class Api {
   getMovies() {
     return this._load({url: `movies`})
       .then(Api.toJSON)
-      .then((movies) => movies.map(MoviesModel.adaptToClient);
+      .then((movies) => movies.map(MoviesModel.adaptToClient));
   }
 
   updateMovie(movie) {
