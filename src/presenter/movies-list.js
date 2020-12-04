@@ -18,7 +18,7 @@ export default class MoviesList {
 
     this._showMoreButtonComponent = null;
 
-    this._loadingCompomemt = new MainMoviesListView(`Loading`);
+    this._loadingCompomemt = new MainMoviesListView(`Loading...`);
     this._emptyMoviesListComponent = new MainMoviesListView(`There are no movies in our database`, false, true);
     this._mainMoviesListComponent = new MainMoviesListView(`All movies. Upcoming`, true);
     this._topRatedMoviesListComponent = new ExtraMoviesListView(`Top rated`);
@@ -117,8 +117,10 @@ export default class MoviesList {
   }
 
   _renderExtraMoviesList() {
-    this._renderMovieList(this._topRatedMoviesListComponent, MOVIES_EXTRA_COUNT, this._movieTopRatedPresenter);
-    this._renderMovieList(this._mostCommentedMoviesListComponent, MOVIES_EXTRA_COUNT, this._movieMostCommentedPresenter);
+    if (this._listMovies.length !== 0) {
+      this._renderMovieList(this._topRatedMoviesListComponent, MOVIES_EXTRA_COUNT, this._movieTopRatedPresenter);
+      this._renderMovieList(this._mostCommentedMoviesListComponent, MOVIES_EXTRA_COUNT, this._movieMostCommentedPresenter);
+    }
   }
 
   _clearMainMovieList(resetRenderedMovieCount = false) {
