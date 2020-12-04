@@ -1,19 +1,19 @@
 import Abstract from "./abstract";
 
-const createMovieStatsTemplate = (movies) => {
+const createMovieStatsTemplate = (countMovies) => {
   return (
     `<section class="footer__statistics">
-       <p>${movies.length} movies inside</p>
+       <p>${countMovies} movies inside</p>
      </section>`
   );
 };
 
-export default class MovieStatsView extends Abstract {
-  constructor(movies) {
+export default class MovieStats extends Abstract {
+  constructor(countMovies) {
     super();
-    this._movies = movies;
+    this._countMovies = countMovies;
   }
   getTemplate() {
-    return createMovieStatsTemplate(this._movies);
+    return createMovieStatsTemplate(this._countMovies);
   }
 }

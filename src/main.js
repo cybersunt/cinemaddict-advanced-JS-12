@@ -6,14 +6,16 @@ import FilterModel from "./model/filter";
 import StatsFilterModel from "./model/stats";
 import Api from "./api";
 import {UpdateType} from "./const";
+import MovieStats from "./view/movie-stats";
 
 const AUTHORIZATION = `Basic bhz44vq5a0nzh4j`;
 const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
+const siteFooterElement = document.querySelector(`.footer`);
 
-export const api = new Api(END_POINT, AUTHORIZATION);
+const api = new Api(END_POINT, AUTHORIZATION);
 
 const moviesModel = new MoviesModel();
 const filterModel = new FilterModel();
@@ -27,7 +29,9 @@ mainInner.init();
 api.getMovies()
   .then((movies) => {
     moviesModel.set(UpdateType.INIT, movies);
+    render(siteFooterElement, new MovieStats(moviesModel.get().length), RenderPosition.BEFOREEND);
   })
   .catch(()=> {
     moviesModel.set(UpdateType.INIT, []);
+    render(siteFooterElement, new MovieStats(moviesModel.get().length), RenderPosition.BEFOREEND);
   });
