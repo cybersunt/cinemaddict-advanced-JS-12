@@ -20,7 +20,7 @@ export default class Board {
     this._showStats = this._showStats.bind(this);
 
     this._siteMenuFilterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel, this._showStats);
-    this._statsPresenter = new StatsMenuFilter(this._boardContainer, this._statsFilterModel, this._moviesModel);
+    this._statsPresenter = null;
     this._moviesComponent = new MoviesView();
     this._moviesListPresenter = new MoviesList(this._moviesComponent, this._api);
     this._currentSortType = SortType.DEFAULT;
@@ -40,6 +40,7 @@ export default class Board {
     const filterType = this._filterModel.get();
     const movies = this._moviesModel.get().slice();
     const filteredMovies = filter[filterType](movies);
+
     switch (this._currentSortType) {
       case SortType.DATE:
         return filteredMovies.sort(sortMovieDate);
@@ -106,14 +107,17 @@ export default class Board {
   }
 
   _renderStats() {
-    this._statsPresenter.destroy();
+    this._statsPresenter = new StatsMenuFilter(this._boardContainer, this._statsFilterModel, this._moviesModel);
     this._statsPresenter.init();
   }
 
   _clearBoard() {
     remove(this._sortComponent);
     remove(this._moviesComponent);
-    this._statsPresenter.destroy();
+
+    if (this._statsPresenter !== null) {
+      this._statsPresenter.destroy();
+    }
   }
 
   _renderBoard() {
