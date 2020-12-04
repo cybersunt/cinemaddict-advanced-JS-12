@@ -4,15 +4,9 @@ import {ONE_HOUR} from "../const";
 
 export const getRandomElement = (array) => array[getRandomInteger(0, array.length - 1)];
 
-export const getArrayRandomLength = (min, max, array) => array.slice(0, (getRandomInteger(min, max)) - array.length);
-
-export const getBooleanValue = () => Boolean(getRandomInteger(0, 1));
-
 export const getStringFromArray = (array, sign) => {
   return array.join(`${sign} `);
 };
-
-export const getСapitalizedString = (str) => str.replace(/(^|\s)\S/g, (a) =>a.toUpperCase());
 
 export const getPictureUrl = (dir, picture) => `./images/${dir}/${picture}`;
 
