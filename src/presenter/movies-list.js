@@ -18,6 +18,7 @@ export default class MoviesList {
 
     this._showMoreButtonComponent = null;
 
+    this._loadingCompomemt = new MainMoviesListView(`Loading`);
     this._emptyMoviesListComponent = new MainMoviesListView(`There are no movies in our database`, false, true);
     this._mainMoviesListComponent = new MainMoviesListView(`All movies. Upcoming`, true);
     this._topRatedMoviesListComponent = new ExtraMoviesListView(`Top rated`);
@@ -68,6 +69,14 @@ export default class MoviesList {
     const movies = this._listMovies.slice(0, Math.min(this._listMovies.length, countMovies));
     render(this._moviesContainer, component, RenderPosition.BEFOREEND);
     this._renderMovies(movies, component, presenterStore);
+  }
+
+  renderLoading() {
+    render(this._moviesContainer, this._loadingCompomemt, RenderPosition.BEFOREEND);
+  }
+
+  clearLoading() {
+    remove(this._loadingCompomemt)
   }
 
   _handleShowMoreButtonClick() {

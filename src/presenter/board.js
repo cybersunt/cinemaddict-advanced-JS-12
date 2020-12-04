@@ -15,12 +15,14 @@ export default class Board {
     this._statsFilterModel = statsFilterModel;
     this._api = api;
 
+    this._isLoading = true;
+
     this._sortComponent = null;
+    this._statsPresenter = null;
 
     this._showStats = this._showStats.bind(this);
 
     this._siteMenuFilterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel, this._showStats);
-    this._statsPresenter = null;
     this._moviesComponent = new MoviesView();
     this._moviesListPresenter = new MoviesList(this._moviesComponent, this._api);
     this._currentSortType = SortType.DEFAULT;
@@ -74,7 +76,8 @@ export default class Board {
         this._updateBoard();
         break;
       case UpdateType.INIT:
-        this._clearBoard();
+        this._isLoading = false;
+        this._moviesListPresenter.clearLoading();
         this._renderBoard();
         break;
     }
@@ -130,6 +133,12 @@ export default class Board {
       this._renderSort();
     }
     this._renderMovies();
+
+    if (this._isLoading) {
+      this._moviesListPresenter.renderLoading();
+      return;
+    }
+
     this._renderMoviesList();
   }
 
