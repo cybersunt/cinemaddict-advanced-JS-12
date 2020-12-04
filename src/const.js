@@ -23,7 +23,8 @@ export const UserAction = {
 
 export const UpdateType = {
   PATCH: `PATCH`,
-  MAJOR: `MAJOR`
+  MAJOR: `MAJOR`,
+  INIT: `INIT`
 };
 
 export const SortType = {

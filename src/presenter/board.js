@@ -73,6 +73,10 @@ export default class Board {
         this._clearBoard();
         this._updateBoard();
         break;
+      case UpdateType.INIT:
+        this._clearBoard();
+        this._renderBoard();
+        break;
     }
   }
 

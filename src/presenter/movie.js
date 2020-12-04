@@ -79,8 +79,6 @@ export default class Movie {
   }
 
   _showMovieCardDetails() {
-
-
     this._api.requestComments(this._movie.id)
       .then((comments) => {
         this._commentsModel.set(comments);

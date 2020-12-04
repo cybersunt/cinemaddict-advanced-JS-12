@@ -5,6 +5,7 @@ import MoviesModel from "./model/movies";
 import FilterModel from "./model/filter";
 import StatsFilterModel from "./model/stats";
 import Api from "./api";
+import {UpdateType} from "./const";
 
 const AUTHORIZATION = `Basic bhz44vq5a0nzh4j`;
 const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
@@ -23,6 +24,10 @@ render(siteHeaderElement, new UserInfo(), RenderPosition.BEFOREEND);
 const mainInner = new Board(siteMainElement, moviesModel, filterModel, statsFilterModel, api);
 mainInner.init();
 
-api.getMovies().then((movies) => {
-  moviesModel.set(movies);
-});
+api.getMovies()
+  .then((movies) => {
+    moviesModel.set(UpdateType.INIT, movies);
+  })
+  .catch(()=> {
+    moviesModel.set(UpdateType.INIT, []);
+  });

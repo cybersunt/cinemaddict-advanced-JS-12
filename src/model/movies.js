@@ -8,8 +8,9 @@ export default class MoviesModel extends Observer {
     this._movies = [];
   }
 
-  set(movies) {
+  set(updateType, movies) {
     this._movies = movies.slice();
+    this._notify(updateType);
   }
 
   get() {
