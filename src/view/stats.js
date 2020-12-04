@@ -112,8 +112,6 @@ const createStatsTemplate = (filters, currentFilterType) => {
 
   const {movies} = getFilteredMovies(filters, currentFilterType);
 
-  console.log(movies);
-
   const totalDurationWatchedMovies = getTotalDuration(movies);
 
   const mostPopularGenre = () => movies.length !== 0 ? Object.keys(getStatisticsGenre(movies)[0]) : ``;

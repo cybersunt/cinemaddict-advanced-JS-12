@@ -34,7 +34,7 @@ const createMovieCardTemplate = (movie) => {
          <span class="film-card__duration">${hours}h ${minutes}m</span>
          <span class="film-card__genre">${getRandomElement(genres)}</span>
        </p>
-      <img src="${getPictureUrl(`posters`, poster)}" alt="" class="film-card__poster" data-id="${id}">
+      <img src="./${poster}" alt="" class="film-card__poster" data-id="${id}">
       <p class="film-card__description">${description}</p>
       <a class="film-card__comments">${comments.length} comments</a>
       <form class="film-card__controls">
@@ -58,7 +58,7 @@ export default class MovieCardView extends Abstract {
     this._movieCardClickHandler = this._movieCardClickHandler.bind(this);
   }
   getTemplate() {
-    return createMovieCardTemplate(this._movie);
+    return createMovieCardTemplate(this._movie, this._comments);
   }
 
   _favoriteClickHandler(evt) {

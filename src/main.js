@@ -20,7 +20,7 @@ const statsFilterModel = new StatsFilterModel();
 
 render(siteHeaderElement, new UserInfo(), RenderPosition.BEFOREEND);
 
-const mainInner = new Board(siteMainElement, moviesModel, filterModel, statsFilterModel);
+const mainInner = new Board(siteMainElement, moviesModel, filterModel, statsFilterModel, api);
 mainInner.init();
 
 api.getMovies().then((movies) => {

@@ -3,6 +3,7 @@ import MovieCardDetailsView from "../view/movie-card-details";
 import {remove, render, RenderPosition, replace} from "../utils/render";
 import {UserAction, UpdateType} from "../const.js";
 import {nanoid} from "nanoid";
+import CommentsModel from "../model/comments";
 
 const Mode = {
   DEFAULT: `DEFAULT`,
@@ -10,7 +11,7 @@ const Mode = {
 };
 
 export default class Movie {
-  constructor(movieListContainer, changeData, changeMode) {
+  constructor(movieListContainer, changeData, changeMode, api) {
     this._bodyElement = document.querySelector(`body`);
     this._movieListElementContainer = movieListContainer.querySelector(`.films-list__container`);
 
@@ -20,9 +21,12 @@ export default class Movie {
 
     this._changeData = changeData;
     this._changeMode = changeMode;
+    this._api = api;
 
     this._newCommentEmoji = null;
     this._newCommentMessage = null;
+
+    this._commentsModel = new CommentsModel();
 
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
@@ -32,53 +36,35 @@ export default class Movie {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._enterKeyDownHandler = this._enterKeyDownHandler.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
-  }
+
+    this._handleModelEvent = this._handleModelEvent.bind(this);
+
+    this._commentsModel.addObserver(this._handleModelEvent);
+ }
 
   init(movie) {
     this._movie = movie;
 
     const prevMovieCardComponent = this._movieCardComponent;
-    const prevMovieCardDetailsComponent = this._movieCardDetailsComponent;
 
-    this._movieCardComponent = new MovieCardView(movie);
-    this._movieCardDetailsComponent = new MovieCardDetailsView(movie);
+    this._movieCardComponent = new MovieCardView(this._movie);
 
     this._movieCardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._movieCardComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._movieCardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
 
-    this._movieCardDetailsComponent.setButtonCloseClickHandler(()=> {
-      this._hideMovieCardDetails();
-    });
-    this._movieCardDetailsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
-    this._movieCardDetailsComponent.setHistoryClickHandler(this._handleHistoryClick);
-    this._movieCardDetailsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
-    this._movieCardDetailsComponent.setDeleteClickHandler(this._handleDeleteClick);
-
     this._movieCardComponent.setMovieCardClickHandler(() => {
       this._handleMovieCardClick();
     });
 
-    if (prevMovieCardComponent === null || prevMovieCardDetailsComponent === null) {
+    if (prevMovieCardComponent === null) {
       render(this._movieListElementContainer, this._movieCardComponent, RenderPosition.BEFOREEND);
       return;
     }
 
-    document.addEventListener(`keydown`, this._escKeyDownHandler);
-    document.addEventListener(`keydown`, this._enterKeyDownHandler);
-
-    if (this._movieListElementContainer.contains(prevMovieCardComponent.getElement())) {
-      render(this._bodyElement, prevMovieCardDetailsComponent, RenderPosition.BEFOREEND);
-    }
-
     replace(this._movieCardComponent, prevMovieCardComponent);
 
-    if (this._mode === Mode.OPENED) {
-      replace(this._movieCardDetailsComponent, prevMovieCardDetailsComponent);
-    }
-
     remove(prevMovieCardComponent);
-    remove(prevMovieCardDetailsComponent);
   }
 
   destroy() {
@@ -90,6 +76,47 @@ export default class Movie {
     if (this._mode !== Mode.DEFAULT) {
       this._hideMovieCardDetails();
     }
+  }
+
+  _showMovieCardDetails() {
+
+
+    this._api.requestComments(this._movie.id)
+      .then((comments) => {
+        this._commentsModel.set(comments);
+        this._movie.comments = this._commentsModel.get();
+
+        this._movieCardDetailsComponent = new MovieCardDetailsView(this._movie);
+
+        this._movieCardDetailsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+        this._movieCardDetailsComponent.setHistoryClickHandler(this._handleHistoryClick);
+        this._movieCardDetailsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+
+        render(this._bodyElement, this._movieCardDetailsComponent, RenderPosition.BEFOREEND);
+
+        this._movieCardDetailsComponent.setDeleteClickHandler(this._handleDeleteClick);
+
+        this._movieCardDetailsComponent.setButtonCloseClickHandler(()=> {
+          this._hideMovieCardDetails();
+        });
+
+        this._changeMode();
+        this._mode = Mode.OPENED;
+
+        // this._movieCardDetailsComponent.restoreHandlers();
+
+        document.addEventListener(`keydown`, this._escKeyDownHandler);
+        document.addEventListener(`keydown`, this._enterKeyDownHandler);
+      });
+  }
+
+  _hideMovieCardDetails() {
+    remove(this._movieCardDetailsComponent);
+    this._mode = Mode.DEFAULT;
+  }
+
+  _handleModelEvent() {
+
   }
 
   _handleFavoriteClick() {
@@ -142,24 +169,10 @@ export default class Movie {
     );
   }
 
-  _showMovieCardDetails() {
-    render(this._bodyElement, this._movieCardDetailsComponent, RenderPosition.BEFOREEND);
-    this._changeMode();
-    this._mode = Mode.OPENED;
-    this._movieCardDetailsComponent.restoreHandlers();
-    document.addEventListener(`keydown`, this._escKeyDownHandler);
-    document.addEventListener(`keydown`, this._enterKeyDownHandler);
-  }
-
-  _hideMovieCardDetails() {
-    remove(this._movieCardDetailsComponent);
-    this._mode = Mode.DEFAULT;
-  }
-
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
-      this._movieCardDetailsComponent.reset(this._movie);
+      // this._movieCardDetailsComponent.reset(this._movie);
       this._hideMovieCardDetails();
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
     }

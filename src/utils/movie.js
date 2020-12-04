@@ -10,7 +10,7 @@ export const getBooleanValue = () => Boolean(getRandomInteger(0, 1));
 
 export const getStringFromArray = (array, sign) => {
   return array.join(`${sign} `);
-}
+};
 
 export const getСapitalizedString = (str) => str.replace(/(^|\s)\S/g, (a) =>a.toUpperCase());
 

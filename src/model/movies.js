@@ -1,12 +1,11 @@
 import Observer from "../utils/observer.js";
 import {filter} from "../presenter/site-menu-filter";
-import { FilterType} from "../const";
+import {FilterType} from "../const";
 
 export default class MoviesModel extends Observer {
   constructor() {
     super();
     this._movies = [];
-    this._comments = [];
   }
 
   set(movies) {

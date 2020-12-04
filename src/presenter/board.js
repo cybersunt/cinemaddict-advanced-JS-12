@@ -8,11 +8,12 @@ import SiteMenuFilter, {filter} from "./site-menu-filter";
 import StatsMenuFilter from "./stats-menu-filter";
 
 export default class Board {
-  constructor(boardContainer, moviesModel, filterModel, statsFilterModel) {
+  constructor(boardContainer, moviesModel, filterModel, statsFilterModel, api) {
     this._boardContainer = boardContainer;
     this._moviesModel = moviesModel;
     this._filterModel = filterModel;
     this._statsFilterModel = statsFilterModel;
+    this._api = api;
 
     this._sortComponent = null;
 
@@ -21,7 +22,7 @@ export default class Board {
     this._siteMenuFilterPresenter = new SiteMenuFilter(this._boardContainer, this._filterModel, this._moviesModel, this._showStats);
     this._statsPresenter = new StatsMenuFilter(this._boardContainer, this._statsFilterModel, this._moviesModel);
     this._moviesComponent = new MoviesView();
-    this._moviesListPresenter = new MoviesList(this._moviesComponent);
+    this._moviesListPresenter = new MoviesList(this._moviesComponent, this._api);
     this._currentSortType = SortType.DEFAULT;
 
     this._handleViewAction = this._handleViewAction.bind(this);

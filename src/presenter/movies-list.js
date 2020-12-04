@@ -8,8 +8,9 @@ const MOVIES_COUNT_PER_STEP = 5;
 const MOVIES_EXTRA_COUNT = 2;
 
 export default class MoviesList {
-  constructor(moviesContainer) {
+  constructor(moviesContainer, api) {
     this._moviesContainer = moviesContainer;
+    this._api = api;
     this._renderedMoviesCount = MOVIES_COUNT_PER_STEP;
     this._movieMainPresenter = {};
     this._movieTopRatedPresenter = {};
@@ -54,7 +55,7 @@ export default class MoviesList {
   }
 
   _renderMovie(movieListElement, movie, presenterStore) {
-    const moviePresenter = new Movie(movieListElement, this._changeData, this._handleModeChange);
+    const moviePresenter = new Movie(movieListElement, this._changeData, this._handleModeChange, this._api);
     moviePresenter.init(movie);
     presenterStore[movie.id] = moviePresenter;
   }

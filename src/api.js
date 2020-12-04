@@ -1,4 +1,5 @@
 import MoviesModel from "./model/movies";
+import CommentsModel from "../../1221137-cinemaddict-12/src/model/comments";
 
 const Method = {
   GET: `GET`,
@@ -14,6 +15,12 @@ export default class Api {
   constructor(endPoint, authorization) {
     this._endPoint = endPoint;
     this._authorization = authorization;
+  }
+
+  requestComments(movieId) {
+    return this._load({url: `comments/${movieId}`})
+      .then(Api.toJSON)
+      .then((comments) => comments.map(CommentsModel.adaptToClient));
   }
 
   getMovies() {

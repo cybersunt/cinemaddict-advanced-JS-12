@@ -164,8 +164,6 @@ const createMovieCardDetailsTemplate = (movie)=> {
     isHistory,
     isFavorite} = movie;
 
-  console.log(comments)
-
   return (
     `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -175,7 +173,7 @@ const createMovieCardDetailsTemplate = (movie)=> {
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="${getPictureUrl(`posters`, poster)}" alt="">
+          <img class="film-details__poster-img" src="${poster}" alt="">
 
           <p class="film-details__age">${ageLimitations}+</p>
         </div>
@@ -220,6 +218,7 @@ export default class MovieCardDetailsView extends Smart {
     this._commentID = null;
 
     this._setNewCommentHandler();
+
     this.setDeleteClickHandler(this._callback.deleteClick);
   }
 
