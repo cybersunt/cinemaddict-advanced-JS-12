@@ -1,6 +1,8 @@
 import {getRandomInteger} from "./common";
 import moment from "moment";
-import {ONE_HOUR} from "../const";
+import {MAX_LENGTH_DESCRIPTION, ONE_HOUR} from "../const";
+
+export const getTextOverflow = (text) => text.length >= MAX_LENGTH_DESCRIPTION ? `${text.slice(0, MAX_LENGTH_DESCRIPTION - 1)}...` : text;
 
 export const getRandomElement = (array) => array[getRandomInteger(0, array.length - 1)];
 

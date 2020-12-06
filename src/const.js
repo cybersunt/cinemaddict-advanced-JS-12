@@ -1,5 +1,7 @@
 export const ONE_HOUR = 60;
 
+export const MAX_LENGTH_DESCRIPTION = 140;
+
 export const FilterType = {
   ALL: `all`,
   FAVORITES: `favorites`,

@@ -1,4 +1,4 @@
-import {getPictureUrl, getRandomElement, getRuntimeInHours, getStringFromArray} from "../utils/movie";
+import {getRandomElement, getRuntimeInHours, getTextOverflow} from "../utils/movie";
 import Abstract from "./abstract";
 
 const createMovieCardTemplate = (movie) => {
@@ -35,7 +35,7 @@ const createMovieCardTemplate = (movie) => {
          <span class="film-card__genre">${getRandomElement(genres)}</span>
        </p>
       <img src="./${poster}" alt="" class="film-card__poster" data-id="${id}">
-      <p class="film-card__description">${description}</p>
+      <p class="film-card__description">${getTextOverflow(description)}</p>
       <a class="film-card__comments">${comments.length} comments</a>
       <form class="film-card__controls">
         <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${watchlistClassName}">Add to watchlist</button>
