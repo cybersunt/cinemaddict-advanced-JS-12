@@ -9,7 +9,7 @@ const createUserInfoTemplate = () => {
   );
 };
 
-export default class UserInfoView extends Abstract {
+export default class UserInfo extends Abstract {
   getTemplate() {
     return createUserInfoTemplate();
   }

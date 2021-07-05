@@ -1,29 +1,37 @@
-import {generateMovie} from "./mock/movie.js";
 import {render, RenderPosition} from "./utils/render";
-import UserInfoView from "./view/user-info";
-import MovieStatsView from "./view/movie-stats";
+import UserInfo from "./view/user-info";
 import Board from "./presenter/board";
 import MoviesModel from "./model/movies";
 import FilterModel from "./model/filter";
 import StatsFilterModel from "./model/stats";
+import Api from "./api";
+import {UpdateType} from "./const";
+import MovieStats from "./view/movie-stats";
 
-const MOVIES_COUNT = 22;
-
-export const movies = new Array(MOVIES_COUNT).fill(``).map((array, index) => generateMovie(index));
-
-const moviesModel = new MoviesModel();
-moviesModel.set(movies);
-
-const filterModel = new FilterModel();
-const statsFilterModel = new StatsFilterModel();
+const AUTHORIZATION = `Basic bhz44vq5a0nzh4j`;
+const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
-render(siteHeaderElement, new UserInfoView(), RenderPosition.BEFOREEND);
+const api = new Api(END_POINT, AUTHORIZATION);
 
-const mainInner = new Board(siteMainElement, moviesModel, filterModel, statsFilterModel);
+const moviesModel = new MoviesModel();
+const filterModel = new FilterModel();
+const statsFilterModel = new StatsFilterModel();
+
+render(siteHeaderElement, new UserInfo(), RenderPosition.BEFOREEND);
+
+const mainInner = new Board(siteMainElement, moviesModel, filterModel, statsFilterModel, api);
 mainInner.init();
-render(siteFooterElement, new MovieStatsView(movies), RenderPosition.BEFOREEND);
 
+api.getMovies()
+  .then((movies) => {
+    moviesModel.set(UpdateType.INIT, movies);
+    render(siteFooterElement, new MovieStats(moviesModel.get().length), RenderPosition.BEFOREEND);
+  })
+  .catch(()=> {
+    moviesModel.set(UpdateType.INIT, []);
+    render(siteFooterElement, new MovieStats(moviesModel.get().length), RenderPosition.BEFOREEND);
+  });

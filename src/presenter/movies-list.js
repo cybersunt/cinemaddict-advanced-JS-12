@@ -8,8 +8,9 @@ const MOVIES_COUNT_PER_STEP = 5;
 const MOVIES_EXTRA_COUNT = 2;
 
 export default class MoviesList {
-  constructor(moviesContainer) {
+  constructor(moviesContainer, api) {
     this._moviesContainer = moviesContainer;
+    this._api = api;
     this._renderedMoviesCount = MOVIES_COUNT_PER_STEP;
     this._movieMainPresenter = {};
     this._movieTopRatedPresenter = {};
@@ -17,6 +18,7 @@ export default class MoviesList {
 
     this._showMoreButtonComponent = null;
 
+    this._loadingCompomemt = new MainMoviesListView(`Loading...`);
     this._emptyMoviesListComponent = new MainMoviesListView(`There are no movies in our database`, false, true);
     this._mainMoviesListComponent = new MainMoviesListView(`All movies. Upcoming`, true);
     this._topRatedMoviesListComponent = new ExtraMoviesListView(`Top rated`);
@@ -54,7 +56,7 @@ export default class MoviesList {
   }
 
   _renderMovie(movieListElement, movie, presenterStore) {
-    const moviePresenter = new Movie(movieListElement, this._changeData, this._handleModeChange);
+    const moviePresenter = new Movie(movieListElement, this._changeData, this._handleModeChange, this._api);
     moviePresenter.init(movie);
     presenterStore[movie.id] = moviePresenter;
   }
@@ -67,6 +69,14 @@ export default class MoviesList {
     const movies = this._listMovies.slice(0, Math.min(this._listMovies.length, countMovies));
     render(this._moviesContainer, component, RenderPosition.BEFOREEND);
     this._renderMovies(movies, component, presenterStore);
+  }
+
+  renderLoading() {
+    render(this._moviesContainer, this._loadingCompomemt, RenderPosition.BEFOREEND);
+  }
+
+  clearLoading() {
+    remove(this._loadingCompomemt)
   }
 
   _handleShowMoreButtonClick() {
@@ -107,8 +117,10 @@ export default class MoviesList {
   }
 
   _renderExtraMoviesList() {
-    this._renderMovieList(this._topRatedMoviesListComponent, MOVIES_EXTRA_COUNT, this._movieTopRatedPresenter);
-    this._renderMovieList(this._mostCommentedMoviesListComponent, MOVIES_EXTRA_COUNT, this._movieMostCommentedPresenter);
+    if (this._listMovies.length !== 0) {
+      this._renderMovieList(this._topRatedMoviesListComponent, MOVIES_EXTRA_COUNT, this._movieTopRatedPresenter);
+      this._renderMovieList(this._mostCommentedMoviesListComponent, MOVIES_EXTRA_COUNT, this._movieMostCommentedPresenter);
+    }
   }
 
   _clearMainMovieList(resetRenderedMovieCount = false) {
